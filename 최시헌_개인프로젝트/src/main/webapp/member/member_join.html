@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Track27 최시헌</title>
+    <link href="../sub.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="title"><a href="../Index.html">穴場 一都三県</a></div>
+        <div class="my">
+            <a href="../Index.html?login=true">Login</a>
+            &nbsp;
+            <a href="member_join.html">Join</a>
+            &nbsp;
+        </div>	
+    </header>
+    
+    <div class="sidebar-container">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="검색어를 입력하세요">
+            &nbsp;
+            <button type="button" class="search-button">🔍</button>
+        </div>
+        
+        <div class="filter">
+            <p class="filter-title">지역별 필터</p>
+            <ul class="filter-list">
+                <li>
+                    <div class="region">
+                        <span class="regionArrow" onclick="RegionList()">▶</span>
+                        <label><input type="checkbox" id="region-check-all"> 전체</label>
+                    </div>
+                    <ul id="sub-region-list" class="sub-list">
+                        <li><label>▶ <input type="checkbox" class="region-check"> 도쿄</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 사이타마</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 치바</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 카나가와</label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="filter">
+            <p class="filter-title">카테고리별 필터</p>
+            <ul class="filter-list">
+                <li>
+                    <div class="category">
+                        <span class="categoryArrow" onclick="CategoryList()">▶</span>
+                        <label><input type="checkbox" id="category-check-all"> 전체</label>
+                    </div>
+                    <ul id="sub-category-list" class="sub-list">
+                        <li>
+                            <span class="foodArrow" onclick="FoodList()">▶</span>
+                            <label><input type="checkbox" class="category-check food-check-all"> 음식</label>
+                            
+                            <ul id="sub-food-list" class="sub-list">
+                                <li><label>▶ <input type="checkbox" class="food-check"> 식당</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 이자카야</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 테이크아웃</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 카페 & 바</label></li>
+                            </ul>
+                        </li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 관광</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 마츠리/하나비</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 숙소</label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="filter mypage-section">
+            <span class="mypage-title">마이페이지</span>
+            <ul class="mypage-list">
+                <li><a href="">▶ &nbsp;내 정보</a></li>
+                <li><a href="">▶ &nbsp;북마크</a></li>
+                <li><a href="recommend/recommend_list.html">▶ &nbsp;장소 신청하기</a></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <address class="address">
+                <p class="title">본사</p>
+                (우)12345 대전광역시 중구 계룡로 825<br>
+                고객센터: 042-242-4412
+            </address>
+            <p class="copyright">Copyright &copy; JSL. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- 메인 영역 -->
+    <div class="main-container">
+         <div class="auth-page-container">
+            <div class="auth-card">
+                
+                <div class="auth-hero">
+                    <div class="hero-content">
+                        <h3>穴場 一都三県</h3>
+                        <p>회원가입 후 맞춤 추천 서비스를 이용해 보세요.</p>
+                    </div>
+                </div>
+
+                <div class="auth-form-section">
+                    <div class="form-header">
+                        <h2>회원가입</h2>
+                        <p>서비스 이용을 위해 회원 정보를 입력해주세요.</p>
+                    </div>
+
+                    <form action="Member" method="post" class="auth-form">
+                        <input type="hidden" name="t_gubun" value="member_save">
+
+						<div class="input-group">
+                            <label for="user-name">이름</label>
+                            <input type="text" id="user-name" name="t_name" placeholder="이름 입력" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="user-id">아이디</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="user-id" name="t_id" placeholder="아이디 입력" required>
+                                <button type="button" class="btn-sub">중복확인</button>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="user-pw">비밀번호</label>
+                            <input type="password" id="user-pw" name="t_pw" placeholder="비밀번호 (8자 이상)" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="user-pw-confirm">비밀번호 확인</label>
+                            <input type="password" id="user-pw-confirm" name="t_pw_confirm" placeholder="비밀번호 재입력" required>
+                        </div>
+
+                        <div class="input-group">
+						    <label for="user-email-1">이메일</label>
+						    <div class="email-inputs">
+						        <input type="text" id="user-email-1" name="t_email_1" placeholder="example" required>
+						        <span>@</span>
+						        <input type="text" id="user-email-2" name="t_email_2" placeholder="email.com" required>
+						    </div>
+						</div>
+                        
+                        <div class="input-group">
+						    <label for="user-ph1">전화번호</label>
+						    <div class="phone-inputs">
+						        <input type="text" id="user-ph1" name="t_ph1" placeholder="010" maxlength="3" required>
+						        <span>-</span>
+						        <input type="text" id="user-ph2" name="t_ph2" placeholder="1234" maxlength="4" required>
+						        <span>-</span>
+						        <input type="text" id="user-ph3" name="t_ph3" placeholder="5678" maxlength="4" required>
+						    </div>
+						</div>
+
+                        <div class="input-group">
+                            <label for="user-region">선호 지역(선택)</label>
+                            <select id="user-region" name="t_region">
+                                <option value="none">선택</option>
+                                <option value="tokyo">도쿄</option>
+                                <option value="saitama">사이타마</option>
+                                <option value="chiba">치바</option>
+                                <option value="kanagawa">카나가와</option>
+                            </select>
+                        </div>
+
+                        <div class="member-join">
+                            <button type="submit" class="btn-primary">회원가입 완료</button>
+                        </div>
+
+                        <div class="direct-login">
+                            <span>이미 계정이 있으신가요? <a href="../Index.html?login=true">로그인하기</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form name="work">
+        <input type="hidden" name="t_gubun">
+    </form>
+
+    <script type="text/javascript">
+        // 1. 지역 및 카테고리 목록 열고 닫기
+        function RegionList() {
+            const subList = document.getElementById('sub-region-list');
+            const arrow = document.querySelector('.regionArrow');
+            if (subList && arrow) {
+                subList.classList.toggle('open');
+                arrow.classList.toggle('open');
+            }
+        }
+
+        function CategoryList() {
+            const subList = document.getElementById('sub-category-list');
+            const arrow = document.querySelector('.categoryArrow');
+            const subFoodList = document.getElementById('sub-food-list');
+            const foodArrow = document.querySelector('.foodArrow');
+
+            if (subList && arrow) {
+                const isOpen = subList.classList.toggle('open');
+                arrow.classList.toggle('open');
+
+                if (subFoodList && foodArrow) {
+                    if (isOpen) {
+                        subFoodList.classList.add('open');
+                        foodArrow.classList.add('open');
+                    } else {
+                        subFoodList.classList.remove('open');
+                        foodArrow.classList.remove('open');
+                    }
+                }
+            }
+        }
+
+        function FoodList() {
+            const subFoodList = document.getElementById('sub-food-list');
+            const arrow = document.querySelector('.foodArrow');
+            if (subFoodList && arrow) {
+                subFoodList.classList.toggle('open');
+                arrow.classList.toggle('open');
+            }
+        }
+
+        // 2. 지역별 필터 로직
+        const checkAll = document.getElementById('region-check-all');
+        const regionChecks = document.querySelectorAll('.region-check');
+
+        if (checkAll) {
+            checkAll.addEventListener('change', function(e) {
+                regionChecks.forEach(cb => cb.checked = e.target.checked);
+            });
+        }
+
+        regionChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const totalCount = regionChecks.length;
+                const checkedCount = document.querySelectorAll('.region-check:checked').length;
+                if (checkAll) checkAll.checked = (totalCount === checkedCount);
+            });
+        });
+
+        // 3. 카테고리별 필터 로직
+        const categoryCheckAll = document.getElementById('category-check-all');
+        const foodCheckAll = document.querySelector('.food-check-all');
+        const foodChecks = document.querySelectorAll('.food-check');
+        const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+
+        if (categoryCheckAll) {
+            categoryCheckAll.addEventListener('change', function() {
+                const isChecked = categoryCheckAll.checked;
+                if (foodCheckAll) foodCheckAll.checked = isChecked;
+                foodChecks.forEach(cb => cb.checked = isChecked);
+                otherCategoryChecks.forEach(cb => cb.checked = isChecked);
+            });
+        }
+
+        if (foodCheckAll) {
+            foodCheckAll.addEventListener('change', function() {
+                const isChecked = foodCheckAll.checked;
+                foodChecks.forEach(cb => cb.checked = isChecked);
+                checkCategoryAllState();
+            });
+        }
+
+        foodChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const checkedCount = document.querySelectorAll('.food-check:checked').length;
+                if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
+                checkCategoryAllState();
+            });
+        });
+
+        otherCategoryChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                checkCategoryAllState();
+            });
+        });
+
+        function checkCategoryAllState() {
+            if (!categoryCheckAll) return;
+            
+            const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
+            const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
+            const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
+
+            categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
+        }
+    </script>
+</body>
+</html>

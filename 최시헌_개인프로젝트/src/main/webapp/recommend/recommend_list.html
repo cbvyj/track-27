@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Track27 최시헌</title>
+    <link href="../sub.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="title"><a href="../Index.html">穴場 一都三県</a></div>
+        <div class="my">
+            <a href="../member/member_login.html" onclick="openLoginModal(); return false;">Login</a>
+            &nbsp;
+            <a href="../member/member_join.html">Join</a>
+            &nbsp;
+        </div>	
+    </header>
+    
+    <div class="sidebar-container">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="검색어를 입력하세요">
+            &nbsp;
+            <button type="button" class="search-button">🔍</button>
+        </div>
+        
+        <div class="filter">
+            <p class="filter-title">지역별 필터</p>
+            <ul class="filter-list">
+                <li>
+                    <div class="region">
+                        <span class="regionArrow" onclick="RegionList()">▶</span>
+                        <label><input type="checkbox" id="region-check-all"> 전체</label>
+                    </div>
+                    <ul id="sub-region-list" class="sub-list">
+                        <li><label>▶ <input type="checkbox" class="region-check"> 도쿄</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 사이타마</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 치바</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check"> 카나가와</label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="filter">
+            <p class="filter-title">카테고리별 필터</p>
+            <ul class="filter-list">
+                <li>
+                    <div class="category">
+                        <span class="categoryArrow" onclick="CategoryList()">▶</span>
+                        <label><input type="checkbox" id="category-check-all"> 전체</label>
+                    </div>
+                    <ul id="sub-category-list" class="sub-list">
+                        <li>
+                            <span class="foodArrow" onclick="FoodList()">▶</span>
+                            <label><input type="checkbox" class="category-check food-check-all"> 음식</label>
+                            
+                            <ul id="sub-food-list" class="sub-list">
+                                <li><label>▶ <input type="checkbox" class="food-check"> 식당</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 이자카야</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 테이크아웃</label></li>
+                                <li><label>▶ <input type="checkbox" class="food-check"> 카페 & 바</label></li>
+                            </ul>
+                        </li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 관광</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 마츠리/하나비</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check"> 숙소</label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="filter mypage-section">
+            <span class="mypage-title">마이페이지</span>
+            <ul class="mypage-list">
+                <li><a href="">▶ &nbsp;내 정보</a></li>
+                <li><a href="">▶ &nbsp;북마크</a></li>
+                <li><a href="recommend_list.html">▶ &nbsp;장소 신청하기</a></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <address class="address">
+                <p class="title">본사</p>
+                (우)12345 대전광역시 중구 계룡로 825<br>
+                고객센터: 042-242-4412
+            </address>
+            <p class="copyright">Copyright &copy; JSL. All rights reserved.</p>
+        </div>
+    </div>
+
+   <div class="main-container">
+        <div class="board-page-container">
+            <!-- 상단 타이틀 & 글쓰기 버튼 -->
+            <div class="board-header">
+                <div class="board-title-group">
+                    <h2>장소 신청 게시판</h2>
+                    <p>알고 계신 숨은 명소를 추천해 주세요. 관리자 검토 후 지도에 반영됩니다.</p>
+                </div>
+                <a href="recommend_write.html" class="btn-board-write">글쓰기</a>
+            </div>
+
+            <!-- 공지사항 스타일 테이블 -->
+            <table class="board-table">
+                <thead>
+                    <tr>
+                        <th class="col-num">번호</th>
+                        <th class="col-title">제목</th>
+                        <th class="col-author">작성자</th>
+                        <th class="col-date">작성일</th>
+                        <th class="col-status">처리상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4</td>
+                        <td class="title-cell">
+                            <a href="recommend_view.html">이치카츠 아사쿠사바시점</a>
+                            <span class="icon-secret">🔒</span>
+                        </td>
+                        <td>김태현</td>
+                        <td>2026.07.28</td>
+                        <td><span class="status-tag status-pending">검토중</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="title-cell">
+                            <a href="recommend_view.html">Mermaid Coffee Roasters Ikebukuro</a>
+                            <span class="icon-secret">🔒</span>
+                        </td>
+                        <td>강선구</td>
+                        <td>2026.07.25</td>
+                        <td><span class="status-tag status-complete">등록완료</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="title-cell">
+                            <a href="recommend_view.html">KISSA 092</a>
+                            <span class="icon-secret">🔒</span>
+                        </td>
+                        <td>임정규</td>
+                        <td>2026.06.20</td>
+                        <td><span class="status-tag status-complete">등록완료</span></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="title-cell">
+                            <a href="recommend_view.html">Lily's Cafe</a>
+                            <span class="icon-secret">🔒</span>
+                        </td>
+                        <td>최시헌</td>
+                        <td>2026.06.18</td>
+                        <td><span class="status-tag status-complete">등록완료</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 하단 페이징 영역 -->
+            <div class="board-pagination">
+                <a href="#" class="page-btn">&laquo;</a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">&raquo;</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 모달 어두운 배경 오버레이 -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
+
+    <!-- 로그인 전용 모달 컨테이너 -->
+    <div id="modal-card" class="modal-card"></div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB85lO0bCRzB3RXAGD1UTS7NK2VQLg8DeI&callback=initMap" async defer></script>
+    <script type="text/javascript">
+        function RegionList() {
+            const subList = document.getElementById('sub-region-list');
+            const arrow = document.querySelector('.regionArrow');
+            if (subList && arrow) {
+                subList.classList.toggle('open');
+                arrow.classList.toggle('open');
+            }
+        }
+
+        function CategoryList() {
+            const subList = document.getElementById('sub-category-list');
+            const arrow = document.querySelector('.categoryArrow');
+            const subFoodList = document.getElementById('sub-food-list');
+            const foodArrow = document.querySelector('.foodArrow');
+
+            if (subList && arrow) {
+                const isOpen = subList.classList.toggle('open');
+                arrow.classList.toggle('open');
+
+                if (subFoodList && foodArrow) {
+                    if (isOpen) {
+                        subFoodList.classList.add('open');
+                        foodArrow.classList.add('open');
+                    } else {
+                        subFoodList.classList.remove('open');
+                        foodArrow.classList.remove('open');
+                    }
+                }
+            }
+        }
+
+        function FoodList() {
+            const subFoodList = document.getElementById('sub-food-list');
+            const arrow = document.querySelector('.foodArrow');
+            if (subFoodList && arrow) {
+                subFoodList.classList.toggle('open');
+                arrow.classList.toggle('open');
+            }
+        }
+
+        const checkAll = document.getElementById('region-check-all');
+        const regionChecks = document.querySelectorAll('.region-check');
+
+        if (checkAll) {
+            checkAll.addEventListener('change', function(e) {
+                regionChecks.forEach(cb => cb.checked = e.target.checked);
+            });
+        }
+
+        regionChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const totalCount = regionChecks.length;
+                const checkedCount = document.querySelectorAll('.region-check:checked').length;
+                if (checkAll) checkAll.checked = (totalCount === checkedCount);
+            });
+        });
+
+        const categoryCheckAll = document.getElementById('category-check-all');
+        const foodCheckAll = document.querySelector('.food-check-all');
+        const foodChecks = document.querySelectorAll('.food-check');
+        const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+
+        if (categoryCheckAll) {
+            categoryCheckAll.addEventListener('change', function() {
+                const isChecked = categoryCheckAll.checked;
+                if (foodCheckAll) foodCheckAll.checked = isChecked;
+                foodChecks.forEach(cb => cb.checked = isChecked);
+                otherCategoryChecks.forEach(cb => cb.checked = isChecked);
+            });
+        }
+
+        if (foodCheckAll) {
+            foodCheckAll.addEventListener('change', function() {
+                const isChecked = foodCheckAll.checked;
+                foodChecks.forEach(cb => cb.checked = isChecked);
+                checkCategoryAllState();
+            });
+        }
+
+        foodChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const checkedCount = document.querySelectorAll('.food-check:checked').length;
+                if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
+                checkCategoryAllState();
+            });
+        });
+
+        otherCategoryChecks.forEach(cb => {
+            cb.addEventListener('change', function() {
+                checkCategoryAllState();
+            });
+        });
+
+        function checkCategoryAllState() {
+            if (!categoryCheckAll) return;
+            const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
+            const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
+            const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
+
+            categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
+        }
+
+        function initMap() {
+            const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
+            const mapElement = document.getElementById('map');
+            if (!mapElement) return;
+
+            const map = new google.maps.Map(mapElement, {
+                zoom: 10, 
+                center: centerLatLng,
+                mapTypeControl: false 
+            });
+
+            const locations = [
+                { title: "도쿄 (Tokyo)", lat: 35.681317002098005, lng: 139.7663684224545 },
+                { title: "사이타마 (Saitama)", lat: 35.86190692619087, lng: 139.6453769889718 },
+                { title: "치바 (Chiba)", lat: 35.6074, lng: 140.1063 },
+                { title: "가나가와 (Kanagawa)", lat: 35.4478, lng: 139.6425 }
+            ];
+
+            locations.forEach(loc => {
+                new google.maps.Marker({
+                    position: { lat: loc.lat, lng: loc.lng },
+                    map: map,
+                    title: loc.title
+                });
+            });
+        }
+
+        // 모달 열기 + 주소창을 member/member_login.html로 변경
+        function openLoginModal(isPopState = false) {
+            const overlay = document.getElementById('modal-overlay');
+            const modalCard = document.getElementById('modal-card');
+
+            if (!overlay || !modalCard) return;
+
+            fetch('member/member_login.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('페이지를 불러오지 못했습니다.');
+                    return response.text();
+                })
+                .then(html => {
+                    modalCard.innerHTML = html;
+                    overlay.style.display = 'block';
+                    modalCard.style.display = 'block';
+
+                    if (!isPopState) {
+                        history.pushState({ modal: 'login' }, "", "member/member_login.html");
+                    }
+                })
+                .catch(error => console.error('Error loading modal:', error));
+        }
+
+        // 모달 닫기 + 주소창을 Index.html로 변경
+        function closeModal(isPopState = false) {
+            const overlay = document.getElementById('modal-overlay');
+            const modalCard = document.getElementById('modal-card');
+
+            if (overlay) overlay.style.display = 'none';
+            if (modalCard) modalCard.style.display = 'none';
+
+            if (!isPopState) {
+                history.pushState(null, "", "../Index.html");
+            }
+        }
+
+        // 뒤로가기/앞으로가기 처리
+        window.addEventListener('popstate', function(e) {
+            if (e.state && e.state.modal === 'login') {
+                openLoginModal(true);
+            } else {
+                closeModal(true);
+            }
+        });
+
+        // 페이지 도착 시 URL 감지 및 처리
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // ?login=true 가 파라미터로 포함된 경우
+            if (urlParams.get('login') === 'true') {
+                // 1. ?login=true 파라미터 주소를 깔끔하게 정리
+                history.replaceState(null, "", "Index.html");
+                // 2. 모달 열고 member/member_login.html 로 주소 교체
+                openLoginModal();
+            }
+        });
+
+        // ESC 키 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
