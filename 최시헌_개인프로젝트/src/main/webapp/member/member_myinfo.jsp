@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="member-join">
-                            <button type="button" onclick="javascript:goSave()" class="btn-primary">내 정보 수정</button>
+                            <button type="button" onclick="javascript:goSave()" class="btn-primary">회원가입</button>
                         </div>
 
                     </form>
