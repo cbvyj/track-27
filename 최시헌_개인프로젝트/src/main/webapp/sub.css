@@ -401,6 +401,7 @@ label {
     color: #888;
     margin-bottom: 6px;
     text-align: left;
+    cursor: default;
 }
 
 .auth-form p {
@@ -553,6 +554,8 @@ label {
 .direct-login a:hover {
     text-decoration: underline;
 }
+
+
 
 /* ================= Board Section ================= */
 .board-page-container {
@@ -834,4 +837,67 @@ label {
 
 .modal-footer a:hover {
     text-decoration: underline;
+}
+
+/* 비밀번호 확인 모달 스타일 */
+.pw-modal-content {
+    padding: 25px;
+    text-align: center;
+}
+
+.pw-modal-title {
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pw-modal-desc {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.pw-modal-input-group {
+    margin-bottom: 20px;
+}
+
+.pw-modal-input {
+    width: 85%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.pw-modal-btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 85%;          
+    margin: 0 auto;      
+}
+
+/* 버튼 내부 글자 줄바꿈 방지 및 동일 비율 배치 */
+.pw-modal-btn-group button {
+    flex: 1;             /* 확인, 취소 버튼 넓이를 1:1로 똑같이 나눔 */
+    white-space: nowrap; /* "취소" 글자가 절대 밑으로 떨어지지 않게 설정 */
+    box-sizing: border-box;
+}
+
+.pw-modal-btn-confirm {
+    padding: 10px 24px;
+    font-size: 14px;
+}
+
+.pw-modal-btn-cancel {
+    padding: 10px 24px;
+    font-size: 14px;
+    background: #e0e0e0;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }

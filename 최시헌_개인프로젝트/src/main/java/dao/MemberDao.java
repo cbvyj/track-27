@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import common.DBConnection;
 import dto.MemberDto;
@@ -61,7 +63,7 @@ public class MemberDao {
 			return encryptData;
 	    }
 
-	 //로그인  
+	//로그인  
 	   public String getLoginName(String id, String password) {
 		   String name ="";
 		   String sql="select name \r\n"
@@ -84,13 +86,14 @@ public class MemberDao {
 		   return name;
 	   }
 
-	 //회원정보
+	//회원정보
 		public MemberDto getMemberInfo(String id) {
 			MemberDto dto = null;
 			String sql = "select name, id, password_length, \r\n"
 					+ "				email_1, email_2, \r\n"
-					+ "                phone_1, phone_2, phone_3, region,\r\n"
-					+ "				to_char (reg_date, 'yyyy-MM-dd hh24:mi:ss') as reg_date\r\n"
+					+ "             phone_1, phone_2, phone_3, region,\r\n"
+					+ "				to_char (reg_date, 'yyyy-MM-dd hh24:mi:ss') as reg_date,\r\n"
+					+ "				to_char (update_date, 'yyyy-MM-dd hh24:mi:ss') as update_date\r\n"
 					+ "from my_최시헌_member\r\n"
 					+ "where id = ?";
 			try {
@@ -116,21 +119,109 @@ public class MemberDao {
 						  region = "치바";
 					  } else if(region.equals("kanagawa")) {
 						  region = "카나가와";
-					  } else {
-						  region ="";
+					  } else if(region.equals("none")) {
+						  region = "선택";
 					  }
 					  String reg_date = rs.getString("reg_date");
-					  
-					  dto = new MemberDto(name, id, "password", password_length, email_1, email_2, phone_1, phone_2, phone_3, region, reg_date, "update_date", "exit_date");
+					  String update_date = rs.getString("update_date");
+					  dto = new MemberDto(name, id, "password", password_length, email_1, email_2, phone_1, phone_2, phone_3, region, reg_date, update_date, "exit_date");
 				   }
 			   } catch(Exception e) {
-				   System.out.println("getLoginName() 오류 : "+sql);
+				   System.out.println("getMemberInfo() 오류 : "+sql);
 				   e.printStackTrace();
 			   } finally {
 				   DBConnection.closeDB(con, ps, rs);
 			   }
-			
 			return dto;
+		}
+
+	//아이디 중복검사
+		public int checkId(String id) {
+			int result = 0;
+			String sql = "select count(*) as count \r\n"
+					+ "from my_최시헌_member\r\n"
+					+ "where id = ?";
+			try {
+				   con = DBConnection.getConnection();
+				   ps = con.prepareStatement(sql);
+				   ps.setString(1, id);
+				   rs = ps.executeQuery();
+				   if(rs.next()) {
+					   result = rs.getInt("count");
+				   }
+			   } catch(Exception e) {
+				   System.out.println("checkId() 오류 : "+sql);
+				   e.printStackTrace();
+			   } finally {
+				   DBConnection.closeDB(con, ps, rs);
+			   }
+			return result;
+		}
+
+	//내 정보 수정
+		public int memberUpdate(MemberDto dto) {
+			int result = 0;
+			String sql = "update my_최시헌_member\r\n"
+					+ "set name = ?, \r\n"
+					+ "email_1= ?, \r\n"
+					+ "email_2= ?,\r\n"
+					+ "phone_1= ?, \r\n"
+					+ "phone_2= ?, \r\n"
+					+ "phone_3= ?, \r\n"
+					+ "region= ?,\r\n"
+					+ "update_date=?\r\n"
+					+ "where id = ? ";
+			try {
+				con = DBConnection.getConnection();
+				
+				//ps = con.prepareStatement(sql);
+				LogPreparedStatement ps = new LogPreparedStatement(con, sql);
+				ps.setString(1,dto.getName());
+				ps.setString(2,dto.getEmail_1());
+				ps.setString(3,dto.getEmail_2());
+				ps.setString(4,dto.getPhone_1());
+				ps.setString(5,dto.getPhone_2());
+				ps.setString(6,dto.getPhone_3());
+				ps.setString(7,dto.getRegion());
+				//ps.setString(8,dto.getUpdate_date());
+				LocalDateTime now = LocalDateTime.now();
+				Timestamp timestamp = Timestamp.valueOf(now);
+				ps.setTimestamp(8,timestamp);
+				ps.setString(9, dto.getId());
+				
+				result = ps.executeUpdate();
+			} catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("memberUpdate() 오류: "+ sql);
+			} finally {
+				DBConnection.closeDB(con, ps, rs);
+			}
+			return result;
+		}
+
+		// 내 정보(비밀번호 확인)
+		public boolean checkPassword(String id, String password) {
+		    boolean result = false;
+		    String sql = "select count(*) as count \r\n"
+		            + "from my_최시헌_member \r\n"
+		            + "where id = ? \r\n"
+		            + "and password = ?";
+		    try {
+		        con = DBConnection.getConnection();
+		        ps = con.prepareStatement(sql);
+		        ps.setString(1, id);
+		        ps.setString(2, encryptSHA256(password)); // 비밀번호 암호화 후 비교
+		        rs = ps.executeQuery();
+		        if(rs.next() && rs.getInt("count") > 0) {
+		            result = true;
+		        }
+		    } catch(Exception e) {
+		        System.out.println("checkPassword() 오류 : " + sql);
+		        e.printStackTrace();
+		    } finally {
+		        DBConnection.closeDB(con, ps, rs);
+		    }
+		    return result;
 		}
 	
 	

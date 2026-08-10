@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import command.member.MemberLogin;
 import command.member.MemberLogout;
 import command.member.MemberMyinfo;
+import command.member.MemberMyinfoPw;
 import command.member.MemberSave;
+import command.member.MemberUpdate;
 
 @WebServlet("/Member")
 public class Member extends HttpServlet {
@@ -54,11 +56,59 @@ public class Member extends HttpServlet {
         
         // 4. 내정보
         else if ("myinfo".equals(gubun)) {
-        	MemberMyinfo mem = new MemberMyinfo();
-        	mem.execute(request);
-        	viewPage = "member/member_myinfo.jsp";
+        	String id = (String)request.getSession().getAttribute("sessionId");
+			if(id == null) {
+				String msg = "세션정보가 만료되었습니다. 다시 로그인하세요.";
+				request.setAttribute("t_msg", msg);
+				request.setAttribute("t_url", "Member");
+				viewPage ="common_alert.jsp";
+			} else {
+				MemberMyinfo mem = new MemberMyinfo();
+	        	mem.execute(request);
+	        	viewPage = "member/member_myinfo.jsp";
+			}
         }
-        	
+        
+        // 5. 내 정보 수정 페이지
+        else if ("memberUpdateForm".equals(gubun)) {
+        	String id = (String)request.getSession().getAttribute("sessionId");
+        	if(id == null) {
+				String msg = "세션정보가 만료되었습니다. 다시 로그인하세요.";
+				request.setAttribute("t_msg", msg);
+				request.setAttribute("t_url", "Member");
+				viewPage ="common_alert.jsp";
+			}else {
+	        	MemberMyinfo mem = new MemberMyinfo();
+	        	mem.execute(request);
+	        	viewPage = "member/member_update.jsp";
+			}	
+        }
+        
+        //6. 내 정보 수정
+        else if ("memberUpdate".equals(gubun)) {
+        	String id = (String)request.getSession().getAttribute("sessionId");
+        	if(id == null) {
+				String msg = "세션정보가 만료되었습니다. 다시 로그인하세요.";
+				request.setAttribute("t_msg", msg);
+				request.setAttribute("t_url", "Member");
+				viewPage ="common_alert.jsp";
+			}else {
+	        	MemberUpdate mem = new MemberUpdate();
+	        	mem.execute(request);
+	        	viewPage = "common_alert_view.jsp";
+			}	
+        }
+        
+        else if (gubun.equals("checkPw")) {
+        	MemberMyinfoPw checkPw = new MemberMyinfoPw();
+            checkPw.execute(request); 
+            String result = (String) request.getAttribute("t_result");
+            
+            // Controller에서 Ajax response 응답 처리
+            response.setContentType("text/plain; charset=UTF-8");
+            response.getWriter().print(result);
+            return;
+        }
         
         // . Fetch 비동기 모달 요청 (로그인 폼 띄우기)
         else if ("true".equals(ajax)) {

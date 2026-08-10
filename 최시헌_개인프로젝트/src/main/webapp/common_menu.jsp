@@ -10,9 +10,9 @@
     <script type="text/javascript" src="js/common.js"></script>
 </head>
 <body>
-    <form name="work">
-        <input type="hidden" name="t_gubun">
-    </form>
+    <form name="work" action="Member" method="post">
+    	<input type="hidden" name="t_gubun">
+	
 
     <script type="text/javascript">
         function goPage(gubun) {
@@ -280,3 +280,4 @@
             <p class="copyright">Copyright &copy; JSL. All rights reserved.</p>
         </div>
     </div>
+    </form>

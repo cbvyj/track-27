@@ -48,10 +48,16 @@
                             <label for="user-region">선호 지역</label>
                             <p id="user-region">${dto.getRegion()}</p>
                         </div>
-
+                        
+                        <c:if test="${not empty dto.getUpdate_date()}">
+						    <div class="input-group">
+						        <label for="user-update-date">최종 정보 수정일</label>
+						        <p id="user-update-date">${dto.getUpdate_date()}</p>
+						    </div>         
+						</c:if>
                         <div class="member-join">
-                            <button type="button" onclick="javascript:goSave()" class="btn-primary">내 정보 수정</button>
-                        </div>
+						    <button type="button" onclick="openPasswordModal()" class="btn-primary">내 정보 수정</button>
+						</div>
 
                     </form>
                 </div>
@@ -66,59 +72,66 @@
     <div id="modal-card" class="modal-card"></div>
 
 	<script type="text/javascript">
-    function goSave(){
-    	if(isEmpty(mem.t_name, "이름을 입력하세요")) return;
-    	if(isEmpty(mem.t_id, "아이디를 입력하세요")) return;
-    	/*
-    	if(mem.t_id_check.value == ""){
-			alert("ID 중복검사 하세요");
-			return;
-		}
-		if(mem.t_id_check.value == "사용불가"){
-			alert("사용할 수 없는 ID입니다");
-			mem.t_id.focus();
-			return;
-		}
-		*/
-  		if(isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
-  		if(isEmpty(mem.t_password_confirm, "비밀번호 확인을 입력하세요")) return;
-  		
-  		if(mem.t_password.value != mem.t_password_confirm.value){
-  			alert("비밀번호가 일치하지 않습니다");
-  			mem.t_password_confirm.focus();
-  			return;
-  		}
-  		if(isEmpty(mem.t_email_1, "이메일을 입력하세요")) return;
-  		if(isEmpty(mem.t_email_2, "이메일을 입력하세요")) return;
-  		if(isEmpty(mem.t_phone_1, "전화번호를 입력하세요")) return;
-  		if(isEmpty(mem.t_phone_2, "전화번호를 입력하세요")) return;
-  		if(isEmpty(mem.t_phone_3, "전화번호를 입력하세요")) return;
-  		
-  		mem.t_gubun.value = "memberSave";
-        mem.method = "post";
-        mem.action = "Member";
-        mem.submit();
-    }
-    
-    function checkId(){
-  		if(checkEmpty(mem.t_id, "아이디 입력후 중복검사 하세요")) return;
-  		var id=mem.t_id.value;
-  		$.ajax({
-			type :"POST",
-			url : "MemberCheckId",
-			data: "t_id="+id,
-			async:false,
-			dataType : "text",
-			error : function(){
-				alert("통신실패!!!");
-			},
-			success : function(data){
-				var result = $.trim(data);
-				mem.t_id_check.value = result;
-				//alert("=="+result+"==");
-			}
-		});
-  	}
+	// 1. 비밀번호 확인 모달 열기
+		function openPasswordModal() {
+	    const overlay = document.getElementById('modal-overlay');
+	    const modalCard = document.getElementById('modal-card');
+	
+	    if (!overlay || !modalCard) return;
+	
+	    modalCard.innerHTML = `
+	        <div class="pw-modal-content">
+	            <h3 class="pw-modal-title">비밀번호 확인</h3>
+	            <p class="pw-modal-desc">
+	                회원님의 정보를 안전하게 보호하기 위해<br>비밀번호를 다시 한번 입력해 주세요.
+	            </p>
+	            <div class="pw-modal-input-group">
+	                <input type="password" id="modal-pw" class="pw-modal-input" placeholder="비밀번호 입력" 
+	                       onkeypress="if(event.keyCode==13) checkPassword();">
+	            </div>
+	            <div class="pw-modal-btn-group">
+	                <button type="button" onclick="checkPassword()" class="btn-primary pw-modal-btn-confirm">확인</button>
+	                <button type="button" onclick="closeModal()" class="pw-modal-btn-cancel">취소</button>
+	            </div>
+	        </div>
+	    `;
+	
+	    overlay.style.display = 'block';
+	    modalCard.style.display = 'block';
+	
+	    setTimeout(() => {
+	        const pwInput = document.getElementById('modal-pw');
+	        if (pwInput) pwInput.focus();
+	    }, 100);
+	}
+
+	// 2. Ajax 비밀번호 일치 검증
+	function checkPassword() {
+	    const pw = document.getElementById('modal-pw').value;
+	    if (!pw.trim()) {
+	        alert("비밀번호를 입력해 주세요.");
+	        document.getElementById('modal-pw').focus();
+	        return;
+	    }
+
+	    fetch('Member?t_gubun=checkPw&t_password=' + encodeURIComponent(pw))
+	        .then(response => response.text())
+	        .then(result => {
+	            if (result.trim() === "true") {
+	                closeModal();
+	                goPage('memberUpdateForm'); // 비밀번호 통과 시 정보 수정 페이지로 이동
+	            } else {
+	                alert("비밀번호가 일치하지 않습니다.");
+	                const pwInput = document.getElementById('modal-pw');
+	                pwInput.value = '';
+	                pwInput.focus();
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	            alert("비밀번호 확인 중 오류가 발생했습니다.");
+	        });
+	}
 	</script>
     
 </body>

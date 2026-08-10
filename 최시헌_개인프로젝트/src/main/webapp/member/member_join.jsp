@@ -23,15 +23,17 @@
 
                         <div class="input-group">
                             <label for="user-name">이름</label>
-                            <input type="text" id="user-name" name="t_name" placeholder="이름 입력">
+                            <input type="text" id="user-name" name="t_name" placeholder="이름 입력" autofocus>
                         </div>
                         
                         <div class="input-group">
                             <label for="user-id">아이디</label>
                             <div class="input-with-btn">
-                                <input type="text" id="user-id" name="t_id" placeholder="아이디 입력">
-                                <button type="button" class="btn-sub">중복확인</button>
+                                <input type="text" id="user-id" name="t_id" oninput="setEmpty()" placeholder="아이디 입력">
+                                <button type="button" onclick="checkId()" class="btn-sub">중복확인</button>
+                                <input type="hidden" name="t_id_check">
                             </div>
+                            <span id="id-check-msg" style="font-size: 12px; margin-top: 5px; display: block;"></span>
                         </div>
 
                         <div class="input-group">
@@ -65,7 +67,7 @@
 						</div>
 
                         <div class="input-group">
-                            <label for="user-region">선호 지역(선택)</label>
+                            <label for="user-region">선호 지역 (선택)</label>
                             <select id="user-region" name="t_region">
                                 <option value="none">선택</option>
                                 <option value="tokyo">도쿄</option>
@@ -102,17 +104,12 @@
     function goSave(){
     	if(isEmpty(mem.t_name, "이름을 입력하세요")) return;
     	if(isEmpty(mem.t_id, "아이디를 입력하세요")) return;
-    	/*
+    	
     	if(mem.t_id_check.value == ""){
 			alert("ID 중복검사 하세요");
 			return;
 		}
-		if(mem.t_id_check.value == "사용불가"){
-			alert("사용할 수 없는 ID입니다");
-			mem.t_id.focus();
-			return;
-		}
-		*/
+		
   		if(isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
   		if(isEmpty(mem.t_password_confirm, "비밀번호 확인을 입력하세요")) return;
   		
@@ -134,7 +131,7 @@
     }
     
     function checkId(){
-  		if(checkEmpty(mem.t_id, "아이디 입력후 중복검사 하세요")) return;
+  		if(isEmpty(mem.t_id, "아이디 입력후 중복검사 하세요")) return;
   		var id=mem.t_id.value;
   		$.ajax({
 			type :"POST",
@@ -148,10 +145,21 @@
 			success : function(data){
 				var result = $.trim(data);
 				mem.t_id_check.value = result;
-				//alert("=="+result+"==");
+				var $msg = $("#id-check-msg");
+	            if(result === "사용가능") {
+	                $msg.css("color", "green").text("✓ 사용 가능한 아이디입니다.");
+	            } else {
+	                $msg.css("color", "red").text("✕ 이미 사용 중인 아이디입니다.");
+	            }
 			}
 		});
   	}
+    
+    function setEmpty(){
+    	mem.t_id_check.value = "";
+        $("#id-check-msg").text(""); 
+  	}
+    
 	</script>
     
 </body>
