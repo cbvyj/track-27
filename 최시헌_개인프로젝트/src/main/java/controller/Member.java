@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import command.member.MemberDelete;
 import command.member.MemberLogin;
 import command.member.MemberLogout;
 import command.member.MemberMyinfo;
@@ -99,6 +101,7 @@ public class Member extends HttpServlet {
 			}	
         }
         
+        //7. 내 정보 수정 전 비밀번호 확인
         else if (gubun.equals("checkPw")) {
         	MemberMyinfoPw checkPw = new MemberMyinfoPw();
             checkPw.execute(request); 
@@ -108,6 +111,21 @@ public class Member extends HttpServlet {
             response.setContentType("text/plain; charset=UTF-8");
             response.getWriter().print(result);
             return;
+        }
+        
+      //8. 회원탈퇴
+        else if ("exit".equals(gubun)) {
+        	String id = (String)request.getSession().getAttribute("sessionId");
+        	if(id == null) {
+				String msg = "세션정보가 만료되었습니다. 다시 로그인하세요.";
+				request.setAttribute("t_msg", msg);
+				request.setAttribute("t_url", "Member");
+				viewPage ="common_alert.jsp";
+			}else {
+	        	MemberDelete mem = new MemberDelete();
+	        	mem.execute(request);
+	        	viewPage = "common_alert_view.jsp";
+			}	
         }
         
         // . Fetch 비동기 모달 요청 (로그인 폼 띄우기)

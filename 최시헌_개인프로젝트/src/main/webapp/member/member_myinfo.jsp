@@ -48,17 +48,22 @@
                             <label for="user-region">선호 지역</label>
                             <p id="user-region">${dto.getRegion()}</p>
                         </div>
-                        
+                        <div class="input-group">
+						        <label for="user-reg-date">회원가입일</label>
+						        <p id="user-reg-date">${dto.getReg_date()}</p>
+						    </div>
                         <c:if test="${not empty dto.getUpdate_date()}">
 						    <div class="input-group">
 						        <label for="user-update-date">최종 정보 수정일</label>
 						        <p id="user-update-date">${dto.getUpdate_date()}</p>
 						    </div>         
 						</c:if>
-                        <div class="member-join">
+                        <div class="member-update">
 						    <button type="button" onclick="openPasswordModal()" class="btn-primary">내 정보 수정</button>
 						</div>
-
+						<div class="member-exit">
+						    <button type="button" onclick="goDelete()" class="btn-primary-exit">탈퇴하기</button>
+						</div>
                     </form>
                 </div>
             </div>
@@ -131,6 +136,12 @@
 	            console.error('Error:', error);
 	            alert("비밀번호 확인 중 오류가 발생했습니다.");
 	        });
+	}
+	
+	function goDelete() {
+	    if (confirm("정말로 탈퇴하시겠습니까? 탈퇴 후에는 계정을 복구할 수 없습니다.")) {
+	        goPage('exit');
+	    }
 	}
 	</script>
     

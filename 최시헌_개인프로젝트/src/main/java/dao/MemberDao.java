@@ -127,7 +127,7 @@ public class MemberDao {
 					  dto = new MemberDto(name, id, "password", password_length, email_1, email_2, phone_1, phone_2, phone_3, region, reg_date, update_date, "exit_date");
 				   }
 			   } catch(Exception e) {
-				   System.out.println("getMemberInfo() 오류 : "+sql);
+				   System.out.println("getMemberInfo() 오류 : "+ps.toString());
 				   e.printStackTrace();
 			   } finally {
 				   DBConnection.closeDB(con, ps, rs);
@@ -150,7 +150,7 @@ public class MemberDao {
 					   result = rs.getInt("count");
 				   }
 			   } catch(Exception e) {
-				   System.out.println("checkId() 오류 : "+sql);
+				   System.out.println("checkId() 오류 : "+ps.toString());
 				   e.printStackTrace();
 			   } finally {
 				   DBConnection.closeDB(con, ps, rs);
@@ -192,7 +192,7 @@ public class MemberDao {
 				result = ps.executeUpdate();
 			} catch(Exception e) {
 				e.printStackTrace();
-				System.out.println("memberUpdate() 오류: "+ sql);
+				System.out.println("memberUpdate() 오류: "+ ps.toString());
 			} finally {
 				DBConnection.closeDB(con, ps, rs);
 			}
@@ -216,12 +216,36 @@ public class MemberDao {
 		            result = true;
 		        }
 		    } catch(Exception e) {
-		        System.out.println("checkPassword() 오류 : " + sql);
+		        System.out.println("checkPassword() 오류 : " + ps.toString());
 		        e.printStackTrace();
 		    } finally {
 		        DBConnection.closeDB(con, ps, rs);
 		    }
 		    return result;
+		}
+
+		//회원 탈퇴
+		public int memberDelete(String id) {
+			int result = 0;
+			String sql = "update my_최시헌_member\r\n"
+					+ "set exit_date = ? \r\n"
+					+ "where id = ?";
+			try {
+				con = DBConnection.getConnection();
+				LogPreparedStatement ps = new LogPreparedStatement(con, sql);
+				//ps.setString(1,dto.getExit_date());
+				LocalDateTime now = LocalDateTime.now();
+				Timestamp timestamp = Timestamp.valueOf(now);
+				ps.setTimestamp(1,timestamp);
+				ps.setString(2, id);
+				result = ps.executeUpdate();
+			} catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("memberDelete() 오류: "+ sql);
+			} finally {
+				DBConnection.closeDB(con, ps, rs);
+			}
+			return result;
 		}
 	
 	
