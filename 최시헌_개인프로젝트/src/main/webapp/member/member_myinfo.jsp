@@ -139,7 +139,7 @@
 	}
 	
 	function goDelete() {
-	    if (confirm("정말로 탈퇴하시겠습니까? 탈퇴 후에는 계정을 복구할 수 없습니다.")) {
+	    if (confirm("정말 탈퇴하시겠습니까? 탈퇴 후에는 계정을 복구할 수 없습니다.")) {
 	        goPage('exit');
 	    }
 	}

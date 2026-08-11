@@ -1,4 +1,4 @@
-package command.member;
+	package command.member;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -37,7 +37,7 @@ public class MemberLogin implements CommonExecute {
 			
 			
 		} else {
-			msg = "ID나 비밀번호가 정확하지 않습니다.";
+			msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
 			url = "Member";
 		}
 		request.setAttribute("t_msg", msg);

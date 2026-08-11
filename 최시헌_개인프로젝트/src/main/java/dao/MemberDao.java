@@ -65,25 +65,29 @@ public class MemberDao {
 
 	//로그인  
 	   public String getLoginName(String id, String password) {
-		   String name ="";
-		   String sql="select name \r\n"
-		   		+ "from my_최시헌_member\r\n"
-		   		+ "where id = '"+id+"'\r\n"
-		   		+ "and password = '"+password+"'";
-		   try {
-			   con = DBConnection.getConnection();
-			   ps = con.prepareStatement(sql);
-			   rs= ps.executeQuery();
-			   if(rs.next()) {
-				   name = rs.getString("name");
-			   }
-		   } catch(Exception e) {
-			   System.out.println("getLoginName() 오류 : "+sql);
-			   e.printStackTrace();
-		   } finally {
-			   DBConnection.closeDB(con, ps, rs);
-		   }
-		   return name;
+	       String name = "";
+	       String sql = "select name \r\n"
+	               + "from my_최시헌_member\r\n"
+	               + "where id = ? \r\n"
+	               + "and password = ? \r\n"
+	               + "and exit_date is null"; 
+	               
+	       try {
+	           con = DBConnection.getConnection();
+	           ps = con.prepareStatement(sql);
+	           ps.setString(1, id);
+	           ps.setString(2, password); 
+	           rs = ps.executeQuery();
+	           if(rs.next()) {
+	               name = rs.getString("name");
+	           }
+	       } catch(Exception e) {
+	           System.out.println("getLoginName() 오류 : " + sql);
+	           e.printStackTrace();
+	       } finally {
+	           DBConnection.closeDB(con, ps, rs);
+	       }
+	       return name;
 	   }
 
 	//회원정보
@@ -227,9 +231,18 @@ public class MemberDao {
 		//회원 탈퇴
 		public int memberDelete(String id) {
 			int result = 0;
-			String sql = "update my_최시헌_member\r\n"
-					+ "set exit_date = ? \r\n"
-					+ "where id = ?";
+			String sql = "update my_최시헌_member \r\n"
+		               + "set exit_date = ?, \r\n"
+		               + "    name = '탈퇴회원', \r\n"
+		               + "    password = 'DELETED', \r\n"
+		               + "    password_length = '0', \r\n"
+		               + "    email_1 = 'deleted', \r\n"
+		               + "    email_2 = 'deleted.com', \r\n"
+		               + "    phone_1 = '000', \r\n"
+		               + "    phone_2 = '0000', \r\n"
+		               + "    phone_3 = '0000', \r\n"
+		               + "    region = null \r\n"
+		               + "where id = ?";
 			try {
 				con = DBConnection.getConnection();
 				LogPreparedStatement ps = new LogPreparedStatement(con, sql);
