@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Track27 최시헌</title>
-    <link href="sub.css" rel="stylesheet">
+    <link href="css/sub.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
 </head>
 <body>
     <form name="work" action="Member" method="post">
     	<input type="hidden" name="t_gubun">
-	
+		
 
     <script type="text/javascript">
         function goPage(gubun) {
@@ -20,7 +20,14 @@
             document.work.method = "post";
             document.work.action = "Member";
             document.work.submit();
-        }   
+        }
+        
+        function goRec(gubun) {
+            document.work.t_gubun.value = gubun;
+            document.work.method = "post";
+            document.work.action = "Recommend"; 
+            document.work.submit();
+        }
 
         function goLogin() {
             if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
@@ -266,7 +273,7 @@
             <ul class="mypage-list">
                 <li><a href="javascript:goPage('myinfo')">▶ &nbsp;내 정보</a></li>
                 <li><a href="">▶ &nbsp;북마크</a></li>
-                <li><a href="Recommend">▶ &nbsp;장소 추천하기</a></li>
+                <li><a href="Recommend">▶ &nbsp;장소 신청하기</a></li>
             </ul>
         </div>
 		</c:if>

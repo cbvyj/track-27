@@ -31,7 +31,7 @@ public class Recommend extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		
-		// 2. 세션 체크 로직 추가
+		// 세션 체크 로직 추가
 		HttpSession session = request.getSession(false); // 기존 세션 가져오기 (없으면 null)
 		String sessionName = (session != null) ? (String) session.getAttribute("sessionName") : null;
 
@@ -59,6 +59,19 @@ public class Recommend extends HttpServlet {
 		if(gubun.equals("list")) {
 			viewPage="recommend/recommend_list.jsp";
 		}	
+		
+		else if(gubun.equals("write")) {
+			viewPage="recommend/recommend_write.jsp";
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);
 		rd.forward(request, response);

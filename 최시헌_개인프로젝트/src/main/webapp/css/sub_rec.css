@@ -1,0 +1,303 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   RECOMMEND SPECIFIC STYLES (장소 추천 게시판 전용 스타일)
+   ========================================================================== */
+
+/* Board List Section */
+.board-page-container {
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #222;
+}
+
+.board-title-group h2 {
+    font-size: 24px;
+    color: #222;
+    margin: 0 0 6px 0;
+}
+
+.board-title-group p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+.btn-board-write {
+    background-color: #222;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-board-write:hover {
+    background-color: #444;
+}
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+
+.board-table th {
+    background-color: rgb(240, 240, 240);
+    color: #333;
+    padding: 12px 10px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.board-table td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+.board-table tr:hover {
+    background-color: #fcfcfc;
+}
+
+.col-num { width: 8%; }
+.col-category { width: 18%; }
+.col-title { width: auto; }
+.col-author { width: 12%; }
+.col-date { width: 12%; }
+.col-status { width: 12%; }
+
+.board-table td.title-cell {
+    text-align: left;
+    padding-left: 15px;
+}
+
+.board-table td.title-cell a {
+    color: #222;
+    text-decoration: none;
+}
+
+.board-table td.title-cell a:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+.icon-secret {
+    font-size: 11px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.badge-region {
+    display: inline-block;
+    font-size: 12px;
+    color: #555;
+    background: #f1f3f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.status-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.status-pending {
+    background-color: #fff3bf;
+    color: #f08c00;
+}
+
+.status-complete {
+    background-color: #e6fcf5;
+    color: #0ca678;
+}
+
+.board-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 30px;
+}
+
+.page-btn {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: #555;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.page-btn.active {
+    background-color: #222;
+    color: #fff;
+    border-color: #222;
+}
+
+.page-btn:hover:not(.active) {
+    background-color: #f1f1f1;
+}
+
+/* Board Write Page */
+.board-write-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 35px 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.write-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 8px;
+    cursor: default;
+}
+
+.form-group .required {
+    color: #bf0a1a;
+    margin-left: 2px;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #222222;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.5;
+    font-family: inherit;
+}
+
+.file-input {
+    font-size: 13px;
+    color: #555;
+}
+
+.field-tip {
+    font-size: 12px;
+    color: #888;
+    margin-top: 6px;
+}
+
+.checkbox-group {
+    margin-top: 5px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.secret-tip {
+    font-size: 12px;
+    color: #888;
+    font-weight: normal;
+}
+
+.btn-group-write {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 42px;
+    background-color: #e0e0e0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-submit {
+    width: 120px;
+    height: 42px;
+    background-color: #222222;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #444444;
+}

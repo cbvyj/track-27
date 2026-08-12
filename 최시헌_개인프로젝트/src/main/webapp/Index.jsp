@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Track27 최시헌</title>
-    <link href="Main.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/Main.css" rel="stylesheet">    
     <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 </head>
@@ -85,7 +85,7 @@
             <ul class="mypage-list">
                 <li><a href="javascript:goPage('myinfo')">▶ &nbsp;내 정보</a></li>
                 <li><a href="">▶ &nbsp;북마크</a></li>
-                <li><a href="Recommend">▶ &nbsp;장소 추천하기</a></li>
+                <li><a href="Recommend">▶ &nbsp;장소 신청하기</a></li>
             </ul>
         </div>
 		</c:if>

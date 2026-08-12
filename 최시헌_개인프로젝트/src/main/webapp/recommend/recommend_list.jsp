@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file = "../common_menu.jsp" %>    
+<link href="${pageContext.request.contextPath}/css/sub_rec.css" rel="stylesheet">    
 
 <div class="main-container">
         <div class="board-page-container">
@@ -9,7 +10,7 @@
                     <h2>장소 신청 게시판</h2>
                     <p>알고 계신 숨은 명소를 추천해 주세요. 관리자 검토 후 지도에 반영됩니다.</p>
                 </div>
-                <a href="recommend_write.html" class="btn-board-write">글쓰기</a>
+               <a href="javascript:goRec('write')" class="btn-board-write">글쓰기</a>
             </div>
 
             <!-- 공지사항 스타일 테이블 -->

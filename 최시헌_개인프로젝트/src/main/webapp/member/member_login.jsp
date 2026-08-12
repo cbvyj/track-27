@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link href="${pageContext.request.contextPath}/css/sub_mem.css" rel="stylesheet">    
+
 <div class="modal-header">
     <h2>로그인</h2>
     <button class="close-btn" onclick="closeModal()">&times;</button>

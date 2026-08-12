@@ -1,0 +1,430 @@
+@charset "UTF-8";
+
+/* ================= Reset & Base ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ================= Header ================= */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.title {
+    color: #555;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.title a {
+    text-decoration: none; 
+    color: inherit;        
+}
+
+.title a:hover,
+.title a:visited,
+.title a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ================= Header Right (.my) ================= */
+.my {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    font-size: 17px;
+    color: #555;
+}
+
+.my li {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.my p {
+    margin: 0;
+    padding: 0;
+    font-size: 17px;
+    color: #555;
+}
+
+.my .user-name {
+    font-size: 17px;
+    font-weight: normal;
+    color: #333;
+}
+
+.my a {
+    text-decoration: none;
+    color: #555;
+    font-size: 17px;
+    line-height: 1;
+}
+
+.my a:hover {    
+    color: #000;
+    text-decoration: underline;
+}
+
+/* ================= Sidebar Layout ================= */
+.sidebar-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 300px;
+    height: calc(100% - 60px);
+    background-color: #efefef;
+    padding: 20px 15px;
+    z-index: 1000;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Search Box */
+.search-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0; 
+    margin-bottom: 7px; 
+}
+
+.search-box {
+    width: 200px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-button {
+    padding: 7px 10px;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #555;
+}
+
+/* Footer */
+.footer {
+    margin-top: auto; 
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 11px; 
+    color: #777;
+}
+
+.footer p {
+    padding: 0;
+    border-bottom: none;
+}
+
+.footer .title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.footer .copyright {
+    font-size: 11px;
+    color: #555;
+    margin-top: 8px;
+}
+
+/* ================= Filter & MyPage Section ================= */
+.filter {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #e0e0e0; 
+    padding-bottom: 3px; 
+    margin-bottom: 3px;
+}
+
+.filter.mypage-section {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.filter .filter-title, 
+.mypage-title {
+    padding: 4px 12px;
+    font-size: 20px;
+    color: #555;
+    line-height: 1.2;
+    border-bottom: none; 
+}
+
+.filter-list, 
+.sub-list,
+.mypage-list {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.filter-list > li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 2px;
+    margin: 6px 0 6px 14px;
+    white-space: nowrap;
+    color: #555;
+}
+
+.region, 
+.category, 
+label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    color: #555;
+    line-height: 1.2;
+}
+
+.region label, 
+.category label,
+.food-check-all {
+    font-size: 17px;
+}
+
+.filter-list input[type="checkbox"] {
+    margin: 0;
+}
+
+.sub-list {
+    display: none;
+    width: 100%; 
+    padding-left: 19px; 
+}
+
+.sub-list.open {
+    display: block;
+}
+
+.sub-list li, .mypage-list li {
+    margin: 6px 0;
+    font-size: 16px; 
+}
+
+.regionArrow, 
+.categoryArrow, 
+.foodArrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    width: 14px;
+    height: 16px;
+    color: #555;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.regionArrow.open, 
+.categoryArrow.open, 
+.foodArrow.open {
+    transform: rotate(90deg);
+}
+
+.mypage-list {
+    padding-left: 12px; 
+}
+
+.mypage-list a {
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+    display: inline-block;
+    transition: color 0.2s ease;
+    line-height: 1.2;
+}
+
+.mypage-list a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+/* ================= Main & Map ================= */
+.main-container {
+    position: fixed;       
+    top: 60px;             
+    left: 300px;           
+    width: calc(100% - 300px);
+    height: calc(100% - 60px);  
+}
+
+#map {
+    width: 100%;           
+    height: 100%;
+}
+
+/* ================= Modal ================= */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+    z-index: 9998;
+}
+
+.modal-card {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    padding: 24px 28px;
+    z-index: 9999;
+    animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -46%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* 모달 헤더 컨테이너 */
+.modal-header {
+    position: relative;      /* [추가] 닫기 버튼의 절대 위치(absolute) 기준점 설정 */
+    display: flex;
+    align-items: center;     /* [유지] 세로 중앙 정렬 */
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+/* [수정] 제목 가로 위치 중앙 정렬 */
+.modal-header h2 {
+    margin: 0;
+    width: 100%;             /* [추가] 전체 너비 사용 */
+    text-align: center;      /* [추가] 텍스트 가로 중앙 정렬 */
+    font-size: 20px;
+    color: #222;
+}
+
+/* [수정] 닫기 버튼을 오른쪽 끝에 고정 */
+.close-btn {
+    position: absolute;      /* [추가] 헤더 우측 끝에 배치 */
+    right: 0;                /* [추가] 우측 여백 0 */
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #111;
+}
+
+.modal-form .input-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-form label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+.modal-form input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-form input:focus {
+    border-color: #222;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #222;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #444;
+}
+
+.modal-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+}
+
+.modal-footer a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 4px;
+}
+
+.modal-footer a:hover {
+    text-decoration: underline;
+}

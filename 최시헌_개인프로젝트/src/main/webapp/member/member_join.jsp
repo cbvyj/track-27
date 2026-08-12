@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file = "../common_menu.jsp" %>    
-
-    <div class="main-container">
+<link href="${pageContext.request.contextPath}/css/sub_mem.css" rel="stylesheet">    
+	
+	<div class="main-container">
         <div class="auth-page-container">
             <div class="auth-card">
                 
