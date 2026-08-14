@@ -14,8 +14,8 @@
 
         <!-- 글쓰기 폼 카드 영역 -->
         <div class="board-write-card">
-            <form name="rec" action="Recommend" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="t_gubun" value="save">
+            <form name="rec" enctype="multipart/form-data">
+                <input type="hidden" name="t_gubun">
                 
                 <!-- 1. 장소명 (제목) - 단독 행 -->
                 <div class="form-group">
@@ -62,7 +62,7 @@
 
                     <div class="form-group">
                         <label for="link">구글맵 링크 <span class="required">*</span></label>
-                        <input type="text" id="link" name="t_link" placeholder="구글맵 주소 입력">
+                        <input type="text" id="link" name="t_link" placeholder="구글맵 링크">
                     </div>
                 </div>
 
@@ -74,28 +74,31 @@
 
                 <!-- 5. 사진 첨부 - 단독 행 -->
                 <div class="form-group">
-                    <label for="file">사진 첨부</label>
-                    <!-- 💡 중복 입력된 multiple 중 하나 정돈 -->
+                    <label for="file">사진 첨부<span class="required">*</span></label>
                     <input type="file" id="file" name="t_attach" accept="image/*" multiple class="file-input" onchange="previewImages(event)">
-                    <p class="field-tip">※ 장소 관련 사진(외관, 음식, 메뉴판 등)을 첨부해 주세요. (여러 장 선택 가능)</p>
-                    
-                    <!-- 💡 네이버 메일 스타일 썸네일 미리보기 리스트 영역 -->
+                    <p class="field-tip">※ 본인이 찍은 장소 관련 사진(풍경, 음식 등)을 첨부해 주세요. (여러 장 선택 가능)</p>
+                    <p class="field-tip">※ 타인의 사진 무단 도용 시 사전 통보 없이 삭제될 수 있으며 저작권 및 초상권 침해에 따른 법적 책임은 작성자 본인에게 있습니다.</p>
+                    <!-- 네이버 메일 스타일 썸네일 미리보기 리스트 영역 -->
                     <div id="preview-container" class="preview-container"></div>
                 </div>
 
                 <!-- 6. 비밀글 체크박스 -->
-                <div class="form-group checkbox-group">
-                    <label class="custom-checkbox">
-                        <input type="checkbox" name="t_secret" value="Y">
-                        <span class="checkmark"></span>
-                        비밀글로 등록하기 🔒 <span class="secret-tip">(작성자와 관리자만 조회 가능합니다)</span>
-                    </label>
-                </div>
+                <input type="hidden" name="t_secret" value="Y">
+
+				<div class="form-group secret-notice-box">
+				    <div class="secret-notice-content">
+				        <span class="lock-icon">🔒</span>
+				        <div>
+				            <strong>이 게시글은 비밀글로 자동 등록됩니다.</strong>
+				            <p>신청하신 장소 정보는 작성자와 관리자만 조회할 수 있습니다.</p>
+				        </div>
+				    </div>
+				</div>
 
                 <!-- 하단 버튼 영역 -->
                 <div class="btn-group-write">
                     <a href="javascript:goRec('list')" class="btn-cancel">취소</a>
-                    <button type="button" onclick="goWrite()" class="btn-submit">신청하기</button>
+                    <button type="button" onclick="goSave()" class="btn-submit">신청하기</button>
                 </div>
 
             </form>
@@ -129,31 +132,61 @@
         }
     }
 
+    // 누적된 파일들을 담아둘 전역 DataTransfer 객체 생성
+    const dataTransfer = new DataTransfer();
+
     function previewImages(event) {
+        const input = event.target;
+        const newFiles = input.files;
+
+        if (newFiles && newFiles.length > 0) {
+            // 새로 선택한 파일들을 기존 dataTransfer 목록에 누적 추가
+            Array.from(newFiles).forEach(function(file) {
+                if (file.type.startsWith('image/')) {
+                    dataTransfer.items.add(file);
+                }
+            });
+
+            // input태그의 files 속성을 누적된 DataTransfer 목록으로 교체
+            input.files = dataTransfer.files;
+        }
+
+        // 미리보기 화면 다시 그리기
+        renderPreviews();
+    }
+
+    // 미리보기 화면 출력 및 개별 삭제 처리 전용 함수
+    function renderPreviews() {
         const container = document.getElementById('preview-container');
-        container.innerHTML = '';
+        container.innerHTML = ''; // 화면 초기화
 
-        const files = event.target.files;
-        if (!files || files.length === 0) return;
+        const files = dataTransfer.files;
 
-        Array.from(files).forEach(function(file) {
-            if (!file.type.startsWith('image/')) return;
-
+        Array.from(files).forEach(function(file, index) {
             const item = document.createElement('div');
             item.className = 'preview-item';
 
             const sizeKB = (file.size / 1024).toFixed(1) + ' KB';
             const imgUrl = URL.createObjectURL(file);
 
+            // 네이버 메일 스타일 HTML + 개별 삭제(X) 버튼 추가
             item.innerHTML = '<img src="' + imgUrl + '" class="preview-thumb" alt="thumb">'
                            + '<span class="preview-name">' + file.name + '</span>'
-                           + '<span class="preview-size">' + sizeKB + '</span>';
+                           + '<span class="preview-size">' + sizeKB + '</span>'
+                           + '<button type="button" class="btn-remove-file" onclick="removeFile(' + index + ')">×</button>';
 
             container.appendChild(item);
         });
     }
 
-    function goWrite() {
+    // 특정 순서의 파일을 목록에서 삭제하는 함수
+    function removeFile(index) {
+        dataTransfer.items.remove(index); // 해당 인덱스 파일 삭제
+        document.getElementById('file').files = dataTransfer.files; // input태그 files 갱신
+        renderPreviews(); // 화면 갱신
+    }
+    
+    function goSave() {
         if (isEmpty(rec.t_title, "장소명(제목)을 입력하세요.")) return;
         if (isEmpty(rec.t_category_main, "카테고리를 선택하세요.")) return;
         
@@ -163,7 +196,40 @@
         if (isEmpty(rec.t_link, "구글맵 링크를 입력하세요.")) return;
         if (isEmpty(rec.t_content, "추천 이유 및 내용을 입력하세요.")) return;
 
-        
-        //rec.submit();
+        // 1. 파일 첨부 여부 체크 (중복 제거 후 1회만 체크)
+        const files = dataTransfer.files;
+        if (files.length === 0) {
+            alert("1개 이상의 사진 파일을 업로드하세요.");
+            return;
+        }
+
+        // 2. 용량 및 확장자 제한
+        const maxFileSize = 50 * 1024 * 1024; // 50MB
+        const allowedExtensions = ['png', 'jpg', 'jpeg'];
+
+        // 3. 첨부 파일 전체 반복 검사
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const fileName = file.name;
+            const fileSize = file.size;
+
+            const ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+            if (!allowedExtensions.includes(ext)) {
+                alert(`'${fileName}'은(는) 업로드할 수 없는 형식입니다.\n(png, jpg, jpeg 파일만 가능합니다.)`);
+                return;
+            }
+
+            if (fileSize > maxFileSize) {
+                alert(`'${fileName}' 파일 용량이 50MB를 초과합니다.`);
+                return;
+            }
+        }
+    	
+    
+        rec.t_gubun.value = "save";
+        rec.method = "post";
+        rec.action = "Recommend";
+        // rec.submit();
     }
 </script>

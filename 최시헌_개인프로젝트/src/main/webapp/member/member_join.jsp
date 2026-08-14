@@ -119,6 +119,11 @@
   			mem.t_password_confirm.focus();
   			return;
   		}
+  		if(mem.t_password.value.length < 8) {
+  		    alert("비밀번호는 8자 이상 입력해야 합니다.");
+  		    mem.t_password.focus();
+  		    return;
+  		}
   		if(isEmpty(mem.t_email_1, "이메일을 입력하세요")) return;
   		if(isEmpty(mem.t_email_2, "이메일을 입력하세요")) return;
   		if(isEmpty(mem.t_phone_1, "전화번호를 입력하세요")) return;
