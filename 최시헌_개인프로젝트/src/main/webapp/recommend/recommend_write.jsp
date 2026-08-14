@@ -14,77 +14,88 @@
 
         <!-- 글쓰기 폼 카드 영역 -->
         <div class="board-write-card">
-            <form name="mem">
-       			<input type="hidden" name="t_gubun" value="write">
+            <form name="rec" action="Recommend" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="t_gubun" value="save">
                 
-                <!-- 장소명 (제목) -->
+                <!-- 1. 장소명 (제목) - 단독 행 -->
                 <div class="form-group">
                     <label for="place_name">장소명 (제목) <span class="required">*</span></label>
-                    <input type="text" id="place_name" name="place_name" placeholder="예: 이치카츠 아사쿠사바시점" required>
+                    <input type="text" id="place_name" name="t_title" placeholder="예: 이치카츠 아사쿠사바시점">
                 </div>
 
-                <!-- 카테고리 & 지역 선택 (2열 배치) -->
-                <div class="form-group">
-				    <label for="category-main">카테고리 <span class="required">*</span></label>
-				    <select id="category-main" name="t_category_main" onchange="changeCategory(this.value)">
-				        <option value="">선택하세요</option>
-				        <option value="food">음식</option>
-				        <option value="tour">관광</option>
-				        <option value="stay">숙소</option>
-				    </select>
-				</div>
-				
-				<!-- 세부 카테고리 (기본은 숨김 처리) -->
-				<div class="form-group" id="sub-category-group" style="display: none;">
-				    <label for="category-sub">세부 카테고리</label>
-				    <select id="category-sub" name="t_category_sub">
-				        <!-- JS로 동적 생성됨 -->
-				    </select>
-				</div>
-				<div class="form-group">
-                        <label for="region">지역 <span class="required">*</span></label>
-                        <select id="region" name="region" required>
+                <!-- 2. 카테고리 | 세부 카테고리 (1행 2열) -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category-main">카테고리 <span class="required">*</span></label>
+                        <select id="category-main" name="t_category_main" onchange="changeCategory(this.value)">
                             <option value="">선택하세요</option>
-                            <option value="도쿄">도쿄</option>
-                            <option value="오사카">오사카</option>
-                            <option value="후쿠오카">후쿠오카</option>
-                            <option value="삿포로">삿포로</option>
-                            <option value="오키나와">오키나와</option>
-                            <option value="기타">기타</option>
+                            <option value="food">음식</option>
+                            <option value="tour">관광</option>
+                            <option value="stay">숙소</option>
                         </select>
                     </div>
-                <!-- 상세 주소 / 위치 정보 -->
-                <div class="form-group">
-                    <label for="address">상세 주소 또는 구글맵 링크</label>
-                    <input type="text" id="address" name="address" placeholder="예: 東京都台東区浅草橋... 또는 구글맵 주소 입력">
+                    
+                    <div class="form-group" id="sub-category-group" style="visibility: hidden;">
+                        <label for="category-sub">세부 카테고리 <span class="required">*</span></label>
+                        <select id="category-sub" name="t_category_sub">
+                            <option value="">선택하세요</option>
+                            <option value="restaurant">식당</option>
+                            <option value="alcohol">이자카야</option>
+                            <option value="takeout">테이크아웃</option>
+                            <option value="drink">카페 & 바</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- 추천 이유 및 내용 -->
+                <!-- 3. 지역 | 구글맵 링크 (1행 2열) -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="region">지역 <span class="required">*</span></label>
+                        <select id="region" name="t_region">
+                            <option value="">선택하세요</option>
+                            <option value="도쿄">도쿄</option>
+                            <option value="사이타마">사이타마</option>
+                            <option value="치바">치바</option>
+                            <option value="카나가와">카나가와</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="link">구글맵 링크 <span class="required">*</span></label>
+                        <input type="text" id="link" name="t_link" placeholder="구글맵 주소 입력">
+                    </div>
+                </div>
+
+                <!-- 4. 추천 이유 및 설명 - 단독 행 -->
                 <div class="form-group">
                     <label for="content">추천 이유 및 설명 <span class="required">*</span></label>
-                    <textarea id="content" name="content" rows="8" placeholder="장소의 특징, 추천 메뉴, 방문 팁 등을 자유롭게 적어주세요." required></textarea>
+                    <textarea id="content" name="t_content" rows="8" placeholder="장소의 특징, 추천 메뉴, 방문 팁 등을 자유롭게 적어주세요."></textarea>
                 </div>
 
-                <!-- 이미지 첨부 -->
+                <!-- 5. 사진 첨부 - 단독 행 -->
                 <div class="form-group">
                     <label for="file">사진 첨부</label>
-                    <input type="file" id="file" name="file" accept="image/*" class="file-input">
-                    <p class="field-tip">※ 장소 관련 사진(외관, 음식, 메뉴판 등)을 첨부해 주세요.</p>
+                    <!-- 💡 중복 입력된 multiple 중 하나 정돈 -->
+                    <input type="file" id="file" name="t_attach" accept="image/*" multiple class="file-input" onchange="previewImages(event)">
+                    <p class="field-tip">※ 장소 관련 사진(외관, 음식, 메뉴판 등)을 첨부해 주세요. (여러 장 선택 가능)</p>
+                    
+                    <!-- 💡 네이버 메일 스타일 썸네일 미리보기 리스트 영역 -->
+                    <div id="preview-container" class="preview-container"></div>
                 </div>
 
-                <!-- 비밀글 여부 -->
+                <!-- 6. 비밀글 체크박스 -->
                 <div class="form-group checkbox-group">
                     <label class="custom-checkbox">
-                        <input type="checkbox" name="is_secret" value="Y">
+                        <input type="checkbox" name="t_secret" value="Y">
                         <span class="checkmark"></span>
                         비밀글로 등록하기 🔒 <span class="secret-tip">(작성자와 관리자만 조회 가능합니다)</span>
                     </label>
                 </div>
 
-                <!-- 하단 버튼 그룹 -->
+                <!-- 하단 버튼 영역 -->
                 <div class="btn-group-write">
-                    <a href="recommend_list.jsp" class="btn-cancel">취소</a>
-                    <button type="submit" class="btn-submit">신청하기</button>
+                    <a href="javascript:goRec('list')" class="btn-cancel">취소</a>
+                    <button type="button" onclick="goWrite()" class="btn-submit">신청하기</button>
                 </div>
 
             </form>
@@ -92,32 +103,67 @@
     </div>
 </div>
 
-<script>
-	function changeCategory(mainCategory) {
-	    const subGroup = document.getElementById('sub-category-group');
-	    const subSelect = document.getElementById('category-sub');
-	    
-	    // 세부 옵션 데이터 정의
-	    const subOptions = {
-	        food: ['식당', '이자카야', '테이크아웃', '카페 & 바'],
-	        tour: ['명소/관광', '마츠리/하나비'],
-	        stay: ['호텔/료칸', '게스트하우스']
-	    };
-	
-	    // 선택을 해제했거나 데이터가 없으면 숨김
-	    if (!mainCategory || !subOptions[mainCategory]) {
-	        subGroup.style.display = 'none';
-	        subSelect.innerHTML = '';
-	        return;
-	    }
-	
-	    // 세부 옵션 생성
-	    let html = '<option value="">선택하세요</option>';
-	    subOptions[mainCategory].forEach(item => {
-	        html += `<option value="${item}">${item}</option>`;
-	    });
-	
-	    subSelect.innerHTML = html;
-	    subGroup.style.display = 'block'; // 화면에 표시
-	}
+<script type="text/javascript">
+    function changeCategory(mainCategory) {
+        const subGroup = document.getElementById('sub-category-group');
+        const subSelect = document.getElementById('category-sub');
+        
+        const foodSubOptions = [
+            { value: 'restaurant', text: '식당' },
+            { value: 'alcohol', text: '이자카야' },
+            { value: 'takeout', text: '테이크아웃' },
+            { value: 'drink', text: '카페 & 바' }
+        ];
+
+        if (mainCategory === 'food') {
+            let html = '<option value="">선택하세요</option>';
+            foodSubOptions.forEach(function(item) {
+                html += '<option value="' + item.value + '">' + item.text + '</option>';
+            });
+
+            subSelect.innerHTML = html;
+            subGroup.style.visibility = 'visible';
+        } else {
+            subGroup.style.visibility = 'hidden';
+            subSelect.innerHTML = '<option value="">선택하세요</option>';
+        }
+    }
+
+    function previewImages(event) {
+        const container = document.getElementById('preview-container');
+        container.innerHTML = '';
+
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        Array.from(files).forEach(function(file) {
+            if (!file.type.startsWith('image/')) return;
+
+            const item = document.createElement('div');
+            item.className = 'preview-item';
+
+            const sizeKB = (file.size / 1024).toFixed(1) + ' KB';
+            const imgUrl = URL.createObjectURL(file);
+
+            item.innerHTML = '<img src="' + imgUrl + '" class="preview-thumb" alt="thumb">'
+                           + '<span class="preview-name">' + file.name + '</span>'
+                           + '<span class="preview-size">' + sizeKB + '</span>';
+
+            container.appendChild(item);
+        });
+    }
+
+    function goWrite() {
+        if (isEmpty(rec.t_title, "장소명(제목)을 입력하세요.")) return;
+        if (isEmpty(rec.t_category_main, "카테고리를 선택하세요.")) return;
+        
+        if (rec.t_category_main.value === 'food' && isEmpty(rec.t_category_sub, "세부 카테고리를 선택하세요.")) return;
+        
+        if (isEmpty(rec.t_region, "지역을 선택하세요.")) return;
+        if (isEmpty(rec.t_link, "구글맵 링크를 입력하세요.")) return;
+        if (isEmpty(rec.t_content, "추천 이유 및 내용을 입력하세요.")) return;
+
+        
+        //rec.submit();
+    }
 </script>
