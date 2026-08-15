@@ -1,31 +1,23 @@
 @charset "UTF-8";
 
 /* ==========================================================================
-
-
-/* 💡 오른쪽 메인 영역 DIV 클래스(또는 main-container)에 직접 스크롤바 공간을 고정 */
+   Layout & Scrollbar
+   ========================================================================== */
 .main-container {
-    overflow-y: scroll; /* 스크롤바 트랙을 항상 띄워두어 유무에 따른 흔들림 방지 */
+    overflow-y: scroll; /* 스크롤바 트랙을 고정하여 화면 흔들림 방지 */
 }
 
-/* 메인 컨테이너에 스크롤 공간 고정 */
-.main-container {
-    overflow-y: scroll;
-}
-
-/* 💡 스크롤바 자체 너비 설정 (기존 15~17px에서 슬림하게 8px 정도로 변경) */
+/* 스크롤바 슬림 스타일 */
 .main-container::-webkit-scrollbar {
     width: 8px;
 }
 
-/* 💡 스크롤바 배경(트랙)을 투명하게 처리하여 여백처럼 보이게 함 */
 .main-container::-webkit-scrollbar-track {
     background: transparent;
 }
 
-/* 💡 내용이 적어 스크롤이 필요 없을 땐 손잡이도 투명 처리 */
 .main-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.15); /* 평소엔 연한 회색 */
+    background-color: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
 
@@ -33,7 +25,9 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Board List Section */
+/* ==========================================================================
+   Board Common Section
+   ========================================================================== */
 .board-page-container {
     width: 900px;
     margin: 0 auto;
@@ -77,10 +71,13 @@
     background-color: #444;
 }
 
+/* ==========================================================================
+   Board List Table
+   ========================================================================== */
 .board-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
 }
 
@@ -187,7 +184,9 @@
     background-color: #f1f1f1;
 }
 
-/* Board Write Page */
+/* ==========================================================================
+   Board Write Card & Forms
+   ========================================================================== */
 .board-write-card {
     width: 100%; 
     background-color: #ffffff;
@@ -218,6 +217,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    margin-bottom: 15px;
 }
 
 .form-group label {
@@ -236,7 +236,7 @@
     line-height: 1;
 }
 
-/* 인풋 박스와 셀렉트 박스 높이 및 스타일 완벽 통일 */
+/* 인풋 박스와 셀렉트 박스 높이 및 스타일 통일 */
 .form-group input[type="text"],
 .form-group select {
     width: 100%;
@@ -244,18 +244,17 @@
     padding: 0 12px;
     border: 1px solid #cccccc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
     transition: border-color 0.2s;
     box-sizing: border-box;
-    margin-bottom: 8px;
 }
 
 .form-group textarea {
     width: 100%;
     border: 1px solid #cccccc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     padding: 10px 12px;
     outline: none;
     transition: border-color 0.2s;
@@ -264,7 +263,6 @@
     min-height: 150px;
     line-height: 1.5;
     font-family: inherit;
-    margin-bottom: 8px;
 }
 
 .form-group input[type="text"]:focus,
@@ -273,6 +271,49 @@
     border-color: #222222;
 }
 
+/* ==========================================================================
+   Place Tag Checkbox Grid (1행 5열)
+   ========================================================================== */
+.tag-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5개 한 줄 배치 */
+    gap: 8px; /* 태그 간격 살짝 조절 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tag-item {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 박스 내부 중앙 정렬 */
+    gap: 6px; /* 체크박스와 텍스트 간격 */
+    font-size: 13px; /* 글자 크기 13px 유지 */
+    color: #333;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    padding: 12px 8px; /* 위아래 여백을 9px -> 12px로 늘림 (좌우 8px) */
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    white-space: nowrap; /* 글자 줄바꿈 방지 */
+}
+
+.tag-item:hover {
+    border-color: #222222;
+    background-color: #f1f3f5;
+}
+
+.tag-item input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: #222222;
+}
+
+/* ==========================================================================
+   File Attachment & Previews
+   ========================================================================== */
 .file-input {
     font-size: 13px;
     color: #555;
@@ -284,71 +325,6 @@
     margin-top: 6px;
 }
 
-.checkbox-group {
-    margin-top: 5px;
-}
-
-.custom-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-}
-
-.secret-tip {
-    font-size: 12px;
-    color: #888;
-    font-weight: normal;
-}
-
-.btn-group-write {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 15px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.btn-cancel {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-    height: 42px;
-    background-color: #e0e0e0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-
-.btn-cancel:hover {
-    background-color: #d0d0d0;
-}
-
-.btn-submit {
-    width: 120px;
-    height: 42px;
-    background-color: #222222;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-submit:hover {
-    background-color: #444444;
-}
-
-/* 네이버 메일 스타일 파일 미리보기 목록 */
 .preview-container {
     display: flex;
     flex-direction: column;
@@ -406,7 +382,9 @@
     color: #ff4d4f;
 }
 
-/* 비밀글 자동 적용 안내 박스 */
+/* ==========================================================================
+   Secret Notice & Buttons
+   ========================================================================== */
 .secret-notice-box {
     margin-top: 10px;
     width: 100%;
@@ -439,4 +417,49 @@
     font-size: 12px;
     color: #666;
     margin: 0;
+}
+
+.btn-group-write {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 42px;
+    background-color: #e0e0e0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-submit {
+    width: 120px;
+    height: 42px;
+    background-color: #222222;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #444444;
 }

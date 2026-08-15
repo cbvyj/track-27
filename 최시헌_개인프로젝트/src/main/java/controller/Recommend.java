@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import command.recommend.RecommendSave;
+
 /**
  * Servlet implementation class Recommend
  */
@@ -52,6 +54,7 @@ public class Recommend extends HttpServlet {
 		String gubun = request.getParameter("t_gubun");
 		String viewPage ="";
 		
+		
 		if(gubun == null) gubun = "list";
 		request.setAttribute("gubun", "recommend");
 		
@@ -60,10 +63,17 @@ public class Recommend extends HttpServlet {
 			viewPage="recommend/recommend_list.jsp";
 		}	
 		
+		//게시글 작성 페이지
 		else if(gubun.equals("write")) {
 			viewPage="recommend/recommend_write.jsp";
 		}
 		
+		//게시글 저장
+		else if(gubun.equals("save")) {
+			RecommendSave rec = new RecommendSave();
+			rec.execute(request);
+			viewPage="common_alert.jsp";
+		}
 		
 		
 		

@@ -19,15 +19,15 @@
                 
                 <!-- 1. 장소명 (제목) - 단독 행 -->
                 <div class="form-group">
-                    <label for="place_name">장소명 (제목) <span class="required">*</span></label>
-                    <input type="text" id="place_name" name="t_title" placeholder="예: 이치카츠 아사쿠사바시점">
+                    <label for="title">장소명 (제목) <span class="required">*</span></label>
+                    <input type="text" id="title" name="t_title" placeholder="예: 이치카츠 아사쿠사바시점">
                 </div>
 
                 <!-- 2. 카테고리 | 세부 카테고리 (1행 2열) -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="category-main">카테고리 <span class="required">*</span></label>
-                        <select id="category-main" name="t_category_main" onchange="changeCategory(this.value)">
+                        <label for="category">카테고리 <span class="required">*</span></label>
+                        <select id="category" name="t_category" onchange="changeCategory(this.value)">
                             <option value="">선택하세요</option>
                             <option value="food">음식</option>
                             <option value="tour">관광</option>
@@ -40,10 +40,32 @@
                         <select id="category-sub" name="t_category_sub">
                             <option value="">선택하세요</option>
                             <option value="restaurant">식당</option>
-                            <option value="alcohol">이자카야</option>
-                            <option value="takeout">테이크아웃</option>
-                            <option value="drink">카페 & 바</option>
+                            <option value="izakaya">이자카야 / 주점</option>
+                            <option value="cafe">카페 / 디저트 / 베이커리</option>
+                            <option value="bar">바 / 펍 / 라운지</option>
                         </select>
+                    </div>
+                </div>
+
+                <!-- 2-1. 장소 특징 태그 영역 (음식 선택 시 노출, 2행 3열 그리드) -->
+                <div class="form-group" id="tag-group" style="display: none;">
+                    <label>장소 특징 <span class="required">* (최소 1개 선택)</span></label>
+                    <div class="tag-grid">
+                        <label class="tag-item">
+                            <input type="checkbox" name="t_tags" value="casual" checked> 일반/캐주얼
+                        </label>
+                        <label class="tag-item">
+                            <input type="checkbox" name="t_tags" value="fine_dining"> 고급/파인다이닝
+                        </label>
+                        <label class="tag-item">
+                            <input type="checkbox" name="t_tags" value="view"> 뷰/야경/루프탑
+                        </label>
+                        <label class="tag-item">
+                            <input type="checkbox" name="t_tags" value="takeout"> 테이크아웃 전용
+                        </label>
+                        <label class="tag-item">
+                            <input type="checkbox" name="t_tags" value="reservation"> 예약필수/웨이팅
+                        </label>
                     </div>
                 </div>
 
@@ -53,10 +75,10 @@
                         <label for="region">지역 <span class="required">*</span></label>
                         <select id="region" name="t_region">
                             <option value="">선택하세요</option>
-                            <option value="도쿄">도쿄</option>
-                            <option value="사이타마">사이타마</option>
-                            <option value="치바">치바</option>
-                            <option value="카나가와">카나가와</option>
+                            <option value="tokyo">도쿄</option>
+                            <option value="saitama">사이타마</option>
+                            <option value="chiba">치바</option>
+                            <option value="kanagawa">카나가와</option>
                         </select>
                     </div>
 
@@ -85,20 +107,20 @@
                 <!-- 6. 비밀글 체크박스 -->
                 <input type="hidden" name="t_secret" value="Y">
 
-				<div class="form-group secret-notice-box">
-				    <div class="secret-notice-content">
-				        <span class="lock-icon">🔒</span>
-				        <div>
-				            <strong>이 게시글은 비밀글로 자동 등록됩니다.</strong>
-				            <p>신청하신 장소 정보는 작성자와 관리자만 조회할 수 있습니다.</p>
-				        </div>
-				    </div>
-				</div>
+                <div class="form-group secret-notice-box">
+                    <div class="secret-notice-content">
+                        <span class="lock-icon">🔒</span>
+                        <div>
+                            <strong>이 게시글은 비밀글로 자동 등록됩니다.</strong>
+                            <p>신청하신 장소 정보는 작성자와 관리자만 조회할 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 하단 버튼 영역 -->
                 <div class="btn-group-write">
                     <a href="javascript:goRec('list')" class="btn-cancel">취소</a>
-                    <button type="button" onclick="goSave()" class="btn-submit">신청하기</button>
+                    <button type="button" onclick="javascript:goSave()" class="btn-submit">신청하기</button>
                 </div>
 
             </form>
@@ -110,12 +132,14 @@
     function changeCategory(mainCategory) {
         const subGroup = document.getElementById('sub-category-group');
         const subSelect = document.getElementById('category-sub');
+        const tagGroup = document.getElementById('tag-group');
         
+        // 세부 카테고리 4개로 수정 적용
         const foodSubOptions = [
             { value: 'restaurant', text: '식당' },
-            { value: 'alcohol', text: '이자카야' },
-            { value: 'takeout', text: '테이크아웃' },
-            { value: 'drink', text: '카페 & 바' }
+            { value: 'izakaya', text: '이자카야 / 주점' },
+            { value: 'cafe', text: '카페 / 디저트 / 베이커리' },
+            { value: 'bar', text: '바 / 펍 / 라운지' }
         ];
 
         if (mainCategory === 'food') {
@@ -126,8 +150,10 @@
 
             subSelect.innerHTML = html;
             subGroup.style.visibility = 'visible';
+            tagGroup.style.display = 'block'; // 음식 선택 시 태그 체크박스 출력
         } else {
             subGroup.style.visibility = 'hidden';
+            tagGroup.style.display = 'none'; // 음식 아닐 시 태그 영역 숨김
             subSelect.innerHTML = '<option value="">선택하세요</option>';
         }
     }
@@ -188,26 +214,33 @@
     
     function goSave() {
         if (isEmpty(rec.t_title, "장소명(제목)을 입력하세요.")) return;
-        if (isEmpty(rec.t_category_main, "카테고리를 선택하세요.")) return;
+        if (isEmpty(rec.t_category, "카테고리를 선택하세요.")) return;
         
-        if (rec.t_category_main.value === 'food' && isEmpty(rec.t_category_sub, "세부 카테고리를 선택하세요.")) return;
+        if (rec.t_category.value === 'food') {
+            if (isEmpty(rec.t_category_sub, "세부 카테고리를 선택하세요.")) return;
+            
+            const checkedTags = document.querySelectorAll('input[name="t_tags"]:checked');
+            if (checkedTags.length === 0) {
+                alert("장소 특징 태그를 최소 1개 이상 선택하세요.");
+                return;
+            }
+        }
         
         if (isEmpty(rec.t_region, "지역을 선택하세요.")) return;
         if (isEmpty(rec.t_link, "구글맵 링크를 입력하세요.")) return;
         if (isEmpty(rec.t_content, "추천 이유 및 내용을 입력하세요.")) return;
 
-        // 1. 파일 첨부 여부 체크 (중복 제거 후 1회만 체크)
+        // 1. 파일 첨부 여부 체크
         const files = dataTransfer.files;
         if (files.length === 0) {
             alert("1개 이상의 사진 파일을 업로드하세요.");
             return;
         }
 
-        // 2. 용량 및 확장자 제한
+        // 2. 용량 및 확장자 제한 검사
         const maxFileSize = 50 * 1024 * 1024; // 50MB
         const allowedExtensions = ['png', 'jpg', 'jpeg'];
 
-        // 3. 첨부 파일 전체 반복 검사
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const fileName = file.name;
@@ -225,11 +258,25 @@
                 return;
             }
         }
-    	
-    
-        rec.t_gubun.value = "save";
+
+        // 3. 다중 파일 개별 파라미터화 (COS 라이브러리 다중 저장 오류 해결)
+        const fileInput = document.getElementById('file');
+        fileInput.removeAttribute('name'); // 기존 single input name 제거
+
+        for (let i = 0; i < files.length; i++) {
+            const dt = new DataTransfer();
+            dt.items.add(files[i]);
+
+            const newInput = document.createElement('input');
+            newInput.type = 'file';
+            newInput.name = 't_attach_' + i; // t_attach_0, t_attach_1 형태로 각각 다른 name 부여
+            newInput.style.display = 'none';
+            newInput.files = dt.files;
+            rec.appendChild(newInput);
+        }
+
         rec.method = "post";
-        rec.action = "Recommend";
-        // rec.submit();
+        rec.action = "Recommend?t_gubun=save";
+        rec.submit();
     }
 </script>

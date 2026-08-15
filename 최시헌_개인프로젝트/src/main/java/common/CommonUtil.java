@@ -21,15 +21,9 @@ public class CommonUtil {
 		return str;
 	}
 	
-	//공지사항 첨부파일 경로
-	public static String getNoticeDir(HttpServletRequest request){
-		String dir = request.getSession().getServletContext().getRealPath("/")+"attach/notice";
-		return dir;
-	}
-	
-	//자료실 첨부파일 경로
-	public static String getPdsDir(){
-		String dir = "C:/track27_csh/java_jsp_project/web_jsl/src/main/webapp/attach/pds/";
+	//게시판 첨부파일 경로
+	public static String getRecommendDir(HttpServletRequest request){
+		String dir = request.getSession().getServletContext().getRealPath("/")+"attach/recommend";
 		return dir;
 	}
 	
@@ -48,6 +42,15 @@ public class CommonUtil {
 		String today = sd.format(date);
 		return today;
 	}
+	
+	// 오늘날짜  yyyy-MM
+		public static String getTodayYYMM(){
+			Date date = new Date();
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM");
+			
+			String today = sd.format(date);
+			return today;
+		}
 	
 	// 오늘날짜 시분초 yyyy-MM-dd HH:mm:ss
 	public static String getTodayTime(){
