@@ -19,52 +19,28 @@
                     <tr>
                         <th class="col-num">번호</th>
                         <th class="col-title">제목</th>
-                        <th class="col-author">작성자</th>
+                        <th class="col-category">카테고리</th>
+                        <th class="col-writer">작성자</th>
                         <th class="col-date">작성일</th>
                         <th class="col-status">처리상태</th>
                     </tr>
                 </thead>
                 <tbody>
+                <c:forEach items="${dtos}" var="dto">
                     <tr>
-                        <td>4</td>
+                        <td>${dto.getNo()}</td>
                         <td class="title-cell">
-                            <a href="recommend_view.html">이치카츠 아사쿠사바시점</a>
-                            <span class="icon-secret">🔒</span>
+                            <a href="recommend_view.html">${dto.getTitle()}</a>
+                            <c:if test="${dto.getSecret() eq 'Y'}">
+                            	<span class="icon-secret">🔒</span>
+                        	</c:if>
                         </td>
-                        <td>김태현</td>
-                        <td>2026.07.28</td>
+                        <td>${dto.getCategory()}</td>
+                        <td>${dto.getReg_id()}</td>
+                        <td>${dto.getReg_date()}</td>
                         <td><span class="status-tag status-pending">검토중</span></td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="title-cell">
-                            <a href="recommend_view.html">Mermaid Coffee Roasters Ikebukuro</a>
-                            <span class="icon-secret">🔒</span>
-                        </td>
-                        <td>강선구</td>
-                        <td>2026.07.25</td>
-                        <td><span class="status-tag status-complete">등록완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="title-cell">
-                            <a href="recommend_view.html">KISSA 092</a>
-                            <span class="icon-secret">🔒</span>
-                        </td>
-                        <td>임정규</td>
-                        <td>2026.06.20</td>
-                        <td><span class="status-tag status-complete">등록완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td class="title-cell">
-                            <a href="recommend_view.html">Lily's Cafe</a>
-                            <span class="icon-secret">🔒</span>
-                        </td>
-                        <td>최시헌</td>
-                        <td>2026.06.18</td>
-                        <td><span class="status-tag status-complete">등록완료</span></td>
-                    </tr>
+                </c:forEach>    
                 </tbody>
             </table>
 

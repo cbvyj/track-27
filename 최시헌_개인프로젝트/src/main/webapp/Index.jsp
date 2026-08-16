@@ -11,6 +11,7 @@
 </head>
 <body>
     <header>
+    
         <div class="title">穴場 一都三県</div>
         <div class="my">
 	    <c:if test="${not empty sessionName}">

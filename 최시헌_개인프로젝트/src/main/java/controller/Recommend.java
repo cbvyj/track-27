@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import command.recommend.RecommendList;
 import command.recommend.RecommendSave;
 
 /**
@@ -31,7 +32,7 @@ public class Recommend extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 		
 		// 세션 체크 로직 추가
 		HttpSession session = request.getSession(false); // 기존 세션 가져오기 (없으면 null)
@@ -60,6 +61,8 @@ public class Recommend extends HttpServlet {
 		
 		//목록
 		if(gubun.equals("list")) {
+			RecommendList rec = new RecommendList();
+			rec.execute(request);
 			viewPage="recommend/recommend_list.jsp";
 		}	
 		

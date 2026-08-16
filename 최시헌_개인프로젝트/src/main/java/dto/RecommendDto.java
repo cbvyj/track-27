@@ -2,12 +2,12 @@ package dto;
 
 public class RecommendDto {
 	private String no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, update_date; 
-	private int hit;
+	private int hit, lat, lng;
 	
 	
 	public RecommendDto(String no, String title, String category, String sub_category, String tags, String region,
 			String link, String content, String attach, String secret, String state, String reg_id, String reg_name,
-			String reg_date, String update_date, int hit) {
+			String reg_date, String update_date, int hit, int lat, int lng) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -25,6 +25,28 @@ public class RecommendDto {
 		this.reg_date = reg_date;
 		this.update_date = update_date;
 		this.hit = hit;
+		this.lat = lat;
+		this.lng = lng;
+	}
+
+	
+	public int getLat() {
+		return lat;
+	}
+
+
+	public void setLat(int lat) {
+		this.lat = lat;
+	}
+
+
+	public int getLng() {
+		return lng;
+	}
+
+
+	public void setLng(int lng) {
+		this.lng = lng;
 	}
 
 

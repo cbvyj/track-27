@@ -30,7 +30,8 @@
                         <select id="category" name="t_category" onchange="changeCategory(this.value)">
                             <option value="">선택하세요</option>
                             <option value="food">음식</option>
-                            <option value="tour">관광</option>
+                            <option value="sights">관광</option>
+                            <option value="festival">마츠리/하나비</option>
                             <option value="stay">숙소</option>
                         </select>
                     </div>

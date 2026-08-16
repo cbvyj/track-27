@@ -1,5 +1,6 @@
 package command.recommend;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -21,50 +22,54 @@ public class RecommendSave implements CommonExecute {
     public void execute(HttpServletRequest request) {
         RecommendDao dao = RecommendDao.getDao();
         
+        // 1. 실제 파일이 저장될 attachDir 경로 가져오기 및 디렉터리 자동 생성
         String attachDir = CommonUtil.getRecommendDir(request);
+        File dir = new File(attachDir);
+        if (!dir.exists()) {
+            dir.mkdirs(); // 디렉터리가 없으면 자동 생성
+        }
+        
         int maxSize = 1024 * 1024 * 50; // 50MB
         MultipartRequest mpr = null;
 
         try {
             mpr = new MultipartRequest(request, attachDir, maxSize, "utf-8", new DefaultFileRenamePolicy());
         } catch (IOException e) {
-            System.out.println("RecommendSave 오류");
+            System.out.println("RecommendSave 파일 업로드 오류");
             e.printStackTrace();
         }
         
         String no = dao.getRecNo();
-        String title = CommonUtil.getSingleQuot(mpr.getParameter("t_title"));
+        String title = mpr.getParameter("t_title");
         String category = mpr.getParameter("t_category");
         String sub_category = mpr.getParameter("t_category_sub");
         String[] tagsArr = mpr.getParameterValues("t_tags");
         String tags = (tagsArr != null) ? String.join(",", tagsArr) : "";
         String region = mpr.getParameter("t_region");
         String link = mpr.getParameter("t_link");
-        String content = CommonUtil.getSingleQuot(mpr.getParameter("t_content"));
+        String content = mpr.getParameter("t_content");
         
-        // 다중 파일명 추출 및 쉼표(,)로 연결 처리
+        // 다중 파일명 추출
         List<String> fileList = new ArrayList<>();
-        Enumeration<?> files = mpr.getFileNames(); // 전송된 모든 파일 파라미터 추출
+        Enumeration<?> files = mpr.getFileNames();
         
         while (files.hasMoreElements()) {
             String fileParamName = (String) files.nextElement();
             String filesystemName = mpr.getFilesystemName(fileParamName);
             
-            // 실제 파일이 존재하는 경우 리스트에 추가
             if (filesystemName != null) {
                 fileList.add(filesystemName);
             }
         }
         
-        // 여러 파일명을 "img1.jpg,img2.jpg,img3.jpg" 형태로 결합
         String attach = String.join(",", fileList);
-        String secret = mpr.getParameter("t_secret"); // JSP hidden 값 'Y'
+        String secret = mpr.getParameter("t_secret");
         String state = "pending"; 
         String reg_id = (String) request.getSession().getAttribute("sessionId");
         String reg_name = (String) request.getSession().getAttribute("sessionName");
         String reg_date = CommonUtil.getTodayTime();
     
-        RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, null, 0);
+        RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, null, 0, 0, 0);
         
         int result = dao.recommendSave(dto);
         
