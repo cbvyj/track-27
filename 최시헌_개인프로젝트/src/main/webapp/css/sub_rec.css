@@ -87,6 +87,7 @@
     padding: 12px 10px;
     border-bottom: 1px solid #ccc;
     font-weight: bold;
+    white-space: nowrap; /* 헤더 글자 줄바꿈 방지 */
 }
 
 .board-table td {
@@ -99,13 +100,16 @@
     background-color: #fcfcfc;
 }
 
-.col-num { width: 8%; }
-.col-category { width: 18%; }
+/* 기존 컬럼 너비 비율 유지 */
+.col-no { width: 8%; }
 .col-title { width: auto; }
-.col-author { width: 12%; }
-.col-date { width: 12%; }
-.col-status { width: 12%; }
+.col-category { width: 11%; }
+.col-reg_id { width: 10%; }
+.col-reg_date { width: 10%; }
+.col-state { width: 10%; }
 
+/* 제목 헤더(th) 및 본문(td) 정렬 위치 통일 */
+.board-table th.col-title,
 .board-table td.title-cell {
     text-align: left;
     padding-left: 15px;
@@ -114,6 +118,7 @@
 .board-table td.title-cell a {
     color: #222;
     text-decoration: none;
+    vertical-align: middle;
 }
 
 .board-table td.title-cell a:hover {
@@ -122,9 +127,12 @@
 }
 
 .icon-secret {
-    font-size: 11px;
+    display: inline-block;
+    font-size: 11px; /* 제목 글자 크기(13px)와 동일하게 맞춰 밸런스를 잡습니다 */
     margin-left: 4px;
     vertical-align: middle;
+    position: relative;
+    top: -1px; /* 이모지 특유의 밑으로 쏠리는 현상을 위로 1px 끌어올려 보정합니다 */
 }
 
 .badge-region {
@@ -236,7 +244,6 @@
     line-height: 1;
 }
 
-/* 인풋 박스와 셀렉트 박스 높이 및 스타일 통일 */
 .form-group input[type="text"],
 .form-group select {
     width: 100%;
@@ -276,8 +283,8 @@
    ========================================================================== */
 .tag-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5개 한 줄 배치 */
-    gap: 8px; /* 태그 간격 살짝 조절 */
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -285,18 +292,18 @@
 .tag-item {
     display: flex;
     align-items: center;
-    justify-content: center; /* 박스 내부 중앙 정렬 */
-    gap: 6px; /* 체크박스와 텍스트 간격 */
-    font-size: 13px; /* 글자 크기 13px 유지 */
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
     color: #333;
     cursor: pointer;
     background-color: #f8f9fa;
-    padding: 12px 8px; /* 위아래 여백을 9px -> 12px로 늘림 (좌우 8px) */
+    padding: 12px 8px;
     border: 1px solid #e9ecef;
     border-radius: 6px;
     transition: all 0.2s ease;
     box-sizing: border-box;
-    white-space: nowrap; /* 글자 줄바꿈 방지 */
+    white-space: nowrap;
 }
 
 .tag-item:hover {

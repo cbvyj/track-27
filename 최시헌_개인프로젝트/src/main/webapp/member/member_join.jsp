@@ -23,41 +23,41 @@
                         <input type="hidden" name="t_gubun" value="member_save">
 
                         <div class="input-group">
-                            <label for="user-name">이름</label>
-                            <input type="text" id="user-name" name="t_name" placeholder="이름 입력" autofocus>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="user-id">아이디</label>
-                            <div class="input-with-btn">
-                                <input type="text" id="user-id" name="t_id" oninput="setEmpty()" placeholder="아이디 입력">
-                                <button type="button" onclick="checkId()" class="btn-sub">중복확인</button>
-                                <input type="hidden" name="t_id_check">
-                            </div>
-                            <span id="id-check-msg" style="font-size: 12px; margin-top: 5px; display: block;"></span>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="user-pw">비밀번호</label>
-                            <input type="password" id="user-pw" name="t_password" placeholder="비밀번호 (8자 이상)">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="user-pw-confirm">비밀번호 확인</label>
-                            <input type="password" id="user-pw-confirm" name="t_password_confirm" placeholder="비밀번호 재입력">
-                        </div>
-
-                        <div class="input-group">
-						    <label for="user-email-1">이메일</label>
+						    <label for="user-name">이름 <span class="required">*</span></label>
+						    <input type="text" id="user-name" name="t_name" placeholder="이름 입력" autofocus>
+						</div>
+						
+						<div class="input-group">
+						    <label for="user-id">아이디 <span class="required">*</span></label>
+						    <div class="input-with-btn">
+						        <input type="text" id="user-id" name="t_id" oninput="setEmpty()" placeholder="아이디 입력(최대 10자)" maxlength="10">
+						        <button type="button" onclick="checkId()" class="btn-sub">중복확인</button>
+						        <input type="hidden" name="t_id_check">
+						    </div>
+						    <span id="id-check-msg" style="font-size: 12px; margin-top: 5px; display: block;"></span>
+						</div>
+						
+						<div class="input-group">
+						    <label for="user-pw">비밀번호 <span class="required">*</span></label>
+						    <input type="password" id="user-pw" name="t_password" placeholder="비밀번호 (8자 이상)">
+						</div>
+						
+						<div class="input-group">
+						    <label for="user-pw-confirm">비밀번호 확인 <span class="required">*</span></label>
+						    <input type="password" id="user-pw-confirm" name="t_password_confirm" placeholder="비밀번호 재입력">
+						</div>
+						
+						<div class="input-group">
+						    <label for="user-email-1">이메일 <span class="required">*</span></label>
 						    <div class="email-inputs">
 						        <input type="text" id="user-email-1" name="t_email_1" placeholder="example">
 						        <span>@</span>
 						        <input type="text" id="user-email-2" name="t_email_2" placeholder="email.com">
 						    </div>
 						</div>
-                        
-                        <div class="input-group">
-						    <label for="user-ph1">전화번호</label>
+						
+						<div class="input-group">
+						    <label for="user-ph1">전화번호 <span class="required">*</span></label>
 						    <div class="phone-inputs">
 						        <input type="text" id="user-ph1" name="t_phone_1" placeholder="010" maxlength="3">
 						        <span>-</span>
@@ -66,17 +66,17 @@
 						        <input type="text" id="user-ph3" name="t_phone_3" placeholder="5678" maxlength="4">
 						    </div>
 						</div>
-
-                        <div class="input-group">
-                            <label for="user-region">선호 지역 (선택)</label>
-                            <select id="user-region" name="t_region">
-                                <option value="none">선택</option>
-                                <option value="tokyo">도쿄</option>
-                                <option value="saitama">사이타마</option>
-                                <option value="chiba">치바</option>
-                                <option value="kanagawa">카나가와</option>
-                            </select>
-                        </div>
+						
+						<div class="input-group">
+						    <label for="user-region">선호 지역 (선택)</label>
+						    <select id="user-region" name="t_region">
+						        <option value="none">선택</option>
+						        <option value="tokyo">도쿄</option>
+						        <option value="saitama">사이타마</option>
+						        <option value="chiba">치바</option>
+						        <option value="kanagawa">카나가와</option>
+						    </select>
+						</div>
 
                         <div class="member-join">
                             <button type="button" onclick="javascript:goSave()" class="btn-primary">회원가입 완료</button>

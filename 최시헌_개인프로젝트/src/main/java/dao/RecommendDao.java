@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import common.CommonUtil;
 import common.DBConnection;
@@ -32,19 +34,19 @@ public class RecommendDao {
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				String maxNo = rs.getString("no"); // P26-08-015
+				String maxNo = rs.getString("no"); // P2026-08-015
 				String todayYM = CommonUtil.getTodayYYMM(); // 26-08
 				
 				if(maxNo == null) {
 					no = "P"+todayYM+"-001";
 				} else {
-					if(maxNo.substring(1,6).equals(todayYM)) {
-						String n = maxNo.substring(7); // 015
+					if(maxNo.substring(1,8).equals(todayYM)) {
+						String n = maxNo.substring(9); // 015
 						int newNo = Integer.parseInt(n) + 1 ; // 16
 						DecimalFormat df = new DecimalFormat("000"); // 016
-						no = "P"+todayYM+"-"+df.format(newNo); // P26-08-016
+						no = "P"+todayYM+"-"+df.format(newNo); // P2026-08-016
 					} else {
-						no = "P"+todayYM+"-001"; // P26-08-001
+						no = "P"+todayYM+"-001"; // P2026-08-001
 					}
 				}
 			}
@@ -98,6 +100,43 @@ public class RecommendDao {
 			DBConnection.closeDB(con, ps, rs);
 		}
 		return result;
+	}
+
+	//게시글 목록
+	public List<RecommendDto> getRecommendList() {
+		List<RecommendDto> dtos = new ArrayList<RecommendDto>(); 
+		String sql = "select no, title, category, secret, state, reg_id, reg_name, \r\n"
+				+ "    to_char(reg_date, 'yyyy-MM-dd') as reg_date\r\n"
+				+ "    from my_최시헌_rec\r\n"
+				+ "    order by no desc";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String no = rs.getString("no");
+				String title = rs.getString("title");
+				String category = rs.getString("category");
+				if(category.equals("food")) category = "음식";
+				else if(category.equals("sights")) category = "관광";
+				else if(category.equals("festival")) category = "마츠리/하나비";
+				else if(category.equals("stay")) category = "숙소";
+				String secret = rs.getString("secret");
+				String state = rs.getString("state");
+				String reg_id = rs.getString("reg_id");
+				String reg_name = rs.getString("reg_name");
+				String reg_date = rs.getString("reg_date");
+				RecommendDto dto = new RecommendDto(no, title, category, "sub_category", "tags", "region", "link", "content", 
+													"attach", secret, state, reg_id, reg_name, reg_date, "update_date", 0, 0, 0);
+				dtos.add(dto);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("getRecommendList() 오류: "+sql);
+		} finally{
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return dtos;
 	}
 	
 	

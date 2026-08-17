@@ -19,5 +19,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="최시헌_개인프로젝트/src/main/webapp/WEB-INF/lib/orai18n.jar"/>
 	<classpathentry kind="output" path="최시헌_개인프로젝트/build/classes"/>
 </classpath>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import command.recommend.RecommendList;
 import command.recommend.RecommendSave;
 
 /**
@@ -60,6 +61,8 @@ public class Recommend extends HttpServlet {
 		
 		//목록
 		if(gubun.equals("list")) {
+			RecommendList rec = new RecommendList();
+			rec.execute(request);
 			viewPage="recommend/recommend_list.jsp";
 		}	
 		
