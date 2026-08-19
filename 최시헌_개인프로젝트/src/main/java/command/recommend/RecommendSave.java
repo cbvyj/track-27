@@ -35,9 +35,10 @@ public class RecommendSave implements CommonExecute {
         String no = dao.getRecNo();
         String title = CommonUtil.getSingleQuot(mpr.getParameter("t_title"));
         String category = mpr.getParameter("t_category");
-        String sub_category = mpr.getParameter("t_category_sub");
+        String sub_category = mpr.getParameter("t_sub_category");
         String[] tagsArr = mpr.getParameterValues("t_tags");
         String tags = (tagsArr != null) ? String.join(",", tagsArr) : "";
+        if(!category.equals("food")) tags = null;
         String region = mpr.getParameter("t_region");
         String link = mpr.getParameter("t_link");
         String content = CommonUtil.getSingleQuot(mpr.getParameter("t_content"));

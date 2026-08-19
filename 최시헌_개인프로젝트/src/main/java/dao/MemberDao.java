@@ -124,7 +124,7 @@ public class MemberDao {
 					  } else if(region.equals("kanagawa")) {
 						  region = "카나가와";
 					  } else if(region.equals("none")) {
-						  region = "선택";
+						  region = "미선택";
 					  }
 					  String reg_date = rs.getString("reg_date");
 					  String update_date = rs.getString("update_date");

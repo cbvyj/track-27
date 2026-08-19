@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import command.recommend.RecommendList;
 import command.recommend.RecommendSave;
+import command.recommend.RecommendView;
 
 /**
  * Servlet implementation class Recommend
@@ -56,7 +57,7 @@ public class Recommend extends HttpServlet {
 		String viewPage ="";
 		
 		
-		if(gubun == null) gubun = "list";
+		if(gubun == null || gubun.equals("")) gubun = "list";
 		request.setAttribute("gubun", "recommend");
 		
 		//목록
@@ -78,6 +79,12 @@ public class Recommend extends HttpServlet {
 			viewPage="common_alert.jsp";
 		}
 		
+		//게시글 상세보기
+		else if(gubun.equals("view")) {
+			RecommendView rec = new RecommendView();
+			rec.execute(request);
+			viewPage="recommend/recommend_view.jsp";
+		}
 		
 		
 		

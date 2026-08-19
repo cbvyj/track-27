@@ -180,6 +180,7 @@
     text-decoration: none;
     border-radius: 4px;
     font-size: 13px;
+    cursor: pointer;
 }
 
 .page-btn.active {
@@ -469,4 +470,258 @@
 
 .btn-submit:hover {
     background-color: #444444;
+}
+
+/* ==========================================================================
+   Board View Card & Detail Sections
+   ========================================================================== */
+.board-view-card {
+    width: 100%; 
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 35px 30px;
+    box-sizing: border-box; 
+}
+
+/* 상단 목록 버튼 */
+.btn-board-list {
+    background-color: #f1f3f5;
+    color: #333;
+    padding: 8px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #dcdfe6;
+    transition: all 0.2s;
+}
+
+.btn-board-list:hover {
+    background-color: #e9ecef;
+    color: #000;
+}
+
+/* 1. Header Area */
+.view-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.view-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.view-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin: 0;
+}
+
+.view-meta-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #666;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.meta-label {
+    color: #888;
+}
+
+.meta-value {
+    color: #333;
+    font-weight: 500;
+}
+
+.meta-divider {
+    color: #e0e0e0;
+    font-size: 11px;
+}
+
+/* 2. Info Grid Section */
+.view-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.info-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-cell.full-width {
+    grid-column: span 2;
+}
+
+.info-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #777;
+}
+
+.info-value {
+    font-size: 14px;
+    color: #222;
+    font-weight: 500;
+}
+
+.link-map {
+    color: #1c7ed6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.link-map:hover {
+    color: #1864ab;
+    text-decoration: underline;
+}
+
+/* Tag Chips */
+.view-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.tag-chip {
+    display: inline-block;
+    background-color: #ffffff;
+    border: 1px solid #dcdfe6;
+    color: #495057;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+/* 3. Content Section */
+.view-content-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #222;
+    margin: 0 0 12px 0;
+    padding-left: 8px;
+    border-left: 3px solid #222;
+}
+
+.view-content {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    min-height: 120px;
+    padding: 10px 5px;
+    white-space: pre-line; /* 줄바꿈 그대로 적용 */
+}
+
+/* 4. Attach Gallery Section */
+.view-attach-section {
+    margin-bottom: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 25px;
+}
+
+.attach-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.04);
+}
+
+/* 5. View Buttons Section */
+.btn-group-view {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-right {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 42px;
+    background-color: #495057;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: #343a40;
+}
+
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 42px;
+    background-color: #e03131;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #c92a2a;
 }

@@ -28,9 +28,9 @@
     
     <div class="sidebar-container">
         <div class="search-container">
-            <input type="text" class="search-box" placeholder="검색어를 입력하세요">
+            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}"  onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
             &nbsp;
-            <button type="button" class="search-button">🔍</button>
+            <button type="button" class="search-button" onclick="goSearch()">🔍</button>
         </div>
         
         <div class="filter">
@@ -113,6 +113,7 @@
 
     <form name="work">
         <input type="hidden" name="t_gubun">
+        <input type="hidden" name="t_nowPage">
     </form>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB85lO0bCRzB3RXAGD1UTS7NK2VQLg8DeI&callback=initMap" async defer></script>
@@ -334,6 +335,14 @@
     	    mem.action = "Member";
     	    mem.submit();
     	}
+        
+        function goSearch() {
+	        document.work.t_nowPage.value = "1";
+	        document.work.t_gubun.value = "list";
+	        document.work.action = "Recommend";
+	        document.work.method = "post";
+	        document.work.submit();
+	    }
     </script>
 </body>
 </html>

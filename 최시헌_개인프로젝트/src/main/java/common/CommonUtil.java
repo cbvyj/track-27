@@ -62,51 +62,52 @@ public class CommonUtil {
 	}	
 	
 	// 페이지 설정
-	public static String getPageSetting(int current_page,int total_page, int pageNumber_count){
-		int pagenumber;    //화면에 보여질 페이지 인덱스수
-		int startpage;     //화면에 보여질 시작 페이지 번호
-		int endpage;       //화면에 보여질 마지막 페이지 번호
-		int curpage;       //이동하고자 하는 페이지 번호
-		
-		String strList=""; //리턴될 페이지 인덱스 리스트
+    public static String getPageSetting(int current_page, int total_page, int pageNumber_count){
+        int pagenumber = pageNumber_count;   // 한 화면의 페이지 인덱스 수
+        int startpage;     // 시작 페이지 번호
+        int endpage;       // 마지막 페이지 번호
+        int curpage;       // 이동할 페이지 번호
+        
+        String strList = ""; 
 
-		pagenumber = pageNumber_count;   //한 화면의 페이지 인덱스수
-		
-		//시작 페이지 번호 구하기
-		startpage = ((current_page - 1)/ pagenumber) * pagenumber + 1;
-		//마지막 페이지 번호 구하기
-		endpage = (((startpage -1) + pagenumber) / pagenumber)*pagenumber;
-		//총페이지수가 계산된 마지막 페이지 번호보다 작을 경우
-		//총페이지수가 마지막 페이지 번호가 됨
-		
-		if(total_page <= endpage)  endpage = total_page;
-					
-		//첫번째 페이지 인덱스 화면이 아닌경우
-		if(current_page > pagenumber){
-			curpage = startpage -1;  //시작페이지 번호보다 1적은 페이지로 이동
-			strList = strList +"<a href=javascript:goListPage('"+curpage+"') ><i class='fa fa-angle-double-left'></i></a>";
-		}
-						
-		//시작페이지 번호부터 마지막 페이지 번호까지 화면에 표시
-		curpage = startpage;
-		while(curpage <= endpage){
-			if(curpage == current_page){
-				strList = strList +"<a class='active'>"+current_page+"</a>";
-			} else {
-				strList = strList +"<a href=javascript:goListPage('"+curpage+"')>"+curpage+"</a>";
-			}
-			curpage++;
-		}
-		//뒤에 페이지가 더 있는 경우
-		if(total_page > endpage){
-			curpage = endpage+1;
-			strList = strList + "<a href=javascript:goListPage('"+curpage+"') ><i class='fa fa-angle-double-right'></i></a>";
-		}
-		return strList;
-	}			
-	
-	
+        // 시작 페이지 번호 구하기
+        startpage = ((current_page - 1) / pagenumber) * pagenumber + 1;
+        // 마지막 페이지 번호 구하기
+        endpage = (((startpage - 1) + pagenumber) / pagenumber) * pagenumber;
+        
+        if(total_page <= endpage) endpage = total_page;
+                    
+        // 이전 페이지 그룹 (<< 버튼)
+        if(current_page > pagenumber){
+            curpage = startpage - 1;
+            strList += "<a href=\"javascript:goListPage('" + curpage + "')\" class='page-btn'>&laquo;</a>";
+        }
+                        
+        // 페이지 번호 생성
+        curpage = startpage;
+        while(curpage <= endpage){
+            if(curpage == current_page){
+                // 현재 활성화된 페이지
+                strList += "<a class='page-btn active'>" + curpage + "</a>";
+            } else {
+                // 클릭 가능한 페이지
+                strList += "<a href=\"javascript:goListPage('" + curpage + "')\" class='page-btn'>" + curpage + "</a>";
+            }
+            curpage++;
+        }
+        
+        // 다음 페이지 그룹 (>> 버튼)
+        if(total_page > endpage){
+            curpage = endpage + 1;
+            strList += "<a href=\"javascript:goListPage('" + curpage + "')\" class='page-btn'>&raquo;</a>";
+        }
+        
+        return strList;
+    }           
 }
+	
+	
+
 
 
 

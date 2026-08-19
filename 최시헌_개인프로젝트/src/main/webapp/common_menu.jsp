@@ -12,10 +12,26 @@
 <body>
     <form name="work" action="Member" method="post">
     	<input type="hidden" name="t_gubun">
-		
+		<input type="hidden" name="t_nowPage">
 
     <script type="text/javascript">
-        function goPage(gubun) {
+	    function goSearch() {
+	        document.work.t_nowPage.value = "1";
+	        document.work.t_gubun.value = "list";
+	        document.work.action = "Recommend";
+	        document.work.method = "post";
+	        document.work.submit();
+	    }        
+    
+	    function goListPage(page) {
+            document.work.t_nowPage.value = page;
+            document.work.t_gubun.value = "list"; 
+            document.work.action = "Recommend"; 
+            document.work.method = "post";
+            document.work.submit();
+        }
+	    
+    	function goPage(gubun) {
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
             document.work.action = "Member";
@@ -23,6 +39,7 @@
         }
         
         function goRec(gubun) {
+        	document.work.t_nowPage.value = "1";
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
             document.work.action = "Recommend"; 
@@ -206,7 +223,6 @@
                 <a href="javascript:goPage('memberLogout')">Logout</a>
             </c:if>
             <c:if test="${empty sessionName}">
-                <!-- Login 클릭 시 Index 페이지로 이동하여 모달 실행 -->
                 <a href="Index?login=true">Login</a>
                 &nbsp;
                 <a href="javascript:goPage('join')">Join</a>
@@ -216,9 +232,9 @@
     
     <div class="sidebar-container">
         <div class="search-container">
-            <input type="text" class="search-box" placeholder="검색어를 입력하세요">
+            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}"  onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
             &nbsp;
-            <button type="button" class="search-button">🔍</button>
+            <button type="button" class="search-button" onclick="goSearch()">🔍</button>
         </div>
         
         <div class="filter">

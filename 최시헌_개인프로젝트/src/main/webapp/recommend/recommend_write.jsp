@@ -37,8 +37,8 @@
                     </div>
                     
                     <div class="form-group" id="sub-category-group" style="visibility: hidden;">
-                        <label for="category-sub">세부 카테고리 <span class="required">*</span></label>
-                        <select id="category-sub" name="t_category_sub">
+                        <label for="sub_category">세부 카테고리 <span class="required">*</span></label>
+                        <select id="sub_category" name="t_sub_category">
                             <option value="">선택하세요</option>
                             <option value="restaurant">식당</option>
                             <option value="izakaya">이자카야 / 주점</option>
@@ -53,7 +53,7 @@
                     <label>장소 특징 <span class="required">* (최소 1개 선택)</span></label>
                     <div class="tag-grid">
                         <label class="tag-item">
-                            <input type="checkbox" name="t_tags" value="casual" checked> 일반/캐주얼
+                            <input type="checkbox" name="t_tags" value="casual"> 일반/캐주얼
                         </label>
                         <label class="tag-item">
                             <input type="checkbox" name="t_tags" value="fine_dining"> 고급/파인다이닝
@@ -132,7 +132,7 @@
 <script type="text/javascript">
     function changeCategory(mainCategory) {
         const subGroup = document.getElementById('sub-category-group');
-        const subSelect = document.getElementById('category-sub');
+        const subSelect = document.getElementById('sub_category');
         const tagGroup = document.getElementById('tag-group');
         
         // 세부 카테고리 4개로 수정 적용
@@ -218,11 +218,11 @@
         if (isEmpty(rec.t_category, "카테고리를 선택하세요.")) return;
         
         if (rec.t_category.value === 'food') {
-            if (isEmpty(rec.t_category_sub, "세부 카테고리를 선택하세요.")) return;
+            if (isEmpty(rec.t_sub_category, "세부 카테고리를 선택하세요.")) return;
             
             const checkedTags = document.querySelectorAll('input[name="t_tags"]:checked');
             if (checkedTags.length === 0) {
-                alert("장소 특징 태그를 최소 1개 이상 선택하세요.");
+                alert("장소 특징을 최소 1개 이상 선택하세요.");
                 return;
             }
         }

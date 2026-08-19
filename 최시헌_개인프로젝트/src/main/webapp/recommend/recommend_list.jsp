@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file = "../common_menu.jsp" %>    
 <link href="${pageContext.request.contextPath}/css/sub_rec.css" rel="stylesheet">    
+<script type="text/javascript">
+	function goView(no){
+		view.t_gubun.value = "view";
+		view.t_no.value = no;
+		view.method = "post";
+		view.action = "Recommend";
+		view.submit();
+	}
+</script>
+
+<form name="view">
+	<input type="hidden" name="t_gubun">
+	<input type="hidden" name="t_no">
+</form>
 
 <div class="main-container">
         <div class="board-page-container">
@@ -25,34 +39,32 @@
                         <th class="col-state">처리상태</th>
                     </tr>
                 </thead>
-                <c:forEach items="${dtos}" var="dto">
+               
 	                <tbody>
-	                    <tr>
-	                        <td>${dto.getNo()}</td>
-	                        <td class="title-cell">
-	                            <a href="recommend_view.html">${dto.getTitle()}</a>
-	                            <c:if test="${dto.getSecret() eq 'Y'}">
-	                            	<span class="icon-secret">🔒</span>
-	                       		</c:if>
-	                        </td>
-	                        <td>${dto.getCategory()}</td>
-	                        <td>${dto.getReg_id()}</td>
-	                        <td>${dto.getReg_date()}</td>
-	                        <c:if test="${dto.getState() eq 'pending'}">
-	                        	<td><span class="status-tag status-pending">검토중</span></td>
-	                    	</c:if>
-	                    </tr>
+	                 	<c:forEach items="${dtos}" var="dto">
+		                    <tr>
+		                        <td>${dto.getNo()}</td>
+		                        <td class="title-cell">
+		                            <a href="javascript:goView('${dto.getNo()}')">${dto.getTitle()}</a>
+		                            <c:if test="${dto.getSecret() eq 'Y'}">
+		                            	<span class="icon-secret">🔒</span>
+		                       		</c:if>
+		                        </td>
+		                        <td>${dto.getCategory()}</td>
+		                        <td>${dto.getReg_id()}</td>
+		                        <td>${dto.getReg_date()}</td>
+		                        <c:if test="${dto.getState() eq 'pending'}">
+		                        	<td><span class="status-tag status-pending">검토중</span></td>
+		                    	</c:if>
+		                    </tr>
+	                    </c:forEach>
 	                </tbody>
-                </c:forEach>
+                
             </table>
 
-            <!-- 하단 페이징 영역 -->
-            <div class="board-pagination">
-                <a href="#" class="page-btn">&laquo;</a>
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn">3</a>
-                <a href="#" class="page-btn">&raquo;</a>
-            </div>
+            <!-- 하단 페이징 영역 (Command에서 생성한 pageDisplay 사용) -->
+			<div class="board-pagination">
+			    ${pageDisplay}
+			</div>
         </div>
     </div>
