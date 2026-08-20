@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import command.recommend.RecommendList;
 import command.recommend.RecommendSave;
+import command.recommend.RecommendUpdate;
 import command.recommend.RecommendView;
 
 /**
@@ -86,7 +87,19 @@ public class Recommend extends HttpServlet {
 			viewPage="recommend/recommend_view.jsp";
 		}
 		
+		//게시글 상세보기
+		else if(gubun.equals("updateForm")) {
+			RecommendView rec = new RecommendView();
+			rec.execute(request);
+			viewPage="recommend/recommend_update.jsp";
+		}
 		
+		//게시글 수정
+		else if(gubun.equals("update")) {
+			RecommendUpdate rec = new RecommendUpdate();
+			rec.execute(request);
+			viewPage="common_alert_view.jsp";
+		}
 		
 		
 		

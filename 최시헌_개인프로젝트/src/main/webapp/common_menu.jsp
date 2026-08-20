@@ -13,6 +13,8 @@
     <form name="work" action="Member" method="post">
     	<input type="hidden" name="t_gubun">
 		<input type="hidden" name="t_nowPage">
+		<input type="hidden" name="t_no">
+		
 
     <script type="text/javascript">
 	    function goSearch() {

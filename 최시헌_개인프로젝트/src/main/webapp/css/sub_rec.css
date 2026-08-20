@@ -552,9 +552,9 @@
 }
 
 /* 2. Info Grid Section */
+/* 기본 그리드 공통 */
 .view-info-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
@@ -563,10 +563,30 @@
     margin-bottom: 30px;
 }
 
+/* 1) 음식 전용 그리드 (1행 3열 + 2행 전체) */
+.view-info-grid.food-grid {
+    grid-template-columns: 0.6fr 0.5fr 1.2fr; /* 카테고리 | 세부카테고리 | 특징(태그) */
+    align-items: stretch; /* 태그가 줄바꿈되어 높이가 늘어나면 다른 셀들도 동일하게 높이 확장 */
+}
+
+.view-info-grid.food-grid .info-cell.full-width {
+    grid-column: span 3; /* 구글맵 링크가 3열 전체를 차지 */
+    border-top: 1px dashed #e0e0e0;
+    padding-top: 12px;
+    margin-top: 5px;
+}
+
+/* 2) 일반(관광/숙소 등) 전용 그리드 (1행 2열) */
+.view-info-grid.default-grid {
+    grid-template-columns: 1fr 1fr; /* 카테고리 | 구글맵 링크 나란히 */
+    align-items: center;
+}
+
 .info-cell {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    height: 100%; /* 셀 내부 높이를 전체 영역에 맞춤 */
 }
 
 .info-cell.full-width {
@@ -577,12 +597,18 @@
     font-size: 12px;
     font-weight: bold;
     color: #777;
+    margin-left: 5px;
 }
 
 .info-value {
     font-size: 14px;
     color: #222;
     font-weight: 500;
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    min-height: 28px;
+    flex: 1; /* 높이가 늘어나도 중앙 위치 유지 */
+    margin-left: 5px;
 }
 
 .link-map {
@@ -600,13 +626,16 @@
 /* Tag Chips */
 .view-tag-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 2px;
+    flex-wrap: wrap; /* 태그가 많아지면 자동으로 다음 줄로 이동 */
+    gap: 8px 6px;    /* 가로 간격 8px, 줄바꿈 시 세로 간격 6px */
+    align-items: center;
+    min-height: 28px;
+    flex: 1;
 }
 
 .tag-chip {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     background-color: #ffffff;
     border: 1px solid #dcdfe6;
     color: #495057;
@@ -614,6 +643,8 @@
     padding: 4px 10px;
     border-radius: 15px;
     font-weight: 500;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 /* 3. Content Section */
@@ -636,7 +667,6 @@
     color: #333;
     min-height: 120px;
     padding: 10px 5px;
-    white-space: pre-line; /* 줄바꿈 그대로 적용 */
 }
 
 /* 4. Attach Gallery Section */
@@ -647,26 +677,25 @@
 }
 
 .attach-gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex; /* Grid 대신 Flex 사용 */
+    flex-wrap: wrap;
     gap: 15px;
     margin-top: 15px;
 }
 
 .gallery-item {
-    width: 100%;
-    height: 180px;
+    height: 220px; /* 높이 고정 */
+    width: auto;   /* 이미지 비율에 따라 가로폭 자동 결정 */
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #e9ecef;
-    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .gallery-item img {
-    width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    width: auto;
+    display: block;
 }
 
 .gallery-item img:hover {

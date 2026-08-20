@@ -41,16 +41,25 @@
                 </thead>
                
 	                <tbody>
+	               		<c:set var="number" value="${order}"></c:set>
 	                 	<c:forEach items="${dtos}" var="dto">
 		                    <tr>
-		                        <td>${dto.getNo()}</td>
+		                        <td>
+			                        ${number}
+									<c:set var="number" value="${number-1}"/>
+								</td>
 		                        <td class="title-cell">
 		                            <a href="javascript:goView('${dto.getNo()}')">${dto.getTitle()}</a>
 		                            <c:if test="${dto.getSecret() eq 'Y'}">
 		                            	<span class="icon-secret">🔒</span>
 		                       		</c:if>
 		                        </td>
-		                        <td>${dto.getCategory()}</td>
+		                        <td>
+									<c:if test="${dto.getCategory() eq 'food'}">음식</c:if>
+									<c:if test="${dto.getCategory() eq 'sights'}">관광</c:if>
+									<c:if test="${dto.getCategory() eq 'festival'}">마츠리/하나비</c:if>
+									<c:if test="${dto.getCategory() eq 'stay'}">숙소</c:if>
+								</td>
 		                        <td>${dto.getReg_id()}</td>
 		                        <td>${dto.getReg_date()}</td>
 		                        <c:if test="${dto.getState() eq 'pending'}">

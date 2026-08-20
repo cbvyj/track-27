@@ -160,10 +160,10 @@ public class RecommendDao {
 	            String title = rs.getString("title");
 	            
 	            String category = rs.getString("category");
-	            if ("food".equals(category)) category = "음식";
-	            else if ("sights".equals(category)) category = "관광";
-	            else if ("festival".equals(category)) category = "마츠리/하나비";
-	            else if ("stay".equals(category)) category = "숙소";
+//	            if ("food".equals(category)) category = "음식";
+//	            else if ("sights".equals(category)) category = "관광";
+//	            else if ("festival".equals(category)) category = "마츠리/하나비";
+//	            else if ("stay".equals(category)) category = "숙소";
 	            
 	            String tags = rs.getString("tags");
 	            if ("casual".equals(tags)) tags = "일반/캐주얼";
@@ -252,10 +252,6 @@ public class RecommendDao {
 			if(rs.next()) {
 				String title = rs.getString("title");
 				String category = rs.getString("category");
-				if ("food".equals(category)) category = "음식";
-	            else if ("sights".equals(category)) category = "관광";
-	            else if ("festival".equals(category)) category = "마츠리/하나비";
-	            else if ("stay".equals(category)) category = "숙소";
 				String sub_category = rs.getString("sub_category");
 				String tags = rs.getString("tags");
 				if ("casual".equals(tags)) tags = "일반/캐주얼";
@@ -286,6 +282,12 @@ public class RecommendDao {
 			DBConnection.closeDB(con, ps, rs);
 		}
 		return dto;
+	}
+
+	//게시글 수정
+	public int recommendUpdate(RecommendDto dto) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
