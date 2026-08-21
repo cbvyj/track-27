@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-/dao/
 /command/
-=======
-/controller/
->>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 /common/
 /controller/
+/dao/
 /dto/
