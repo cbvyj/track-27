@@ -34,11 +34,18 @@
                         <th class="col-no">번호</th>
                         <th class="col-title">제목</th>
                         <th class="col-category">카테고리</th>
+<<<<<<< HEAD
                         <th class="col-reg_id">작성자</th>
                         <th class="col-reg_date">작성일</th>
                         <th class="col-state">처리상태</th>
+=======
+                        <th class="col-writer">작성자</th>
+                        <th class="col-date">작성일</th>
+                        <th class="col-status">처리상태</th>
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
                     </tr>
                 </thead>
+<<<<<<< HEAD
                
 	                <tbody>
 	               		<c:set var="number" value="${order}"></c:set>
@@ -69,6 +76,25 @@
 	                    </c:forEach>
 	                </tbody>
                 
+=======
+                <tbody>
+                <c:forEach items="${dtos}" var="dto">
+                    <tr>
+                        <td>${dto.getNo()}</td>
+                        <td class="title-cell">
+                            <a href="recommend_view.html">${dto.getTitle()}</a>
+                            <c:if test="${dto.getSecret() eq 'Y'}">
+                            	<span class="icon-secret">🔒</span>
+                        	</c:if>
+                        </td>
+                        <td>${dto.getCategory()}</td>
+                        <td>${dto.getReg_id()}</td>
+                        <td>${dto.getReg_date()}</td>
+                        <td><span class="status-tag status-pending">검토중</span></td>
+                    </tr>
+                </c:forEach>    
+                </tbody>
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
             </table>
 
             <!-- 하단 페이징 영역 (Command에서 생성한 pageDisplay 사용) -->

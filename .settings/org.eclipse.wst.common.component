@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-        
-    <wb-module deploy-name="최시헌-개인프로젝트">
-                
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/최시헌_개인프로젝트/src/main/java"/>
-                
-        <wb-resource deploy-path="/" source-path="/최시헌_개인프로젝트/src/main/webapp"/>
-                
-        <property name="java-output-path" value="/최시헌-개인프로젝트/최시헌_개인프로젝트/build/classes"/>
-        <property name="context-root" value="최시헌-개인프로젝트"/>
             
-    </wb-module>
     
+    <wb-module deploy-name="최시헌-개인프로젝트">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/최시헌_개인프로젝트/src/main/webapp"/>
+                        
+        
+        <property name="java-output-path" value="/최시헌-개인프로젝트/최시헌_개인프로젝트/build/classes"/>
+                
+        <property name="context-root" value="최시헌-개인프로젝트"/>
+                    
+    
+    </wb-module>
+        
+
 </project-modules>

@@ -101,12 +101,23 @@
 }
 
 /* 기존 컬럼 너비 비율 유지 */
+<<<<<<< HEAD
 .col-no { width: 8%; }
+=======
+.col-num { width: 8%; }
+.col-category { width: 12%; }
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 .col-title { width: auto; }
+<<<<<<< HEAD
 .col-category { width: 11%; }
 .col-reg_id { width: 10%; }
 .col-reg_date { width: 10%; }
 .col-state { width: 10%; }
+=======
+.col-writer { width: 12%; }
+.col-date { width: 12%; }
+.col-status { width: 10%; }
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 
 /* 제목 헤더(th) 및 본문(td) 정렬 위치 통일 */
 .board-table th.col-title,
@@ -116,7 +127,7 @@
 }
 
 .board-table td.title-cell a {
-    color: #222;
+	color: #222;
     text-decoration: none;
     vertical-align: middle;
 }

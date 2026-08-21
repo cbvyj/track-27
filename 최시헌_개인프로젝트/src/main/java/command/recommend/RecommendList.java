@@ -1,5 +1,6 @@
 package command.recommend;
 
+<<<<<<< HEAD
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,34 @@ public class RecommendList implements CommonExecute {
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("order", order);
 		request.setAttribute("pageDisplay", pageDisplay);
+=======
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import common.CommonExecute;
+import dao.RecommendDao;
+import dto.RecommendDto;
+
+public class RecommendList implements CommonExecute {
+
+	@Override
+	public void execute(HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		RecommendDao dao = RecommendDao.getDao();
+		
+		List<RecommendDto> dtos = dao.getRecommendList();
+		request.setAttribute("dtos", dtos);
+		
+		
+		
+		
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 	}
 
 }

@@ -34,7 +34,7 @@ public class Recommend extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 		
 		// 세션 체크 로직 추가
 		HttpSession session = request.getSession(false); // 기존 세션 가져오기 (없으면 null)

@@ -2,13 +2,21 @@ package dto;
 
 public class RecommendDto {
 	private String no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, update_date; 
+<<<<<<< HEAD
 	private int hit;
 	private double lat,lng;
+=======
+	private int hit, lat, lng;
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 	
 	
 	public RecommendDto(String no, String title, String category, String sub_category, String tags, String region,
 			String link, String content, String attach, String secret, String state, String reg_id, String reg_name,
+<<<<<<< HEAD
 			String reg_date, String update_date, int hit, double lat, double lng) {
+=======
+			String reg_date, String update_date, int hit, int lat, int lng) {
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 		super();
 		this.no = no;
 		this.title = title;
@@ -28,6 +36,29 @@ public class RecommendDto {
 		this.hit = hit;
 		this.lat = lat;
 		this.lng = lng;
+<<<<<<< HEAD
+=======
+	}
+
+	
+	public int getLat() {
+		return lat;
+	}
+
+
+	public void setLat(int lat) {
+		this.lat = lat;
+	}
+
+
+	public int getLng() {
+		return lng;
+	}
+
+
+	public void setLng(int lng) {
+		this.lng = lng;
+>>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 	}
 
 
