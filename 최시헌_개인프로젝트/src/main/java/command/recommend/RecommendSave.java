@@ -69,18 +69,6 @@ public class RecommendSave implements CommonExecute {
         String reg_id = (String) request.getSession().getAttribute("sessionId");
         String reg_name = (String) request.getSession().getAttribute("sessionName");
         String reg_date = CommonUtil.getTodayTime();
-    
-<<<<<<< HEAD
-        RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, null, 0,0,0);
-=======
-        RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, null, 0, 0, 0);
->>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
-        
-        int result = dao.recommendSave(dto);
-        
-        String msg = (result == 1) ? "등록되었습니다" : "등록 실패하였습니다";
-        
-        request.setAttribute("t_msg", msg);
-        request.setAttribute("t_url", "Recommend");
+
     }
 }

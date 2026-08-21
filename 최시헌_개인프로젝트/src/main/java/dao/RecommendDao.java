@@ -26,7 +26,6 @@ public class RecommendDao {
 
 	// 게시글 번호
 	public String getRecNo() {
-<<<<<<< HEAD
 		String no = "";
 		String sql = "select max(no) as no\r\n"
 				+ "from my_최시헌_rec";
@@ -58,39 +57,6 @@ public class RecommendDao {
 			DBConnection.closeDB(con, ps, rs);
 		}
 		return no;	
-=======
-	    String no = "";
-	    String sql = "select max(no) as no\r\n"
-	            + "from my_최시헌_rec";
-	    try {
-	        con = DBConnection.getConnection();
-	        ps = con.prepareStatement(sql);
-	        rs = ps.executeQuery();
-	        if(rs.next()) {
-	            String maxNo = rs.getString("no"); // 예: P2026-08-001
-	            String todayYM = CommonUtil.getTodayYYMM(); // 예: 2026-08 (7자)
-	            
-	            if(maxNo == null) {
-	                no = "P"+todayYM+"-001";
-	            } else {
-	                if(maxNo.length() >= 8 && maxNo.substring(1, 8).equals(todayYM)) {
-	                    String n = maxNo.substring(9); // "001" 추출
-	                    int newNo = Integer.parseInt(n) + 1 ; // 2
-	                    DecimalFormat df = new DecimalFormat("000"); // 002
-	                    no = "P"+todayYM+"-"+df.format(newNo); // P2026-08-002
-	                } else {
-	                    no = "P"+todayYM+"-001"; 
-	                }
-	            }
-	        }
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	        System.out.println("getRecNo() 오류: "+ sql);
-	    } finally {
-	        DBConnection.closeDB(con, ps, rs);
-	    }
-	    return no;	
->>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 	}
 
 	//게시글 조회수
