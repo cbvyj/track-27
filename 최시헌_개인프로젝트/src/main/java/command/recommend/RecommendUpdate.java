@@ -25,7 +25,6 @@ public class RecommendUpdate implements CommonExecute {
 		String link = request.getParameter("t_link");
 		String content = CommonUtil.getSingleQuot(request.getParameter("t_content"));
 		String secret = request.getParameter("t_secret"); // 기본값 'Y'
-		String state = "pending";
 
 		HttpSession session = request.getSession();
 		String sessionLevel = (String) session.getAttribute("sessionLevel");
