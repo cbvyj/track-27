@@ -57,7 +57,7 @@
 }
 
 .btn-board-write {
-    background-color: #222;
+    background-color: #555;
     color: #fff;
     padding: 8px 18px;
     border-radius: 4px;
@@ -100,34 +100,23 @@
     background-color: #fcfcfc;
 }
 
-/* 기존 컬럼 너비 비율 유지 */
-<<<<<<< HEAD
+/* 컬럼 너비 비율 설정 (JSP 변수명 기준) */
 .col-no { width: 8%; }
-=======
-.col-num { width: 8%; }
-.col-category { width: 12%; }
->>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 .col-title { width: auto; }
-<<<<<<< HEAD
 .col-category { width: 11%; }
 .col-reg_id { width: 10%; }
 .col-reg_date { width: 10%; }
 .col-state { width: 10%; }
-=======
-.col-writer { width: 12%; }
-.col-date { width: 12%; }
-.col-status { width: 10%; }
->>>>>>> branch 'main' of https://github.com/cbvyj/track-27.git
 
-/* 제목 헤더(th) 및 본문(td) 정렬 위치 통일 */
+/* 제목 헤더(th) 및 본문(td) 좌측 정렬 */
 .board-table th.col-title,
 .board-table td.title-cell {
-    text-align: left;
-    padding-left: 15px;
+    text-align: left !important;
+    padding-left: 20px;
 }
 
 .board-table td.title-cell a {
-	color: #222;
+    color: #222;
     text-decoration: none;
     vertical-align: middle;
 }
@@ -139,11 +128,11 @@
 
 .icon-secret {
     display: inline-block;
-    font-size: 11px; /* 제목 글자 크기(13px)와 동일하게 맞춰 밸런스를 잡습니다 */
+    font-size: 11px;
     margin-left: 4px;
     vertical-align: middle;
     position: relative;
-    top: -1px; /* 이모지 특유의 밑으로 쏠리는 현상을 위로 1px 끌어올려 보정합니다 */
+    top: -1px;
 }
 
 .badge-region {
@@ -168,7 +157,7 @@
     color: #f08c00;
 }
 
-.status-complete {
+.status-approved {
     background-color: #e6fcf5;
     color: #0ca678;
 }
@@ -195,9 +184,9 @@
 }
 
 .page-btn.active {
-    background-color: #222;
+    background-color: #555;
     color: #fff;
-    border-color: #222;
+    border-color: #555;
 }
 
 .page-btn:hover:not(.active) {
@@ -563,7 +552,6 @@
 }
 
 /* 2. Info Grid Section */
-/* 기본 그리드 공통 */
 .view-info-grid {
     display: grid;
     gap: 15px;
@@ -574,22 +562,20 @@
     margin-bottom: 30px;
 }
 
-/* 1) 음식 전용 그리드 (1행 3열 + 2행 전체) */
 .view-info-grid.food-grid {
-    grid-template-columns: 0.6fr 0.5fr 1.2fr; /* 카테고리 | 세부카테고리 | 특징(태그) */
-    align-items: stretch; /* 태그가 줄바꿈되어 높이가 늘어나면 다른 셀들도 동일하게 높이 확장 */
+    grid-template-columns: 0.6fr 0.5fr 1.2fr;
+    align-items: stretch;
 }
 
 .view-info-grid.food-grid .info-cell.full-width {
-    grid-column: span 3; /* 구글맵 링크가 3열 전체를 차지 */
+    grid-column: span 3;
     border-top: 1px dashed #e0e0e0;
     padding-top: 12px;
     margin-top: 5px;
 }
 
-/* 2) 일반(관광/숙소 등) 전용 그리드 (1행 2열) */
 .view-info-grid.default-grid {
-    grid-template-columns: 1fr 1fr; /* 카테고리 | 구글맵 링크 나란히 */
+    grid-template-columns: 1fr 1fr;
     align-items: center;
 }
 
@@ -597,7 +583,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    height: 100%; /* 셀 내부 높이를 전체 영역에 맞춤 */
+    height: 100%;
 }
 
 .info-cell.full-width {
@@ -616,9 +602,9 @@
     color: #222;
     font-weight: 500;
     display: flex;
-    align-items: center; /* 수직 가운데 정렬 */
+    align-items: center;
     min-height: 28px;
-    flex: 1; /* 높이가 늘어나도 중앙 위치 유지 */
+    flex: 1;
     margin-left: 5px;
 }
 
@@ -637,8 +623,8 @@
 /* Tag Chips */
 .view-tag-list {
     display: flex;
-    flex-wrap: wrap; /* 태그가 많아지면 자동으로 다음 줄로 이동 */
-    gap: 8px 6px;    /* 가로 간격 8px, 줄바꿈 시 세로 간격 6px */
+    flex-wrap: wrap;
+    gap: 8px 6px;
     align-items: center;
     min-height: 28px;
     flex: 1;
@@ -688,15 +674,15 @@
 }
 
 .attach-gallery {
-    display: flex; /* Grid 대신 Flex 사용 */
+    display: flex;
     flex-wrap: wrap;
     gap: 15px;
     margin-top: 15px;
 }
 
 .gallery-item {
-    height: 220px; /* 높이 고정 */
-    width: auto;   /* 이미지 비율에 따라 가로폭 자동 결정 */
+    height: 220px;
+    width: auto;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #e0e0e0;

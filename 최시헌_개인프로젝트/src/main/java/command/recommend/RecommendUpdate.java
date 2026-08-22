@@ -32,8 +32,8 @@ public class RecommendUpdate implements CommonExecute {
 
 		String reqLat = request.getParameter("t_lat");
 		String reqLng = request.getParameter("t_lng");
-		Double lat = null; 
-		Double lng = null;
+		Double lat = 0.0; 
+		Double lng = 0.0;
 
 		if ("top".equals(sessionLevel) 
 		        && reqLat != null && !reqLat.trim().isEmpty() 
@@ -43,7 +43,7 @@ public class RecommendUpdate implements CommonExecute {
 		        lat = Double.parseDouble(reqLat.trim());
 		        lng = Double.parseDouble(reqLng.trim());
 		        secret = "N";       
-		        state = "complete"; 
+		        state = "approved"; 
 		    } catch (NumberFormatException e) {
 		        lat = null;
 		        lng = null;

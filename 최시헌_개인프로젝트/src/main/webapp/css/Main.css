@@ -126,13 +126,14 @@ header {
 .search-button {
     padding: 7px 10px;
     color: white;
+    background-color: #555;
     border: 1px solid #555;
     border-radius: 0 4px 4px 0;
     cursor: pointer;
 }
 
 .search-button:hover {
-    background-color: #555;
+    background-color: #333;
 }
 
 /* Footer */
@@ -293,6 +294,47 @@ label {
     height: 100%;
 }
 
+.map-legend {
+    position: absolute;
+    top: 10px;              
+    right: 10px;
+    background: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 5;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.legend-title {
+    font-weight: bold;
+    color: #222;
+    font-size: 13px;
+    padding-right: 10px;
+    border-right: 1px solid #e0e0e0;
+    margin: 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444;
+    font-size: 12px;
+    margin: 0;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
 /* ================= Modal ================= */
 .modal-overlay {
     display: none;
@@ -332,29 +374,26 @@ label {
     }
 }
 
-/* 모달 헤더 컨테이너 */
 .modal-header {
-    position: relative;      /* [추가] 닫기 버튼의 절대 위치(absolute) 기준점 설정 */
+    position: relative;
     display: flex;
-    align-items: center;     /* [유지] 세로 중앙 정렬 */
+    align-items: center;
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 12px;
     margin-bottom: 20px;
 }
 
-/* [수정] 제목 가로 위치 중앙 정렬 */
 .modal-header h2 {
     margin: 0;
-    width: 100%;             /* [추가] 전체 너비 사용 */
-    text-align: center;      /* [추가] 텍스트 가로 중앙 정렬 */
+    width: 100%;
+    text-align: center;
     font-size: 20px;
     color: #222;
 }
 
-/* [수정] 닫기 버튼을 오른쪽 끝에 고정 */
 .close-btn {
-    position: absolute;      /* [추가] 헤더 우측 끝에 배치 */
-    right: 0;                /* [추가] 우측 여백 0 */
+    position: absolute;
+    right: 0;
     background: none;
     border: none;
     font-size: 24px;

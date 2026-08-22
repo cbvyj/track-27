@@ -50,7 +50,7 @@
                                 <span class="status-tag status-pending">검토중</span>
                             </c:when>
                             <c:when test="${dto.getState() eq 'approved'}">
-                                <span class="status-tag status-complete">승인완료</span>
+                                <span class="status-tag status-approved">승인완료</span>
                             </c:when>
                             <c:otherwise>
                                 <span class="status-tag status-pending">${dto.getState()}</span>
@@ -178,17 +178,33 @@
 			</c:if>
 
             <!-- 5. 하단 버튼 영역 (작성자/관리자 권한 처리용) -->
-            <div class="btn-group-view">
-                <div class="btn-left">
-                    <a href="javascript:goRec('list')" class="btn-cancel">목록으로</a>
-                </div>
-                <div class="btn-right">
-				    <c:if test="${sessionScope.sessionId eq dto.getReg_id() or sessionScope.sessionLevel eq 'top'}">
-				        <a href="javascript:goUpdateForm('${dto.getNo()}')" class="btn-edit">수정</a>
-				        <a href="javascript:goDelete('${dto.getNo()}')" class="btn-delete">삭제</a>
-				    </c:if>
-				</div>
-            </div>
+			<div class="btn-group-view">
+			    <div class="btn-left">
+			        <a href="javascript:goRec('list')" class="btn-cancel">목록으로</a>
+			    </div>
+			    
+			    <div class="btn-right">
+			        <%-- CASE 1: 관리자인 경우 (승인 여부 상관없이 항상 수정/삭제 가능) --%>
+			        <c:if test="${sessionScope.sessionLevel eq 'top'}">
+			            <a href="javascript:goUpdateForm('${dto.getNo()}')" class="btn-edit">수정</a>
+			            <a href="javascript:goDelete('${dto.getNo()}')" class="btn-delete">삭제</a>
+			        </c:if>
+			
+			        <%-- CASE 2: 일반 작성자인 경우 --%>
+			        <c:if test="${sessionScope.sessionLevel ne 'top' and sessionScope.sessionId eq dto.getReg_id()}">
+			            <%-- 검토 중일 때만 직접 수정/삭제 허용 --%>
+			            <c:if test="${dto.getState() eq 'pending'}">
+			                <a href="javascript:goUpdateForm('${dto.getNo()}')" class="btn-edit">수정</a>
+			                <a href="javascript:goDelete('${dto.getNo()}')" class="btn-delete">삭제</a>
+			            </c:if>
+			            
+			            <%-- 승인 완료된 경우 안내 문구 노출 (필요 시 삭제 요청 버튼 등으로 대체 가능) --%>
+			            <c:if test="${dto.getState() eq 'approved'}">
+			                <span class="notice-text">※ 승인 완료된 장소는 정보 보호를 위해 직접 수정/삭제가 불가능합니다.</span>
+			            </c:if>
+			        </c:if>
+			    </div>
+			</div>
 
         </div>
     </div>

@@ -94,11 +94,11 @@
 					<div class="form-row">
 	                    <div class="form-group">
 	                        <label for="lat">위도</label>
-	                        <input type="text" id="lat" name="t_lat">
+	                        <input type="text" id="lat" name="t_lat" <c:if test="${dto.lat ne 0.0}">value="${dto.lat}"</c:if>>
 	                    </div>
 	                    <div class="form-group">
-	                        <label for="lng">위도</label>
-	                        <input type="text" id="lng" name="t_lng">
+	                        <label for="lng">경도</label>
+							<input type="text" id="lng" name="t_lng" <c:if test="${dto.lng ne 0.0}">value="${dto.lng}"</c:if>>
 	                    </div>
 	                </div>
                 </c:if>

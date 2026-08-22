@@ -5,31 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Track27 최시헌</title>
+    <!-- 분리된 외부 CSS 불러오기 -->
     <link href="${pageContext.request.contextPath}/css/Main.css" rel="stylesheet">    
     <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
-	<script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
 </head>
 <body>
     <header>
-    
         <div class="title">穴場 一都三県</div>
         <div class="my">
-	    <c:if test="${not empty sessionName}">
-	        <span class="user-name">${sessionName}님</span>
-	        &nbsp;
-	        <a href="javascript:goPage('memberLogout')">Logout</a>
-	    </c:if>
-	    <c:if test="${empty sessionName}">
-	        <a href="Member" onclick="openLoginModal(); return false;">Login</a>
-	        &nbsp;
-	        <a href="javascript:goPage('join')">Join</a>
-	    </c:if>
-		</div>
+            <c:if test="${not empty sessionName}">
+                <span class="user-name">${sessionName}님</span>
+                &nbsp;
+                <a href="javascript:goPage('memberLogout')">Logout</a>
+            </c:if>
+            <c:if test="${empty sessionName}">
+                <a href="Member" onclick="openLoginModal(); return false;">Login</a>
+                &nbsp;
+                <a href="javascript:goPage('join')">Join</a>
+            </c:if>
+        </div>
     </header>
     
     <div class="sidebar-container">
         <div class="search-container">
-            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}"  onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
+            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}" onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
             &nbsp;
             <button type="button" class="search-button" onclick="goSearch()">🔍</button>
         </div>
@@ -89,7 +89,7 @@
                 <li><a href="Recommend">▶ &nbsp;장소 신청하기</a></li>
             </ul>
         </div>
-		</c:if>
+        </c:if>
 
         <div class="footer">
             <address class="address">
@@ -104,22 +104,40 @@
     <!-- 메인 지도 영역 -->
     <div class="main-container">
         <div id="map"></div>
+        
+        <!-- 지도 상단 카테고리 범례 (Legend) -->
+        <div class="map-legend">
+            <div class="legend-item">
+                <span class="legend-dot" style="background: #e03131;"></span>
+                <span>음식</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot" style="background: #1971c2;"></span>
+                <span>관광</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot" style="background: #2f9e44;"></span>
+                <span>숙소</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot" style="background: #f59f00;"></span>
+                <span>마츠리/하나비</span>
+            </div>
+        </div>
     </div>
     
-    <!-- 모달 어두운 배경 오버레이 -->
+    <!-- 모달 오버레이 & 컨테이너 -->
     <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
-
-    <!-- 로그인 전용 모달 컨테이너 -->
     <div id="modal-card" class="modal-card"></div>
 
     <form name="work">
         <input type="hidden" name="t_gubun">
         <input type="hidden" name="t_nowPage">
+        <input type="hidden" name="t_no">
     </form>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB85lO0bCRzB3RXAGD1UTS7NK2VQLg8DeI&callback=initMap" async defer></script>
     <script type="text/javascript">
-        // 페이지 이동 함수
         function goPage(gubun) {
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
@@ -127,9 +145,15 @@
             document.work.submit();
         }
 
-     // ==========================================
-        // 1. 지역 및 카테고리 목록 열고 닫기 (화살표 전용)
-        // ==========================================
+        function goView(no) {
+            document.work.t_gubun.value = "view";
+            document.work.t_no.value = no;
+            document.work.method = "post";
+            document.work.action = "Recommend";
+            document.work.submit();
+        }
+
+        // 1. 지역 및 카테고리 토글
         function RegionList() {
             const subList = document.getElementById('sub-region-list');
             const arrow = document.querySelector('.regionArrow');
@@ -170,9 +194,7 @@
             }
         }
 
-        // ==========================================
-        // 2. 지역별 필터 로직
-        // ==========================================
+        // 2. 지역별 필터
         const checkAll = document.getElementById('region-check-all');
         const regionChecks = document.querySelectorAll('.region-check');
 
@@ -190,9 +212,7 @@
             });
         });
 
-        // ==========================================
-        // 3. 카테고리별 필터 로직
-        // ==========================================
+        // 3. 카테고리별 필터
         const categoryCheckAll = document.getElementById('category-check-all');
         const foodCheckAll = document.querySelector('.food-check-all');
         const foodChecks = document.querySelectorAll('.food-check');
@@ -231,7 +251,6 @@
 
         function checkCategoryAllState() {
             if (!categoryCheckAll) return;
-            
             const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
             const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
             const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
@@ -239,9 +258,7 @@
             categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
         }
 
-        // ==========================================
-        // 4. 구글 맵 초기화 함수
-        // ==========================================
+        // 4. 구글 맵 초기화 및 SVG 마커 생성
         function initMap() {
             const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
             const mapElement = document.getElementById('map');
@@ -251,26 +268,64 @@
             const map = new google.maps.Map(mapElement, {
                 zoom: 10, 
                 center: centerLatLng,
-                mapTypeControl: false 
+                disableDefaultUI: true
             });
 
+            // 기본 핀 모양 SVG 데이터 정의
+            const pinSymbol = {
+                path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+                fillOpacity: 1,
+                scale: 1.5,
+                strokeColor: "#ffffff",
+                strokeWeight: 1.5,
+                anchor: new google.maps.Point(12, 22)
+            };
+
+            // 카테고리별 색상 매핑
+            const categoryColors = {
+                'food': '#e03131',      // 빨강: 음식
+                'sights': '#1971c2',     // 파랑: 관광
+                'stay': '#2f9e44',       // 초록: 숙소
+                'festival': '#f59f00'    // 노랑: 마츠리/하나비
+            };
+            const defaultColor = '#7048e8'; // 보라: 기타/기본
+
+            // DB 목록 객체 변환
             const locations = [
-                { title: "도쿄 (Tokyo)", lat: 35.681317002098005, lng: 139.7663684224545 },
-                { title: "사이타마 (Saitama)", lat: 35.86190692619087, lng: 139.6453769889718 },
-                { title: "치바 (Chiba)", lat: 35.6074, lng: 140.1063 },
-                { title: "가나가와 (Kanagawa)", lat: 35.4478, lng: 139.6425 }
+                <c:forEach items="${dtos}" var="dto" varStatus="status">
+                    { 
+                        no: "${dto.getNo()}",
+                        title: "${dto.getTitle()}", 
+                        category: "${dto.getCategory()}",
+                        lat: parseFloat("${dto.getLat()}"), 
+                        lng: parseFloat("${dto.getLng()}") 
+                    }${!status.last ? ',' : ''}
+                </c:forEach>
             ];
 
+            // 마커 동적 생성
             locations.forEach(loc => {
-                new google.maps.Marker({
-                    position: { lat: loc.lat, lng: loc.lng },
-                    map: map,
-                    title: loc.title
-                });
+                if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
+                    const color = categoryColors[loc.category] || defaultColor;
+
+                    const marker = new google.maps.Marker({
+                        position: { lat: loc.lat, lng: loc.lng },
+                        map: map,
+                        title: loc.title,
+                        icon: {
+                            ...pinSymbol,
+                            fillColor: color
+                        }
+                    });
+
+                    marker.addListener('click', function() {
+                        goView(loc.no);
+                    });
+                }
             });
         }
 
-     // 로그인 전용 비동기(Fetch) 모달 로직
+        // 로그인 모달 제어
         function openLoginModal(isPopState = false) {
             const overlay = document.getElementById('modal-overlay');
             const modalCard = document.getElementById('modal-card');
@@ -287,13 +342,9 @@
                     overlay.style.display = 'block';
                     modalCard.style.display = 'block';
                     
-                    // [추가] 모달이 화면에 출력된 후 아이디 입력창에 자동 포커스
                     const loginInput = document.getElementById('login-id');
-                    if (loginInput) {
-                        loginInput.focus();
-                    }
+                    if (loginInput) loginInput.focus();
 
-                    // 주소창에는 파라미터 없이 깔끔하게 'Member'만 노출
                     if (!isPopState) {
                         history.pushState({ modal: 'login' }, "", "Member");
                     }
@@ -308,42 +359,38 @@
             if (overlay) overlay.style.display = 'none';
             if (modalCard) modalCard.style.display = 'none';
             
-            // 모달을 닫으면 메인 주소인 Index로 복귀
             if (!isPopState) {
                 history.pushState(null, "", "Index");
             }
         }
 
-        // 뒤로가기/앞으로가기 및 초기 로드 처리
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            
             if (urlParams.get('login') === 'true') {
                 openLoginModal();
             }
         });
 
-        // ESC 키 닫기
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
         
         function goLogin() {
-    	    if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
-    	    if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
-    	    mem.t_gubun.value = "memberLogin";
-    	    mem.method = "post";
-    	    mem.action = "Member";
-    	    mem.submit();
-    	}
+            if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
+            if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
+            mem.t_gubun.value = "memberLogin";
+            mem.method = "post";
+            mem.action = "Member";
+            mem.submit();
+        }
         
         function goSearch() {
-	        document.work.t_nowPage.value = "1";
-	        document.work.t_gubun.value = "list";
-	        document.work.action = "Recommend";
-	        document.work.method = "post";
-	        document.work.submit();
-	    }
+            document.work.t_nowPage.value = "1";
+            document.work.t_gubun.value = "list";
+            document.work.action = "Recommend";
+            document.work.method = "post";
+            document.work.submit();
+        }
     </script>
 </body>
 </html>

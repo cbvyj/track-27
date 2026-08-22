@@ -467,19 +467,36 @@ label {
     flex: 1;
     white-space: nowrap;
     box-sizing: border-box;
+    
 }
 
 .pw-modal-btn-confirm {
     padding: 10px 24px;
     font-size: 14px;
+    background-color: #555;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.pw-modal-btn-confirm:hover {
+    background-color: #222;
 }
 
 .pw-modal-btn-cancel {
     padding: 10px 24px;
     font-size: 14px;
-    background: #e0e0e0;
-    color: #333;
+    background-color: #e0e0e0;
+    color: #333333;
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.pw-modal-btn-cancel:hover {
+    background-color: #d0d0d0;
 }

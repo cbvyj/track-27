@@ -90,13 +90,13 @@ public class RecommendDao {
 	        ps = new LogPreparedStatement(con, sql);
 	        
 	        ps.setString(1, dto.getNo());
-	        ps.setNString(2, dto.getTitle());       
+	        ps.setString(2, dto.getTitle());       
 	        ps.setString(3, dto.getCategory());
 	        ps.setString(4, dto.getSub_category());
 	        ps.setString(5, dto.getTags());
 	        ps.setString(6, dto.getRegion());
 	        ps.setString(7, dto.getLink());
-	        ps.setNString(8, dto.getContent());     
+	        ps.setString(8, dto.getContent());     
 	        ps.setString(9, dto.getAttach());      
 	        ps.setString(10, dto.getSecret());
 	        ps.setString(11, dto.getState());
@@ -235,62 +235,142 @@ public class RecommendDao {
 	    return count;
 	}
 
-	//게시글 상세정보
+	// 게시글 상세정보
 	public RecommendDto recommendView(String no) {
-		RecommendDto dto = null;
-		String sql="select r.no, r.title, r.hit, r.category, r.sub_category,  \r\n"
-				+ "        r.tags, r.region, r.link, r.content, r.attach, r.secret,  \r\n"
-				+ "        r.state, r.reg_id, r.reg_name,\r\n"
-				+ "        to_char(r.reg_date, 'yyyy-MM-dd hh24:mi:ss') as reg_date,\r\n"
-				+ "        to_char(r.update_date, 'yyyy-MM-dd hh24:mi:ss') as update_date\r\n"
-				+ "from my_최시헌_rec r, my_최시헌_member m\r\n"
-				+ "where r.reg_id = m.id\r\n"
-				+ "and r.no = ?";
-		
-		try {
-			con = DBConnection.getConnection();
-			ps = con.prepareStatement(sql);
-			ps.setString(1, no);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				String title = rs.getString("title");
-				String category = rs.getString("category");
-				String sub_category = rs.getString("sub_category");
-				String tags = rs.getString("tags");
-				if ("casual".equals(tags)) tags = "일반/캐주얼";
+	    RecommendDto dto = null;
+	    String sql = "select r.no, r.title, r.hit, r.category, r.sub_category, \r\n"
+	            + "        r.tags, r.region, r.link, r.content, r.attach, r.secret, \r\n"
+	            + "        r.state, r.reg_id, r.reg_name, r.lat, r.lng, \r\n" // r.lat, r.lng 추가
+	            + "        to_char(r.reg_date, 'yyyy-MM-dd hh24:mi:ss') as reg_date, \r\n"
+	            + "        to_char(r.update_date, 'yyyy-MM-dd hh24:mi:ss') as update_date \r\n"
+	            + "from my_최시헌_rec r, my_최시헌_member m \r\n"
+	            + "where r.reg_id = m.id \r\n"
+	            + "and r.no = ?";
+	    
+	    try {
+	        con = DBConnection.getConnection();
+	        ps = con.prepareStatement(sql);
+	        ps.setString(1, no);
+	        rs = ps.executeQuery();
+	        if(rs.next()) {
+	            String title = rs.getString("title");
+	            String category = rs.getString("category");
+	            String sub_category = rs.getString("sub_category");
+	            String tags = rs.getString("tags");
+	            if ("casual".equals(tags)) tags = "일반/캐주얼";
 	            else if ("fine_dining".equals(tags)) tags = "고급/파인다이닝";
 	            else if ("view".equals(tags)) tags = "뷰/야경/루프탑";
 	            else if ("takeout".equals(tags)) tags = "테이크아웃 전용";
 	            else if ("reservation".equals(tags)) tags = "예약필수/웨이팅";
 	            else if (tags == null) tags = "";
-				String region = rs.getString("region");
-				String link = rs.getString("link");
-				String content = rs.getString("content");
-				String attach = rs.getString("attach");
-				String secret = rs.getString("secret");
-				String state = rs.getString("state");
-				String reg_id = rs.getString("reg_id");
-				String reg_name = rs.getString("reg_name");
-				String reg_date = rs.getString("reg_date");
-				String update_date = rs.getString("update_date");
-				int hit = rs.getInt("hit");
-				
-				
-				dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, update_date, hit, 0, 0);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("recommendView() 오류: "+sql);
-		} finally{
-			DBConnection.closeDB(con, ps, rs);
-		}
-		return dto;
+	            String region = rs.getString("region");
+	            String link = rs.getString("link");
+	            String content = rs.getString("content");
+	            String attach = rs.getString("attach");
+	            String secret = rs.getString("secret");
+	            String state = rs.getString("state");
+	            String reg_id = rs.getString("reg_id");
+	            String reg_name = rs.getString("reg_name");
+	            String reg_date = rs.getString("reg_date");
+	            String update_date = rs.getString("update_date");
+	            int hit = rs.getInt("hit");
+	            double lat = rs.getDouble("lat");
+	            double lng = rs.getDouble("lng");
+	            
+	            dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, attach, secret, state, reg_id, reg_name, reg_date, update_date, hit, lat, lng);
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        System.out.println("recommendView() 오류: " + sql);
+	    } finally {
+	        DBConnection.closeDB(con, ps, rs);
+	    }
+	    return dto;
 	}
 
 	//게시글 수정
 	public int recommendUpdate(RecommendDto dto) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		String sql = "update my_최시헌_rec\r\n"
+				+ "set title= ? , \r\n"
+				+ "    category= ? ,\r\n"
+				+ "    sub_category= ? , \r\n"
+				+ "    tags= ? , \r\n"
+				+ "    region= ? , \r\n"
+				+ "    link= ? , \r\n"
+				+ "    content= ? ,\r\n"
+				+ "    secret= ? , \r\n"
+				+ "    state= ? , \r\n"
+				+ "    update_date= ? , \r\n"
+				+ "    lat = ?, \r\n"
+				+ "    lng = ? \r\n"
+				+ "where no = ? ";
+		try {
+	        con = DBConnection.getConnection();
+	        ps = new LogPreparedStatement(con, sql);
+	        
+	        ps.setString(1, dto.getTitle());       
+	        ps.setString(2, dto.getCategory());
+	        ps.setString(3, dto.getSub_category());
+	        ps.setString(4, dto.getTags());
+	        ps.setString(5, dto.getRegion());
+	        ps.setString(6, dto.getLink());
+	        ps.setString(7, dto.getContent());
+	        ps.setString(8, dto.getSecret());
+	        ps.setString(9, dto.getState());
+
+	        LocalDateTime now = LocalDateTime.now();
+	        Timestamp timestamp = Timestamp.valueOf(now);
+	        ps.setTimestamp(10, timestamp);
+	        ps.setDouble(11, dto.getLat());
+	        ps.setDouble(12, dto.getLng());
+	        ps.setString(13, dto.getNo());       
+
+	        
+	        result = ps.executeUpdate();
+	    } catch(Exception e) {
+	        System.out.println("recommendUpdate() 오류:"+ps.toString());
+	        e.printStackTrace();
+	    } finally {
+	        DBConnection.closeDB(con, ps, rs);
+	    }
+		return result;
+	}
+	
+	// 지도에 마커 생성
+	public ArrayList<RecommendDto> getMapList() {
+	    ArrayList<RecommendDto> dtos = new ArrayList<>();
+	    String sql = " select no, title, category, sub_category, tags, region, content, lat, lng "
+	               + " from my_최시헌_rec "
+	               + " where lat is not null and lng is not null and state = 'approved' "
+	               + " order by no desc ";
+
+	    try {
+	        con = DBConnection.getConnection();
+	        ps = con.prepareStatement(sql);
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            String no = rs.getString("no");
+	            String title = rs.getString("title");
+	            String category = rs.getString("category");
+	            String sub_category = rs.getString("sub_category");
+	            String tags = rs.getString("tags");
+	            String region = rs.getString("region");
+	            String content = rs.getString("content");
+	            double lat = rs.getDouble("lat");
+	            double lng = rs.getDouble("lng");
+
+	            RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, "link", content, "attach", "secret", "state", "reg_id", "reg_name", "reg_date", "update_date", 0 , lat, lng);
+	            dtos.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println("getMapList() 오류: " + sql);
+	    } finally {
+	        DBConnection.closeDB(con, ps, rs);
+	    }
+	    return dtos;
 	}
 	
 	
