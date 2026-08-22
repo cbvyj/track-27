@@ -117,44 +117,7 @@ public class RecommendDao {
 	    return result;
 	}
 
-	//게시판 목록
-	public List<RecommendDto> getRecommendList() {
-		List<RecommendDto> dtos = new ArrayList<RecommendDto>();
-		String sql = "select no, title, category, secret, state, reg_id, reg_name, \r\n"
-				+ "    to_char(reg_date, 'yyyy-MM-dd') as reg_date\r\n"
-				+ "    from my_최시헌_rec\r\n"
-				+ "    order by no desc";
-		try {
-			con = DBConnection.getConnection();
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
-			while(rs.next()) {
-				String no = rs.getString("no");
-				String title = rs.getNString("title");
-				String category = rs.getString("category");
-				if(category.equals("food")) category = "음식";
-				else if(category.equals("sights")) category = "관광";
-				else if(category.equals("festival")) category = "마츠리/하나비";
-				else if(category.equals("stay")) category = "숙소";
-				String secret = rs.getString("secret");
-				String state = rs.getString("state");
-				String reg_id = rs.getString("reg_id");
-				String reg_name = rs.getString("reg_name");
-				String reg_date = rs.getString("reg_date");
-				
-				RecommendDto dto = new RecommendDto(no, title, category, "sub_category", "tags", "region", "link",
-													"content", "attach", secret, state, reg_id, reg_name, reg_date, "update_date", 0,0,0);
-				
-				dtos.add(dto);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("getRecommendList() 오류: "+ sql);
-		} finally {
-			DBConnection.closeDB(con, ps, rs);
-		}
-		return dtos;
-	}
+
 
 	// 게시글 목록
 	public List<RecommendDto> getRecommendList(String search, int start, int end) {

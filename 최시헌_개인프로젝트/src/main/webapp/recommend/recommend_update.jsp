@@ -98,7 +98,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                        <label for="lng">위도</label>
-	                        <input type="text" id="llng" name="t_lng">
+	                        <input type="text" id="lng" name="t_lng">
 	                    </div>
 	                </div>
                 </c:if>
