@@ -240,7 +240,7 @@ public class RecommendDao {
 	    RecommendDto dto = null;
 	    String sql = "select r.no, r.title, r.hit, r.category, r.sub_category, \r\n"
 	            + "        r.tags, r.region, r.link, r.content, r.attach, r.secret, \r\n"
-	            + "        r.state, r.reg_id, r.reg_name, r.lat, r.lng, \r\n" // r.lat, r.lng 추가
+	            + "        r.state, r.reg_id, r.reg_name, r.lat, r.lng, \r\n" 
 	            + "        to_char(r.reg_date, 'yyyy-MM-dd hh24:mi:ss') as reg_date, \r\n"
 	            + "        to_char(r.update_date, 'yyyy-MM-dd hh24:mi:ss') as update_date \r\n"
 	            + "from my_최시헌_rec r, my_최시헌_member m \r\n"
@@ -341,9 +341,9 @@ public class RecommendDao {
 	public ArrayList<RecommendDto> getMapList() {
 	    ArrayList<RecommendDto> dtos = new ArrayList<>();
 	    String sql = " select no, title, category, sub_category, tags, region, content, lat, lng "
-	               + " from my_최시헌_rec "
-	               + " where lat is not null and lng is not null and state = 'approved' "
-	               + " order by no desc ";
+	                + " from my_최시헌_rec "
+	                + " where lat is not null and lng is not null and state = 'approved' "
+	                + " order by no desc ";
 
 	    try {
 	        con = DBConnection.getConnection();
@@ -352,16 +352,49 @@ public class RecommendDao {
 
 	        while (rs.next()) {
 	            String no = rs.getString("no");
-	            String title = rs.getString("title");
+	            String title = (rs.getString("title") != null) ? rs.getString("title") : "";
+	            
+	            // 1. 카테고리 변환
 	            String category = rs.getString("category");
+	            if ("food".equals(category)) category = "음식 food";
+	            else if ("sights".equals(category)) category = "관광 sights";
+	            else if ("festival".equals(category)) category = "마츠리/하나비 festival";
+	            else if ("stay".equals(category)) category = "숙소 stay";
+	            else if (category == null) category = "";
+
+	            // 2. 세부 카테고리 한글/영문 병행 변환
 	            String sub_category = rs.getString("sub_category");
+	            if (sub_category == null) sub_category = "";
+	            sub_category = sub_category.replace("restaurant", "식당 restaurant")
+	                                       .replace("izakaya", "이자카야 izakaya")
+	                                       .replace("takeout", "테이크아웃 takeout")
+	                                       .replace("bar", "카페 & 바 bar cafe");
+
+	            // 3. 태그 한글/영문 병행 변환 (복수 태그 지원)
 	            String tags = rs.getString("tags");
+	            if (tags == null) tags = "";
+	            tags = tags.replace("casual", "일반/캐주얼 casual")
+	                       .replace("fine_dining", "고급/파인다이닝 fine_dining")
+	                       .replace("view", "뷰/야경/루프탑 view")
+	                       .replace("takeout", "테이크아웃 전용 takeout")
+	                       .replace("reservation", "예약필수/웨이팅 reservation");
+
+	            // 4. 지역 한글/영문 병행 변환
 	            String region = rs.getString("region");
-	            String content = rs.getString("content");
+	            if (region == null) region = "";
+	            region = region.replace("tokyo", "도쿄 tokyo")
+	                           .replace("saitama", "사이타마 saitama")
+	                           .replace("chiba", "치바 chiba")
+	                           .replace("kanagawa", "카나가와 kanagawa");
+
+	            // 5. 본문 내용 특수문자 및 줄바꿈 안전 정제
+	            String rawContent = rs.getString("content");
+	            String content = (rawContent != null) ? rawContent.replaceAll("[\\r\\n'\"\\\\`]", " ") : "";
+
 	            double lat = rs.getDouble("lat");
 	            double lng = rs.getDouble("lng");
 
-	            RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, "link", content, "attach", "secret", "state", "reg_id", "reg_name", "reg_date", "update_date", 0 , lat, lng);
+	            RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, "link", content, "attach", "secret", "state", "reg_id", "reg_name", "reg_date", "update_date", 0, lat, lng);
 	            dtos.add(dto);
 	        }
 	    } catch (Exception e) {

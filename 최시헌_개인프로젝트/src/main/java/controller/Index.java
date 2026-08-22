@@ -32,7 +32,9 @@ public class Index extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RecommendDao dao = RecommendDao.getDao();
+		request.setCharacterEncoding("UTF-8"); 
+		
+		RecommendDao dao = RecommendDao.getDao();
         ArrayList<RecommendDto> dtos = dao.getMapList(); 
         
         request.setAttribute("dtos", dtos);

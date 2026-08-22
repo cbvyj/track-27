@@ -112,11 +112,11 @@
                 <span>음식</span>
             </div>
             <div class="legend-item">
-                <span class="legend-dot" style="background: #1971c2;"></span>
+                <span class="legend-dot" style="background: #7048e8;"></span>
                 <span>관광</span>
             </div>
             <div class="legend-item">
-                <span class="legend-dot" style="background: #2f9e44;"></span>
+                <span class="legend-dot" style="background: #00b8d4;"></span>
                 <span>숙소</span>
             </div>
             <div class="legend-item">
@@ -138,260 +138,299 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB85lO0bCRzB3RXAGD1UTS7NK2VQLg8DeI&callback=initMap" async defer></script>
     
-    <script type="text/javascript">
-        function goPage(gubun) {
-            document.work.t_gubun.value = gubun;
-            document.work.method = "post";
-            document.work.action = "Member";
-            document.work.submit();
+	<script type="text/javascript">
+    function goPage(gubun) {
+        document.work.t_gubun.value = gubun;
+        document.work.method = "post";
+        document.work.action = "Member";
+        document.work.submit();
+    }
+
+    function goView(no) {
+        document.work.t_gubun.value = "view";
+        document.work.t_no.value = no;
+        document.work.method = "post";
+        document.work.action = "Recommend";
+        document.work.submit();
+    }
+
+    // 1. 지역 및 카테고리 토글
+    function RegionList() {
+        const subList = document.getElementById('sub-region-list');
+        const arrow = document.querySelector('.regionArrow');
+        if (subList && arrow) {
+            subList.classList.toggle('open');
+            arrow.classList.toggle('open');
         }
+    }
 
-        function goView(no) {
-            document.work.t_gubun.value = "view";
-            document.work.t_no.value = no;
-            document.work.method = "post";
-            document.work.action = "Recommend";
-            document.work.submit();
-        }
+    function CategoryList() {
+        const subList = document.getElementById('sub-category-list');
+        const arrow = document.querySelector('.categoryArrow');
+        const subFoodList = document.getElementById('sub-food-list');
+        const foodArrow = document.querySelector('.foodArrow');
 
-        // 1. 지역 및 카테고리 토글
-        function RegionList() {
-            const subList = document.getElementById('sub-region-list');
-            const arrow = document.querySelector('.regionArrow');
-            if (subList && arrow) {
-                subList.classList.toggle('open');
-                arrow.classList.toggle('open');
-            }
-        }
+        if (subList && arrow) {
+            const isOpen = subList.classList.toggle('open');
+            arrow.classList.toggle('open');
 
-        function CategoryList() {
-            const subList = document.getElementById('sub-category-list');
-            const arrow = document.querySelector('.categoryArrow');
-            const subFoodList = document.getElementById('sub-food-list');
-            const foodArrow = document.querySelector('.foodArrow');
-
-            if (subList && arrow) {
-                const isOpen = subList.classList.toggle('open');
-                arrow.classList.toggle('open');
-
-                if (subFoodList && foodArrow) {
-                    if (isOpen) {
-                        subFoodList.classList.add('open');
-                        foodArrow.classList.add('open');
-                    } else {
-                        subFoodList.classList.remove('open');
-                        foodArrow.classList.remove('open');
-                    }
+            if (subFoodList && foodArrow) {
+                if (isOpen) {
+                    subFoodList.classList.add('open');
+                    foodArrow.classList.add('open');
+                } else {
+                    subFoodList.classList.remove('open');
+                    foodArrow.classList.remove('open');
                 }
             }
         }
+    }
 
-        function FoodList() {
-            const subFoodList = document.getElementById('sub-food-list');
-            const arrow = document.querySelector('.foodArrow');
-            if (subFoodList && arrow) {
-                subFoodList.classList.toggle('open');
-                arrow.classList.toggle('open');
-            }
+    function FoodList() {
+        const subFoodList = document.getElementById('sub-food-list');
+        const arrow = document.querySelector('.foodArrow');
+        if (subFoodList && arrow) {
+            subFoodList.classList.toggle('open');
+            arrow.classList.toggle('open');
         }
+    }
 
-        // 2. 지역별 필터
-        const checkAll = document.getElementById('region-check-all');
-        const regionChecks = document.querySelectorAll('.region-check');
+    // 2. 지역별 필터
+    const checkAll = document.getElementById('region-check-all');
+    const regionChecks = document.querySelectorAll('.region-check');
 
-        if (checkAll) {
-            checkAll.addEventListener('change', function(e) {
-                regionChecks.forEach(cb => cb.checked = e.target.checked);
-            });
-        }
+    if (checkAll) {
+        checkAll.addEventListener('change', function(e) {
+            regionChecks.forEach(cb => cb.checked = e.target.checked);
+        });
+    }
 
-        regionChecks.forEach(cb => {
-            cb.addEventListener('change', function() {
-                const totalCount = regionChecks.length;
-                const checkedCount = document.querySelectorAll('.region-check:checked').length;
-                if (checkAll) checkAll.checked = (totalCount === checkedCount);
-            });
+    regionChecks.forEach(cb => {
+        cb.addEventListener('change', function() {
+            const totalCount = regionChecks.length;
+            const checkedCount = document.querySelectorAll('.region-check:checked').length;
+            if (checkAll) checkAll.checked = (totalCount === checkedCount);
+        });
+    });
+
+    // 3. 카테고리별 필터
+    const categoryCheckAll = document.getElementById('category-check-all');
+    const foodCheckAll = document.querySelector('.food-check-all');
+    const foodChecks = document.querySelectorAll('.food-check');
+    const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+
+    if (categoryCheckAll) {
+        categoryCheckAll.addEventListener('change', function() {
+            const isChecked = categoryCheckAll.checked;
+            if (foodCheckAll) foodCheckAll.checked = isChecked;
+            foodChecks.forEach(cb => cb.checked = isChecked);
+            otherCategoryChecks.forEach(cb => cb.checked = isChecked);
+        });
+    }
+
+    if (foodCheckAll) {
+        foodCheckAll.addEventListener('change', function() {
+            const isChecked = foodCheckAll.checked;
+            foodChecks.forEach(cb => cb.checked = isChecked);
+            checkCategoryAllState();
+        });
+    }
+
+    foodChecks.forEach(cb => {
+        cb.addEventListener('change', function() {
+            const checkedCount = document.querySelectorAll('.food-check:checked').length;
+            if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
+            checkCategoryAllState();
+        });
+    });
+
+    otherCategoryChecks.forEach(cb => {
+        cb.addEventListener('change', function() {
+            checkCategoryAllState();
+        });
+    });
+
+    function checkCategoryAllState() {
+        if (!categoryCheckAll) return;
+        const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
+        const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
+        const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
+
+        categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
+    }
+
+    // 4. 구글 맵 초기화 및 SVG 마커 생성
+    let allMarkers = [];
+
+    function initMap() {
+        const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
+        const mapElement = document.getElementById('map');
+        
+        if (!mapElement) return;
+
+        const map = new google.maps.Map(mapElement, {
+            zoom: 10, 
+            center: centerLatLng,
+            disableDefaultUI: true
         });
 
-        // 3. 카테고리별 필터
-        const categoryCheckAll = document.getElementById('category-check-all');
-        const foodCheckAll = document.querySelector('.food-check-all');
-        const foodChecks = document.querySelectorAll('.food-check');
-        const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+     // 1. 마커 스케일 및 테두리 선 두께 강화 (배경 분리 효과)
+        const pinSymbol = {
+            path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+            fillOpacity: 1,
+            scale: 1.5,
+            strokeColor: "#000000", 
+            strokeWeight: 1.5,   
+            anchor: new google.maps.Point(12, 22)
+        };
 
-        if (categoryCheckAll) {
-            categoryCheckAll.addEventListener('change', function() {
-                const isChecked = categoryCheckAll.checked;
-                if (foodCheckAll) foodCheckAll.checked = isChecked;
-                foodChecks.forEach(cb => cb.checked = isChecked);
-                otherCategoryChecks.forEach(cb => cb.checked = isChecked);
-            });
-        }
+        const categoryColors = {
+            'food': '#e03131',      
+            'sights': '#7048e8',   
+            'stay': '#00b8d4',      
+            'festival': '#f59f00'  
+        };
+        const defaultColor = '#495057';
 
-        if (foodCheckAll) {
-            foodCheckAll.addEventListener('change', function() {
-                const isChecked = foodCheckAll.checked;
-                foodChecks.forEach(cb => cb.checked = isChecked);
-                checkCategoryAllState();
-            });
-        }
+        const locations = [
+            <c:forEach items="${dtos}" var="dto" varStatus="status">
+                { 
+                    no: "${dto.getNo()}",
+                    title: "${dto.getTitle()}", 
+                    category: "${dto.getCategory()}",
+                    subCategory: "${dto.getSub_category()}",
+                    tags: "${dto.getTags()}",
+                    region: "${dto.getRegion()}",
+                    content: "${dto.getContent()}",
+                    lat: parseFloat("${dto.getLat()}"), 
+                    lng: parseFloat("${dto.getLng()}") 
+                }${!status.last ? ',' : ''}
+            </c:forEach>
+        ];
 
-        foodChecks.forEach(cb => {
-            cb.addEventListener('change', function() {
-                const checkedCount = document.querySelectorAll('.food-check:checked').length;
-                if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
-                checkCategoryAllState();
-            });
-        });
+        allMarkers = [];
 
-        otherCategoryChecks.forEach(cb => {
-            cb.addEventListener('change', function() {
-                checkCategoryAllState();
-            });
-        });
-
-        function checkCategoryAllState() {
-            if (!categoryCheckAll) return;
-            const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
-            const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
-            const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
-
-            categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
-        }
-
-        // 4. 구글 맵 초기화 및 SVG 마커 생성
-        function initMap() {
-            const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
-            const mapElement = document.getElementById('map');
-            
-            if (!mapElement) return;
-
-            const map = new google.maps.Map(mapElement, {
-                zoom: 10, 
-                center: centerLatLng,
-                disableDefaultUI: true
-            });
-
-            // 기본 핀 모양 SVG 데이터 정의
-            const pinSymbol = {
-                path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
-                fillOpacity: 1,
-                scale: 1.5,
-                strokeColor: "#ffffff",
-                strokeWeight: 1.5,
-                anchor: new google.maps.Point(12, 22)
-            };
-
-            // 카테고리별 색상 매핑
-            const categoryColors = {
-                'food': '#e03131',      // 빨강: 음식
-                'sights': '#1971c2',     // 파랑: 관광
-                'stay': '#2f9e44',       // 초록: 숙소
-                'festival': '#f59f00'    // 노랑: 마츠리/하나비
-            };
-            const defaultColor = '#7048e8'; // 보라: 기타/기본
-
-            // DB 목록 객체 변환
-            const locations = [
-                <c:forEach items="${dtos}" var="dto" varStatus="status">
-                    { 
-                        no: "${dto.getNo()}",
-                        title: "${dto.getTitle()}", 
-                        category: "${dto.getCategory()}",
-                        lat: parseFloat("${dto.getLat()}"), 
-                        lng: parseFloat("${dto.getLng()}") 
-                    }${!status.last ? ',' : ''}
-                </c:forEach>
-            ];
-
-            // 마커 동적 생성
-            locations.forEach(loc => {
-                if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
-                    const color = categoryColors[loc.category] || defaultColor;
-
-                    const marker = new google.maps.Marker({
-                        position: { lat: loc.lat, lng: loc.lng },
-                        map: map,
-                        title: loc.title,
-                        icon: {
-                            ...pinSymbol,
-                            fillColor: color
+        locations.forEach(loc => {
+            if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
+                
+                // 카테고리 색상 결정 (키워드 부분 일치 검사)
+                let color = defaultColor;
+                if (loc.category) {
+                    const lowerCat = loc.category.toLowerCase();
+                    for (const key in categoryColors) {
+                        if (lowerCat.includes(key)) {
+                            color = categoryColors[key];
+                            break;
                         }
-                    });
-
-                    marker.addListener('click', function() {
-                        goView(loc.no);
-                    });
-                }
-            });
-        }
-
-        // 로그인 모달 제어
-        function openLoginModal(isPopState = false) {
-            const overlay = document.getElementById('modal-overlay');
-            const modalCard = document.getElementById('modal-card');
-
-            if (!overlay || !modalCard) return;
-
-            fetch('Member?ajax=true&t_gubun=login')
-                .then(response => {
-                    if (!response.ok) throw new Error('페이지를 불러오지 못했습니다.');
-                    return response.text();
-                })
-                .then(html => {
-                    modalCard.innerHTML = html;
-                    overlay.style.display = 'block';
-                    modalCard.style.display = 'block';
-                    
-                    const loginInput = document.getElementById('login-id');
-                    if (loginInput) loginInput.focus();
-
-                    if (!isPopState) {
-                        history.pushState({ modal: 'login' }, "", "Member");
                     }
-                })
-                .catch(error => console.error('Error loading modal:', error));
-        }
+                }
 
-        function closeModal(isPopState = false) {
-            const overlay = document.getElementById('modal-overlay');
-            const modalCard = document.getElementById('modal-card');
+                const marker = new google.maps.Marker({
+                    position: { lat: loc.lat, lng: loc.lng },
+                    map: map,
+                    title: loc.title,
+                    icon: {
+                        ...pinSymbol,
+                        fillColor: color
+                    }
+                });
 
-            if (overlay) overlay.style.display = 'none';
-            if (modalCard) modalCard.style.display = 'none';
-            
-            if (!isPopState) {
-                history.pushState(null, "", "Index");
-            }
-        }
+                // 통합 검색용 텍스트 데이터 바인딩 (제목, 카테고리, 태그, 지역, 내용 전체 결합)
+                marker.searchData = [
+                    loc.title,
+                    loc.category,
+                    loc.subCategory,
+                    loc.tags,
+                    loc.region,
+                    loc.content
+                ].join(' ').toLowerCase();
 
-        window.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('login') === 'true') {
-                openLoginModal();
+                marker.addListener('click', function() {
+                    goView(loc.no);
+                });
+
+                allMarkers.push(marker);
             }
         });
+    }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
+    // 로그인 모달 제어
+    function openLoginModal(isPopState = false) {
+        const overlay = document.getElementById('modal-overlay');
+        const modalCard = document.getElementById('modal-card');
+
+        if (!overlay || !modalCard) return;
+
+        fetch('Member?ajax=true&t_gubun=login')
+            .then(response => {
+                if (!response.ok) throw new Error('페이지를 불러오지 못했습니다.');
+                return response.text();
+            })
+            .then(html => {
+                modalCard.innerHTML = html;
+                overlay.style.display = 'block';
+                modalCard.style.display = 'block';
+                
+                const loginInput = document.getElementById('login-id');
+                if (loginInput) loginInput.focus();
+
+                if (!isPopState) {
+                    history.pushState({ modal: 'login' }, "", "Member");
+                }
+            })
+            .catch(error => console.error('Error loading modal:', error));
+    }
+
+    function closeModal(isPopState = false) {
+        const overlay = document.getElementById('modal-overlay');
+        const modalCard = document.getElementById('modal-card');
+
+        if (overlay) overlay.style.display = 'none';
+        if (modalCard) modalCard.style.display = 'none';
+        
+        if (!isPopState) {
+            history.pushState(null, "", "Index");
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('login') === 'true') {
+            openLoginModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+    
+    function goLogin() {
+        if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
+        if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
+        mem.t_gubun.value = "memberLogin";
+        mem.method = "post";
+        mem.action = "Member";
+        mem.submit();
+    }
+    
+    // 클라이언트 통합 검색 함수
+    function goSearch() {
+        const searchInput = document.querySelector('input[name="t_search"]');
+        const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+        allMarkers.forEach(marker => {
+            if (keyword === "") {
+                marker.setVisible(true);
+                return;
+            }
+
+            if (marker.searchData && marker.searchData.includes(keyword)) {
+                marker.setVisible(true);
+            } else {
+                marker.setVisible(false);
+            }
         });
-        
-        function goLogin() {
-            if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
-            if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
-            mem.t_gubun.value = "memberLogin";
-            mem.method = "post";
-            mem.action = "Member";
-            mem.submit();
-        }
-        
-        function goSearch() {
-            document.work.t_nowPage.value = "1";
-            document.work.t_gubun.value = "list";
-            document.work.action = "Recommend";
-            document.work.method = "post";
-            document.work.submit();
-        }
-    </script>
+    }
+</script>
 </body>
 </html>

@@ -18,7 +18,7 @@ public class RecommendList implements CommonExecute {
 		
 		/* paging 설정 start*/
 		int totalCount = dao.getTotalCount(search);
-		int list_setup_count = 5;  //한페이지당 출력 행수 
+		int list_setup_count = 10;  //한페이지당 출력 행수 
 		int pageNumber_count = 5;  //한페이지당 출력 페이지 갯수
 		
 		String nowPage = request.getParameter("t_nowPage");
