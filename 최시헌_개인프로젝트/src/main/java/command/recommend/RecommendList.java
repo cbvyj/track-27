@@ -46,7 +46,7 @@ public class RecommendList implements CommonExecute {
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("order", order);
 		request.setAttribute("pageDisplay", pageDisplay);
-
+		request.setAttribute("t_nowPage", current_page);
 		
 	}
 

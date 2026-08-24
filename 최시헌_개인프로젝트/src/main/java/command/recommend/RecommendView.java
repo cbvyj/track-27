@@ -15,16 +15,18 @@ public class RecommendView implements CommonExecute {
 		String no = request.getParameter("t_no");
 		String gubun = request.getParameter("t_gubun"); 
 		
+		String nowPage = request.getParameter("t_nowPage");
+		if(nowPage == null || nowPage.equals("")) {
+			nowPage = "1";
+		}
+		
 		if(gubun.equals("view")) {
 			int result = dao.setRecHit(no);
 			if(result != 1) System.out.println("조회수 증가오류");
-			
 		}
 		
 		RecommendDto dto = dao.recommendView(no);
 		request.setAttribute("dto", dto);
-		
+		request.setAttribute("t_nowPage", nowPage);
 	}
-
 }
-

@@ -148,6 +148,17 @@
 	    function goView(no) {
 	        document.work.t_gubun.value = "view";
 	        document.work.t_no.value = no;
+	        
+	        // ✨ 지도의 마커를 통해 상세보기로 접근했음을 알리는 파라미터 생성/전달
+	        let fromInput = document.work.querySelector('input[name="t_from"]');
+	        if (!fromInput) {
+	            fromInput = document.createElement('input');
+	            fromInput.type = 'hidden';
+	            fromInput.name = 't_from';
+	            document.work.appendChild(fromInput);
+	        }
+	        fromInput.value = "map";
+
 	        document.work.method = "post";
 	        document.work.action = "Recommend";
 	        document.work.submit();

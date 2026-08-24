@@ -180,7 +180,7 @@
             <!-- 5. 하단 버튼 영역 (작성자/관리자 권한 처리용) -->
 			<div class="btn-group-view">
 			    <div class="btn-left">
-			        <a href="javascript:goRec('list')" class="btn-cancel">목록으로</a>
+			        <a href="javascript:goRecList()" class="btn-cancel">목록으로</a>
 			    </div>
 			    
 			    <div class="btn-right">
@@ -210,7 +210,20 @@
     </div>
 </div>
 
+<form name="view">
+    <input type="hidden" name="t_gubun">
+    <input type="hidden" name="t_nowPage" value="${t_nowPage}">
+</form>
+
 <script type="text/javascript">
+	function goRecList() {
+	    view.t_nowPage.value = "${t_nowPage}";
+	    view.t_gubun.value = "list";
+	    view.action = "Recommend";
+	    view.method = "post";
+	    view.submit();
+	}
+    
     function goUpdateForm(no) {
         document.work.t_no.value = no;             
         document.work.t_gubun.value = "updateForm";

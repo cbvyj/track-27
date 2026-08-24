@@ -40,7 +40,6 @@
         }
         
         function goRec(gubun) {
-            document.work.t_nowPage.value = "1";
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
             document.work.action = "Recommend"; 

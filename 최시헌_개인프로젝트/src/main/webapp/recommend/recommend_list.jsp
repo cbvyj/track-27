@@ -7,6 +7,7 @@
     function goView(no){
         view.t_gubun.value = "view";
         view.t_no.value = no;
+        view.t_nowPage.value = "${t_nowPage}";
         view.method = "post";
         view.action = "Recommend";
         view.submit();
@@ -107,6 +108,7 @@
 <form name="view">
     <input type="hidden" name="t_gubun">
     <input type="hidden" name="t_no">
+    <input type="hidden" name="t_nowPage">
 </form>
 
 <div class="main-container">
