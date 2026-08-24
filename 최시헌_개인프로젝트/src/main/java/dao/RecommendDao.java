@@ -366,9 +366,9 @@ public class RecommendDao {
 	            String sub_category = rs.getString("sub_category");
 	            if (sub_category == null) sub_category = "";
 	            sub_category = sub_category.replace("restaurant", "식당 restaurant")
-	                                       .replace("izakaya", "이자카야 izakaya")
-	                                       .replace("takeout", "테이크아웃 takeout")
-	                                       .replace("bar", "카페 & 바 bar cafe");
+	                                       .replace("izakaya", "이자카야 / 주점 izakaya")
+	                                       .replace("cafe", "카페 / 디저트 / 베이커리 cafe")
+	                                       .replace("bar", "바 / 펍 / 라운지 bar");
 
 	            // 3. 태그 한글/영문 병행 변환 (복수 태그 지원)
 	            String tags = rs.getString("tags");

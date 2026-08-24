@@ -11,29 +11,28 @@
 </head>
 <body>
     <form name="work" action="Member" method="post">
-    	<input type="hidden" name="t_gubun">
-		<input type="hidden" name="t_nowPage">
-		<input type="hidden" name="t_no">
-		
-
+        <input type="hidden" name="t_gubun">
+        <input type="hidden" name="t_nowPage">
+        <input type="hidden" name="t_no">
+        
     <script type="text/javascript">
-	    function goSearch() {
-	        document.work.t_nowPage.value = "1";
-	        document.work.t_gubun.value = "list";
-	        document.work.action = "Recommend";
-	        document.work.method = "post";
-	        document.work.submit();
-	    }        
+        function goSearch() {
+            document.work.t_nowPage.value = "1";
+            document.work.t_gubun.value = "list";
+            document.work.action = "Recommend";
+            document.work.method = "post";
+            document.work.submit();
+        }        
     
-	    function goListPage(page) {
+        function goListPage(page) {
             document.work.t_nowPage.value = page;
             document.work.t_gubun.value = "list"; 
             document.work.action = "Recommend"; 
             document.work.method = "post";
             document.work.submit();
         }
-	    
-    	function goPage(gubun) {
+        
+        function goPage(gubun) {
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
             document.work.action = "Member";
@@ -41,7 +40,7 @@
         }
         
         function goRec(gubun) {
-        	document.work.t_nowPage.value = "1";
+            document.work.t_nowPage.value = "1";
             document.work.t_gubun.value = gubun;
             document.work.method = "post";
             document.work.action = "Recommend"; 
@@ -74,9 +73,7 @@
                     modalCard.style.display = 'block';
                     
                     const loginInput = document.getElementById('login-id');
-                    if (loginInput) {
-                        loginInput.focus();
-                    }
+                    if (loginInput) loginInput.focus();
 
                     if (!isPopState) {
                         history.pushState({ modal: 'login' }, "", "Member");
@@ -137,6 +134,21 @@
             }
         }
 
+        // 체크박스 클릭 시 선택한 파라미터와 함께 Index 페이지로 이동
+        function redirectToIndex() {
+            const selectedRegions = Array.from(document.querySelectorAll('.region-check:checked')).map(cb => cb.value);
+            const selectedFood = Array.from(document.querySelectorAll('.food-check:checked')).map(cb => cb.value);
+            const selectedOther = Array.from(document.querySelectorAll('.category-check:not(.food-check-all):checked')).map(cb => cb.value);
+
+            const allCategories = [...selectedFood, ...selectedOther];
+
+            const params = new URLSearchParams();
+            if (selectedRegions.length > 0) params.append('regions', selectedRegions.join(','));
+            if (allCategories.length > 0) params.append('categories', allCategories.join(','));
+
+            window.location.href = 'Index?' + params.toString();
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('login') === 'true') {
@@ -149,6 +161,7 @@
             if (checkAll) {
                 checkAll.addEventListener('change', function(e) {
                     regionChecks.forEach(cb => cb.checked = e.target.checked);
+                    redirectToIndex();
                 });
             }
 
@@ -157,6 +170,7 @@
                     const totalCount = regionChecks.length;
                     const checkedCount = document.querySelectorAll('.region-check:checked').length;
                     if (checkAll) checkAll.checked = (totalCount === checkedCount);
+                    redirectToIndex();
                 });
             });
 
@@ -171,6 +185,7 @@
                     if (foodCheckAll) foodCheckAll.checked = isChecked;
                     foodChecks.forEach(cb => cb.checked = isChecked);
                     otherCategoryChecks.forEach(cb => cb.checked = isChecked);
+                    redirectToIndex();
                 });
             }
 
@@ -179,6 +194,7 @@
                     const isChecked = foodCheckAll.checked;
                     foodChecks.forEach(cb => cb.checked = isChecked);
                     checkCategoryAllState();
+                    redirectToIndex();
                 });
             }
 
@@ -187,18 +203,19 @@
                     const checkedCount = document.querySelectorAll('.food-check:checked').length;
                     if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
                     checkCategoryAllState();
+                    redirectToIndex();
                 });
             });
 
             otherCategoryChecks.forEach(cb => {
                 cb.addEventListener('change', function() {
                     checkCategoryAllState();
+                    redirectToIndex();
                 });
             });
 
             function checkCategoryAllState() {
                 if (!categoryCheckAll) return;
-                
                 const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
                 const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
                 const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
@@ -234,7 +251,7 @@
     
     <div class="sidebar-container">
         <div class="search-container">
-            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}"  onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
+            <input type="text" class="search-box" name="t_search" placeholder="검색어를 입력하세요" value="${search}" onfocus="this.value=''" onkeydown="if(event.keyCode == 13){ goSearch(); return false; }">
             &nbsp;
             <button type="button" class="search-button" onclick="goSearch()">🔍</button>
         </div>
@@ -248,10 +265,10 @@
                         <label><input type="checkbox" id="region-check-all"> 전체</label>
                     </div>
                     <ul id="sub-region-list" class="sub-list">
-                        <li><label>▶ <input type="checkbox" class="region-check"> 도쿄</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 사이타마</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 치바</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 카나가와</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="도쿄"> 도쿄</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="사이타마"> 사이타마</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="치바"> 치바</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="카나가와"> 카나가와</label></li>
                     </ul>
                 </li>
             </ul>
@@ -269,17 +286,16 @@
                         <li>
                             <span class="foodArrow" onclick="FoodList()">▶</span>
                             <label><input type="checkbox" class="category-check food-check-all"> 음식</label>
-                            
-                            <ul id="sub-food-list" class="sub-list">
-                                <li><label>▶ <input type="checkbox" class="food-check"> 식당</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 이자카야</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 테이크아웃</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 카페 & 바</label></li>
-                            </ul>
+							<ul id="sub-food-list" class="sub-list">
+							    <li><label>▶ <input type="checkbox" class="food-check" value="식당"> 식당</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="이자카야"> 이자카야 / 주점</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="카페"> 카페 / 디저트 / 베이커리</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="바"> 바 / 펍 / 라운지</label></li>
+							</ul>
                         </li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 관광</label></li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 마츠리/하나비</label></li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 숙소</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="관광"> 관광</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="마츠리"> 마츠리/하나비</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="숙소"> 숙소</label></li>
                     </ul>
                 </li>
             </ul>
@@ -294,7 +310,7 @@
                 <li><a href="Recommend">▶ &nbsp;장소 신청하기</a></li>
             </ul>
         </div>
-		</c:if>
+        </c:if>
 
         <div class="footer">
             <address class="address">

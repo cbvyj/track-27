@@ -43,10 +43,10 @@
                         <label><input type="checkbox" id="region-check-all"> 전체</label>
                     </div>
                     <ul id="sub-region-list" class="sub-list">
-                        <li><label>▶ <input type="checkbox" class="region-check"> 도쿄</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 사이타마</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 치바</label></li>
-                        <li><label>▶ <input type="checkbox" class="region-check"> 카나가와</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="도쿄"> 도쿄</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="사이타마"> 사이타마</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="치바"> 치바</label></li>
+                        <li><label>▶ <input type="checkbox" class="region-check" value="카나가와"> 카나가와</label></li>
                     </ul>
                 </li>
             </ul>
@@ -64,17 +64,16 @@
                         <li>
                             <span class="foodArrow" onclick="FoodList()">▶</span>
                             <label><input type="checkbox" class="category-check food-check-all"> 음식</label>
-                            
-                            <ul id="sub-food-list" class="sub-list">
-                                <li><label>▶ <input type="checkbox" class="food-check"> 식당</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 이자카야</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 테이크아웃</label></li>
-                                <li><label>▶ <input type="checkbox" class="food-check"> 카페 & 바</label></li>
-                            </ul>
+							<ul id="sub-food-list" class="sub-list">
+							    <li><label>▶ <input type="checkbox" class="food-check" value="식당"> 식당</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="이자카야"> 이자카야 / 주점</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="카페"> 카페 / 디저트 / 베이커리</label></li>
+							    <li><label>▶ <input type="checkbox" class="food-check" value="바"> 바 / 펍 / 라운지</label></li>
+							</ul>
                         </li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 관광</label></li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 마츠리/하나비</label></li>
-                        <li><label>▶ <input type="checkbox" class="category-check"> 숙소</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="관광"> 관광</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="마츠리"> 마츠리/하나비</label></li>
+                        <li><label>▶ <input type="checkbox" class="category-check" value="숙소"> 숙소</label></li>
                     </ul>
                 </li>
             </ul>
@@ -139,298 +138,455 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB85lO0bCRzB3RXAGD1UTS7NK2VQLg8DeI&callback=initMap" async defer></script>
     
 	<script type="text/javascript">
-    function goPage(gubun) {
-        document.work.t_gubun.value = gubun;
-        document.work.method = "post";
-        document.work.action = "Member";
-        document.work.submit();
-    }
+	    function goPage(gubun) {
+	        document.work.t_gubun.value = gubun;
+	        document.work.method = "post";
+	        document.work.action = "Member";
+	        document.work.submit();
+	    }
+	
+	    function goView(no) {
+	        document.work.t_gubun.value = "view";
+	        document.work.t_no.value = no;
+	        document.work.method = "post";
+	        document.work.action = "Recommend";
+	        document.work.submit();
+	    }
+	
+	    // 1. 지역 및 카테고리 아코디언 토글
+	    function RegionList() {
+	        const subList = document.getElementById('sub-region-list');
+	        const arrow = document.querySelector('.regionArrow');
+	        if (subList && arrow) {
+	            subList.classList.toggle('open');
+	            arrow.classList.toggle('open');
+	        }
+	    }
+	
+	    function CategoryList() {
+	        const subList = document.getElementById('sub-category-list');
+	        const arrow = document.querySelector('.categoryArrow');
+	        const subFoodList = document.getElementById('sub-food-list');
+	        const foodArrow = document.querySelector('.foodArrow');
+	
+	        if (subList && arrow) {
+	            const isOpen = subList.classList.toggle('open');
+	            arrow.classList.toggle('open');
+	
+	            if (subFoodList && foodArrow) {
+	                if (isOpen) {
+	                    subFoodList.classList.add('open');
+	                    foodArrow.classList.add('open');
+	                } else {
+	                    subFoodList.classList.remove('open');
+	                    foodArrow.classList.remove('open');
+	                }
+	            }
+	        }
+	    }
+	
+	    function FoodList() {
+	        const subFoodList = document.getElementById('sub-food-list');
+	        const arrow = document.querySelector('.foodArrow');
+	        if (subFoodList && arrow) {
+	            subFoodList.classList.toggle('open');
+	            arrow.classList.toggle('open');
+	        }
+	    }
+	
+	    // 2. 상위/하위 체크박스 동기화 로직
+	    function updateRegionCheckState() {
+	        const checkAll = document.getElementById('region-check-all');
+	        const regionChecks = document.querySelectorAll('.region-check');
+	        if (checkAll && regionChecks.length > 0) {
+	            checkAll.checked = Array.from(regionChecks).every(cb => cb.checked);
+	        }
+	    }
+	
+	    function updateFoodCheckState() {
+	        const foodCheckAll = document.querySelector('.food-check-all');
+	        const foodChecks = document.querySelectorAll('.food-check');
+	        if (foodCheckAll && foodChecks.length > 0) {
+	            foodCheckAll.checked = Array.from(foodChecks).every(cb => cb.checked);
+	        }
+	    }
+	
+	    function syncParentCheckboxes() {
+	        updateFoodCheckState(); 
+	
+	        const categoryCheckAll = document.getElementById('category-check-all');
+	        const foodCheckAll = document.querySelector('.food-check-all');
+	        const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+	
+	        if (!categoryCheckAll) return;
+	
+	        const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
+	        const isOthersAllChecked = otherCategoryChecks.length > 0 && Array.from(otherCategoryChecks).every(cb => cb.checked);
+	
+	        categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
+	    }
+	
+	    // 3. 지역별 필터 이벤트 (수정됨: 전체 선택 시 아코디언 열기 추가)
+	    const checkAll = document.getElementById('region-check-all');
+	    const regionChecks = document.querySelectorAll('.region-check');
+	
+	    if (checkAll) {
+	        checkAll.addEventListener('change', function(e) {
+	            const isChecked = e.target.checked;
+	            regionChecks.forEach(cb => cb.checked = isChecked);
+	            
+	            // ✨ 전체 체크 시 아코디언 강제 오픈
+	            if (isChecked) {
+	                const subList = document.getElementById('sub-region-list');
+	                const arrow = document.querySelector('.regionArrow');
+	                if (subList) subList.classList.add('open');
+	                if (arrow) arrow.classList.add('open');
+	            }
+	            
+	            filterMarkers();
+	        });
+	    }
+	
+	    regionChecks.forEach(cb => {
+	        cb.addEventListener('change', function() {
+	            updateRegionCheckState();
+	            filterMarkers();
+	        });
+	    });
+	
+	    // 4. 카테고리별 필터 이벤트 (수정됨: 전체 선택 시 아코디언 열기 추가)
+	    const categoryCheckAll = document.getElementById('category-check-all');
+	    const foodCheckAll = document.querySelector('.food-check-all');
+	    const foodChecks = document.querySelectorAll('.food-check');
+	    const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
+	
+	    if (categoryCheckAll) {
+	        categoryCheckAll.addEventListener('change', function(e) {
+	            const isChecked = e.target.checked;
+	            if (foodCheckAll) foodCheckAll.checked = isChecked;
+	            foodChecks.forEach(cb => cb.checked = isChecked);
+	            otherCategoryChecks.forEach(cb => cb.checked = isChecked);
+	            
+	            // ✨ 카테고리 전체 체크 시 하위 아코디언 모두 강제 오픈
+	            if (isChecked) {
+	                const subCategoryList = document.getElementById('sub-category-list');
+	                const categoryArrow = document.querySelector('.categoryArrow');
+	                if (subCategoryList) subCategoryList.classList.add('open');
+	                if (categoryArrow) categoryArrow.classList.add('open');
 
-    function goView(no) {
-        document.work.t_gubun.value = "view";
-        document.work.t_no.value = no;
-        document.work.method = "post";
-        document.work.action = "Recommend";
-        document.work.submit();
-    }
+	                const subFoodList = document.getElementById('sub-food-list');
+	                const foodArrow = document.querySelector('.foodArrow');
+	                if (subFoodList) subFoodList.classList.add('open');
+	                if (foodArrow) foodArrow.classList.add('open');
+	            }
+	            
+	            filterMarkers();
+	        });
+	    }
+	
+	    if (foodCheckAll) {
+	        foodCheckAll.addEventListener('change', function(e) {
+	            const isChecked = e.target.checked;
+	            foodChecks.forEach(cb => cb.checked = isChecked);
+	            syncParentCheckboxes();
+	            
+	            // ✨ 음식 전체 체크 시 음식 하위 아코디언 강제 오픈
+	            if (isChecked) {
+	                const subFoodList = document.getElementById('sub-food-list');
+	                const foodArrow = document.querySelector('.foodArrow');
+	                if (subFoodList) subFoodList.classList.add('open');
+	                if (foodArrow) foodArrow.classList.add('open');
+	            }
+	            
+	            filterMarkers();
+	        });
+	    }
+	
+	    foodChecks.forEach(cb => {
+	        cb.addEventListener('change', function() {
+	            syncParentCheckboxes();
+	            filterMarkers();
+	        });
+	    });
+	
+	    otherCategoryChecks.forEach(cb => {
+	        cb.addEventListener('change', function() {
+	            syncParentCheckboxes();
+	            filterMarkers();
+	        });
+	    });
+	
+	    // 5. 구글 맵 초기화 및 마커 생성 (기존 유지)
+	    let allMarkers = [];
+	
+	    function initMap() {
+	        const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
+	        const mapElement = document.getElementById('map');
+	        
+	        if (!mapElement) return;
+	
+	        const map = new google.maps.Map(mapElement, {
+	            zoom: 10, 
+	            center: centerLatLng,
+	            disableDefaultUI: true
+	        });
+	
+	        const pinSymbol = {
+	            path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+	            fillOpacity: 1,
+	            scale: 1.5,
+	            strokeColor: "#000000", 
+	            strokeWeight: 1.5,   
+	            anchor: new google.maps.Point(12, 22)
+	        };
+	
+	        const categoryColors = {
+	            'food': '#e03131',      
+	            'sights': '#7048e8',   
+	            'stay': '#00b8d4',      
+	            'festival': '#f59f00'  
+	        };
+	        const defaultColor = '#495057';
+	
+	        const locations = [
+	            <c:forEach items="${dtos}" var="dto" varStatus="status">
+	                { 
+	                    no: "${dto.getNo()}",
+	                    title: `${dto.getTitle()}`.replace(/[\n\r]+/g, ' ').replace(/"/g, '\\"'), 
+	                    category: "${dto.getCategory()}",
+	                    subCategory: "${dto.getSub_category()}",
+	                    tags: "${dto.getTags()}",
+	                    region: "${dto.getRegion()}",
+	                    content: `${dto.getContent()}`.replace(/[\n\r]+/g, ' ').replace(/"/g, '\\"'),
+	                    lat: parseFloat("${dto.getLat()}"), 
+	                    lng: parseFloat("${dto.getLng()}") 
+	                }${!status.last ? ',' : ''}
+	            </c:forEach>
+	        ];
+	
+	        allMarkers = [];
+	
+	        locations.forEach(loc => {
+	            if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
+	                
+	                let color = defaultColor;
+	                if (loc.category) {
+	                    const lowerCat = loc.category.toLowerCase();
+	                    for (const key in categoryColors) {
+	                        if (lowerCat.includes(key)) {
+	                            color = categoryColors[key];
+	                            break;
+	                        }
+	                    }
+	                }
+	
+	                const marker = new google.maps.Marker({
+	                    position: { lat: loc.lat, lng: loc.lng },
+	                    map: map,
+	                    title: loc.title,
+	                    visible: true,
+	                    icon: {
+	                        ...pinSymbol,
+	                        fillColor: color
+	                    }
+	                });
+	
+	                marker.markerRegion = loc.region || "";
+	                marker.markerCategory = loc.category || "";
+	                marker.markerSubCategory = loc.subCategory || "";
+	                marker.markerTags = loc.tags || ""; 
+	                
+	                marker.searchData = [
+	                    loc.title,
+	                    loc.category,
+	                    loc.subCategory,
+	                    loc.tags,
+	                    loc.region,
+	                    loc.content
+	                ].join(' ').toLowerCase();
+	
+	                marker.addListener('click', function() {
+	                    goView(loc.no);
+	                });
+	
+	                allMarkers.push(marker);
+	            }
+	        });
+	
+	        filterMarkers();
+	    }
+	
+	 // 6. 통합 필터 및 검색 처리 함수
+	    function filterMarkers() {
+	        const searchInput = document.querySelector('input[name="t_search"]');
+	        const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
-    // 1. 지역 및 카테고리 토글
-    function RegionList() {
-        const subList = document.getElementById('sub-region-list');
-        const arrow = document.querySelector('.regionArrow');
-        if (subList && arrow) {
-            subList.classList.toggle('open');
-            arrow.classList.toggle('open');
-        }
-    }
+	        const selectedRegions = Array.from(document.querySelectorAll('.region-check:checked')).map(cb => cb.value);
+	        const selectedFoodSubs = Array.from(document.querySelectorAll('.food-check:checked')).map(cb => cb.value);
+	        const selectedOtherCats = Array.from(document.querySelectorAll('.category-check:not(.food-check-all):checked')).map(cb => cb.value);
 
-    function CategoryList() {
-        const subList = document.getElementById('sub-category-list');
-        const arrow = document.querySelector('.categoryArrow');
-        const subFoodList = document.getElementById('sub-food-list');
-        const foodArrow = document.querySelector('.foodArrow');
+	        const hasRegionFilter = selectedRegions.length > 0;
+	        const hasCategoryFilter = selectedFoodSubs.length > 0 || selectedOtherCats.length > 0;
+	        const hasKeyword = keyword.length > 0;
 
-        if (subList && arrow) {
-            const isOpen = subList.classList.toggle('open');
-            arrow.classList.toggle('open');
+	        // ✨ 핵심 변경 사항: 아무 필터 및 검색어도 없으면 모든 마커를 숨기고 함수 종료
+	        if (!hasRegionFilter && !hasCategoryFilter && !hasKeyword) {
+	            allMarkers.forEach(marker => marker.setVisible(false));
+	            return;
+	        }
 
-            if (subFoodList && foodArrow) {
-                if (isOpen) {
-                    subFoodList.classList.add('open');
-                    foodArrow.classList.add('open');
-                } else {
-                    subFoodList.classList.remove('open');
-                    foodArrow.classList.remove('open');
-                }
-            }
-        }
-    }
+	        allMarkers.forEach(marker => {
+	            let show = true;
 
-    function FoodList() {
-        const subFoodList = document.getElementById('sub-food-list');
-        const arrow = document.querySelector('.foodArrow');
-        if (subFoodList && arrow) {
-            subFoodList.classList.toggle('open');
-            arrow.classList.toggle('open');
-        }
-    }
+	            // 체크된 지역이 있을 때만 필터링 (선택이 없으면 통과)
+	            if (hasRegionFilter) {
+	                const matchRegion = selectedRegions.some(reg => marker.markerRegion.includes(reg));
+	                if (!matchRegion) show = false;
+	            }
 
-    // 2. 지역별 필터
-    const checkAll = document.getElementById('region-check-all');
-    const regionChecks = document.querySelectorAll('.region-check');
+	            // 체크된 카테고리가 있을 때만 필터링 (선택이 없으면 통과)
+	            if (hasCategoryFilter) {
+	                let matchCategory = false;
+	                
+	                if (selectedFoodSubs.length > 0 && selectedFoodSubs.some(sub => 
+	                    marker.markerSubCategory.includes(sub) || marker.markerTags.includes(sub)
+	                )) {
+	                    matchCategory = true;
+	                }
+	                
+	                if (selectedOtherCats.length > 0 && selectedOtherCats.some(cat => marker.markerCategory.includes(cat))) {
+	                    matchCategory = true;
+	                }
 
-    if (checkAll) {
-        checkAll.addEventListener('change', function(e) {
-            regionChecks.forEach(cb => cb.checked = e.target.checked);
-        });
-    }
+	                if (!matchCategory) show = false;
+	            }
 
-    regionChecks.forEach(cb => {
-        cb.addEventListener('change', function() {
-            const totalCount = regionChecks.length;
-            const checkedCount = document.querySelectorAll('.region-check:checked').length;
-            if (checkAll) checkAll.checked = (totalCount === checkedCount);
-        });
-    });
+	            if (hasKeyword) {
+	                if (!marker.searchData.includes(keyword)) {
+	                    show = false;
+	                }
+	            }
 
-    // 3. 카테고리별 필터
-    const categoryCheckAll = document.getElementById('category-check-all');
-    const foodCheckAll = document.querySelector('.food-check-all');
-    const foodChecks = document.querySelectorAll('.food-check');
-    const otherCategoryChecks = document.querySelectorAll('.category-check:not(.food-check-all)');
-
-    if (categoryCheckAll) {
-        categoryCheckAll.addEventListener('change', function() {
-            const isChecked = categoryCheckAll.checked;
-            if (foodCheckAll) foodCheckAll.checked = isChecked;
-            foodChecks.forEach(cb => cb.checked = isChecked);
-            otherCategoryChecks.forEach(cb => cb.checked = isChecked);
-        });
-    }
-
-    if (foodCheckAll) {
-        foodCheckAll.addEventListener('change', function() {
-            const isChecked = foodCheckAll.checked;
-            foodChecks.forEach(cb => cb.checked = isChecked);
-            checkCategoryAllState();
-        });
-    }
-
-    foodChecks.forEach(cb => {
-        cb.addEventListener('change', function() {
-            const checkedCount = document.querySelectorAll('.food-check:checked').length;
-            if (foodCheckAll) foodCheckAll.checked = (checkedCount === foodChecks.length);
-            checkCategoryAllState();
-        });
-    });
-
-    otherCategoryChecks.forEach(cb => {
-        cb.addEventListener('change', function() {
-            checkCategoryAllState();
-        });
-    });
-
-    function checkCategoryAllState() {
-        if (!categoryCheckAll) return;
-        const isFoodAllChecked = foodCheckAll ? foodCheckAll.checked : true;
-        const otherCheckedCount = document.querySelectorAll('.category-check:not(.food-check-all):checked').length;
-        const isOthersAllChecked = (otherCheckedCount === otherCategoryChecks.length);
-
-        categoryCheckAll.checked = isFoodAllChecked && isOthersAllChecked;
-    }
-
-    // 4. 구글 맵 초기화 및 SVG 마커 생성
-    let allMarkers = [];
-
-    function initMap() {
-        const centerLatLng = { lat: 35.6895, lng: 139.6917 }; 
-        const mapElement = document.getElementById('map');
-        
-        if (!mapElement) return;
-
-        const map = new google.maps.Map(mapElement, {
-            zoom: 10, 
-            center: centerLatLng,
-            disableDefaultUI: true
-        });
-
-     // 1. 마커 스케일 및 테두리 선 두께 강화 (배경 분리 효과)
-        const pinSymbol = {
-            path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
-            fillOpacity: 1,
-            scale: 1.5,
-            strokeColor: "#000000", 
-            strokeWeight: 1.5,   
-            anchor: new google.maps.Point(12, 22)
-        };
-
-        const categoryColors = {
-            'food': '#e03131',      
-            'sights': '#7048e8',   
-            'stay': '#00b8d4',      
-            'festival': '#f59f00'  
-        };
-        const defaultColor = '#495057';
-
-        const locations = [
-            <c:forEach items="${dtos}" var="dto" varStatus="status">
-                { 
-                    no: "${dto.getNo()}",
-                    title: "${dto.getTitle()}", 
-                    category: "${dto.getCategory()}",
-                    subCategory: "${dto.getSub_category()}",
-                    tags: "${dto.getTags()}",
-                    region: "${dto.getRegion()}",
-                    content: "${dto.getContent()}",
-                    lat: parseFloat("${dto.getLat()}"), 
-                    lng: parseFloat("${dto.getLng()}") 
-                }${!status.last ? ',' : ''}
-            </c:forEach>
-        ];
-
-        allMarkers = [];
-
-        locations.forEach(loc => {
-            if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
-                
-                // 카테고리 색상 결정 (키워드 부분 일치 검사)
-                let color = defaultColor;
-                if (loc.category) {
-                    const lowerCat = loc.category.toLowerCase();
-                    for (const key in categoryColors) {
-                        if (lowerCat.includes(key)) {
-                            color = categoryColors[key];
-                            break;
-                        }
-                    }
-                }
-
-                const marker = new google.maps.Marker({
-                    position: { lat: loc.lat, lng: loc.lng },
-                    map: map,
-                    title: loc.title,
-                    icon: {
-                        ...pinSymbol,
-                        fillColor: color
-                    }
-                });
-
-                // 통합 검색용 텍스트 데이터 바인딩 (제목, 카테고리, 태그, 지역, 내용 전체 결합)
-                marker.searchData = [
-                    loc.title,
-                    loc.category,
-                    loc.subCategory,
-                    loc.tags,
-                    loc.region,
-                    loc.content
-                ].join(' ').toLowerCase();
-
-                marker.addListener('click', function() {
-                    goView(loc.no);
-                });
-
-                allMarkers.push(marker);
-            }
-        });
-    }
-
-    // 로그인 모달 제어
-    function openLoginModal(isPopState = false) {
-        const overlay = document.getElementById('modal-overlay');
-        const modalCard = document.getElementById('modal-card');
-
-        if (!overlay || !modalCard) return;
-
-        fetch('Member?ajax=true&t_gubun=login')
-            .then(response => {
-                if (!response.ok) throw new Error('페이지를 불러오지 못했습니다.');
-                return response.text();
-            })
-            .then(html => {
-                modalCard.innerHTML = html;
-                overlay.style.display = 'block';
-                modalCard.style.display = 'block';
-                
-                const loginInput = document.getElementById('login-id');
-                if (loginInput) loginInput.focus();
-
-                if (!isPopState) {
-                    history.pushState({ modal: 'login' }, "", "Member");
-                }
-            })
-            .catch(error => console.error('Error loading modal:', error));
-    }
-
-    function closeModal(isPopState = false) {
-        const overlay = document.getElementById('modal-overlay');
-        const modalCard = document.getElementById('modal-card');
-
-        if (overlay) overlay.style.display = 'none';
-        if (modalCard) modalCard.style.display = 'none';
-        
-        if (!isPopState) {
-            history.pushState(null, "", "Index");
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('login') === 'true') {
-            openLoginModal();
-        }
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal();
-    });
-    
-    function goLogin() {
-        if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
-        if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
-        mem.t_gubun.value = "memberLogin";
-        mem.method = "post";
-        mem.action = "Member";
-        mem.submit();
-    }
-    
-    // 클라이언트 통합 검색 함수
-    function goSearch() {
-        const searchInput = document.querySelector('input[name="t_search"]');
-        const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
-
-        allMarkers.forEach(marker => {
-            if (keyword === "") {
-                marker.setVisible(true);
-                return;
-            }
-
-            if (marker.searchData && marker.searchData.includes(keyword)) {
-                marker.setVisible(true);
-            } else {
-                marker.setVisible(false);
-            }
-        });
-    }
-</script>
+	            marker.setVisible(show);
+	        });
+	    }
+	
+	    function goSearch() {
+	        filterMarkers();
+	    }
+	
+	    // 7. 로그인 모달 제어 (기존 유지)
+	    function openLoginModal(isPopState = false) {
+	        const overlay = document.getElementById('modal-overlay');
+	        const modalCard = document.getElementById('modal-card');
+	
+	        if (!overlay || !modalCard) return;
+	
+	        fetch('Member?ajax=true&t_gubun=login')
+	            .then(response => {
+	                if (!response.ok) throw new Error('페이지를 불러오지 못했습니다.');
+	                return response.text();
+	            })
+	            .then(html => {
+	                modalCard.innerHTML = html;
+	                overlay.style.display = 'block';
+	                modalCard.style.display = 'block';
+	                
+	                const loginInput = document.getElementById('login-id');
+	                if (loginInput) loginInput.focus();
+	
+	                if (!isPopState) {
+	                    history.pushState({ modal: 'login' }, "", "Member");
+	                }
+	            })
+	            .catch(error => console.error('Error loading modal:', error));
+	    }
+	
+	    function closeModal(isPopState = false) {
+	        const overlay = document.getElementById('modal-overlay');
+	        const modalCard = document.getElementById('modal-card');
+	
+	        if (overlay) overlay.style.display = 'none';
+	        if (modalCard) modalCard.style.display = 'none';
+	        
+	        if (!isPopState) {
+	            history.pushState(null, "", "Index");
+	        }
+	    }
+	
+	    // 8. DOM 로드 완료 후 파라미터 복원 및 상위 체크박스 동기화 (기존 유지)
+	    window.addEventListener('DOMContentLoaded', function() {
+	        const urlParams = new URLSearchParams(window.location.search);
+	        
+	        document.querySelectorAll('.sidebar-container input[type="checkbox"]').forEach(cb => cb.checked = false);
+	
+	        const regionsParam = urlParams.get('regions');
+	        const categoriesParam = urlParams.get('categories');
+	
+	        if (regionsParam || categoriesParam) {
+	            const regions = regionsParam ? regionsParam.split(',') : [];
+	            const categories = categoriesParam ? categoriesParam.split(',') : [];
+	
+	            if (regions.length > 0) {
+	                document.querySelectorAll('.region-check').forEach(cb => {
+	                    if (regions.includes(cb.value)) cb.checked = true;
+	                });
+	                const subRegionList = document.getElementById('sub-region-list');
+	                const regionArrow = document.querySelector('.regionArrow');
+	                if (subRegionList) subRegionList.classList.add('open');
+	                if (regionArrow) regionArrow.classList.add('open');
+	            }
+	
+	            if (categories.length > 0) {
+	                document.querySelectorAll('.food-check, .category-check:not(.food-check-all)').forEach(cb => {
+	                    if (categories.includes(cb.value)) cb.checked = true;
+	                });
+	
+	                const subCategoryList = document.getElementById('sub-category-list');
+	                const categoryArrow = document.querySelector('.categoryArrow');
+	                if (subCategoryList) subCategoryList.classList.add('open');
+	                if (categoryArrow) categoryArrow.classList.add('open');
+	
+	                const foodChecked = document.querySelectorAll('.food-check:checked').length > 0;
+	                if (foodChecked) {
+	                    const subFoodList = document.getElementById('sub-food-list');
+	                    const foodArrow = document.querySelector('.foodArrow');
+	                    if (subFoodList) subFoodList.classList.add('open');
+	                    if (foodArrow) foodArrow.classList.add('open');
+	                }
+	            }
+	
+	            updateRegionCheckState();
+	            syncParentCheckboxes();
+	        }
+	
+	        if (urlParams.get('login') === 'true') {
+	            openLoginModal();
+	        }
+	
+	        if (typeof filterMarkers === 'function') {
+	            filterMarkers();
+	        }
+	        
+	        if (window.location.search) {
+	            window.history.replaceState({}, document.title, window.location.pathname);
+	        }
+	    });
+	    
+	    
+	
+	    document.addEventListener('keydown', function(e) {
+	        if (e.key === 'Escape') closeModal();
+	    });
+	    
+	    function goLogin() {
+	        if (isEmpty(mem.t_id, "아이디를 입력하세요")) return;
+	        if (isEmpty(mem.t_password, "비밀번호를 입력하세요")) return;
+	        mem.t_gubun.value = "memberLogin";
+	        mem.method = "post";
+	        mem.action = "Member";
+	        mem.submit();
+	    }
+	</script>
 </body>
 </html>
