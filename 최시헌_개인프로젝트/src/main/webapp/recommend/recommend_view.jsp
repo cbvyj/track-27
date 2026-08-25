@@ -212,7 +212,9 @@
 
 <form name="view">
     <input type="hidden" name="t_gubun">
+    <input type="hidden" name="t_no">
     <input type="hidden" name="t_nowPage" value="${t_nowPage}">
+    <input type="hidden" name="t_attach" value="${dto.getAttach()}">
 </form>
 
 <script type="text/javascript">
@@ -234,11 +236,12 @@
 
     function goDelete(no) {
         if(confirm("정말 이 게시글을 삭제하시겠습니까?")) {
-            document.work.t_no.value = no;        
-            document.work.t_gubun.value = "delete";
-            document.work.action = "Recommend";
-            document.work.method = "post";
-            document.work.submit();
+            view.t_no.value = no;        
+            view.t_gubun.value = "delete";
+            view.action = "Recommend";
+            view.method = "post";
+            view.submit();
         }
     }
+    
 </script>

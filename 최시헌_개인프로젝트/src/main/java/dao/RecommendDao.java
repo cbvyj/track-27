@@ -340,7 +340,7 @@ public class RecommendDao {
 	// 지도에 마커 생성
 	public ArrayList<RecommendDto> getMapList() {
 	    ArrayList<RecommendDto> dtos = new ArrayList<>();
-	    String sql = " select no, title, category, sub_category, tags, region, content, lat, lng "
+	    String sql = " select no, title, category, sub_category, tags, region, content, lat, lng, link"
 	                + " from my_최시헌_rec "
 	                + " where lat is not null and lng is not null and state = 'approved' "
 	                + " order by no desc ";
@@ -390,12 +390,13 @@ public class RecommendDao {
 	            // 5. 본문 내용 특수문자 및 줄바꿈 안전 정제
 	            String rawContent = rs.getString("content");
 	            String content = (rawContent != null) ? rawContent.replaceAll("[\\r\\n'\"\\\\`]", " ") : "";
-
+	            String link = rs.getString("link");
 	            double lat = rs.getDouble("lat");
 	            double lng = rs.getDouble("lng");
 
-	            RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, "link", content, "attach", "secret", "state", "reg_id", "reg_name", "reg_date", "update_date", 0, lat, lng);
+	            RecommendDto dto = new RecommendDto(no, title, category, sub_category, tags, region, link, content, "attach", "secret", "state", "reg_id", "reg_name", "reg_date", "update_date", 0, lat, lng);
 	            dtos.add(dto);
+	            
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -404,6 +405,26 @@ public class RecommendDao {
 	        DBConnection.closeDB(con, ps, rs);
 	    }
 	    return dtos;
+	}
+
+	
+	//게시글 삭제
+	public int recommendDelete(String no) {
+		int result = 0;
+		String sql="delete from my_최시헌_rec\r\n"
+				+ "where no = ?";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, no);
+			result = ps.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("recommendDelete() 오류: "+sql);
+		} finally{
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return result;
 	}
 	
 	

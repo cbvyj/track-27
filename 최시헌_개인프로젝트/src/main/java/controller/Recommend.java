@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import command.recommend.RecommendDelete;
 import command.recommend.RecommendList;
 import command.recommend.RecommendSave;
 import command.recommend.RecommendUpdate;
@@ -110,6 +111,12 @@ public class Recommend extends HttpServlet {
 			viewPage="common_alert_view.jsp";
 		}
 		
+		//게시글 삭제
+		else if(gubun.equals("delete")) {
+			RecommendDelete rec = new RecommendDelete();
+			rec.execute(request);
+			viewPage="common_alert.jsp";
+		}
 		
 		
 		

@@ -15,6 +15,7 @@
         <input type="hidden" name="t_nowPage">
         <input type="hidden" name="t_no">
         
+        
     <script type="text/javascript">
         function goSearch() {
             document.work.t_nowPage.value = "1";

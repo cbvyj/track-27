@@ -104,6 +104,10 @@
     <div class="main-container">
         <div id="map"></div>
         
+        <div class="map-message" id="map-message">
+        원하는 지역 또는 카테고리를 선택해 주세요.
+   	 	</div>
+        
         <!-- 지도 상단 카테고리 범례 (Legend) -->
         <div class="map-legend">
             <div class="legend-item">
@@ -335,13 +339,13 @@
 	        const mapElement = document.getElementById('map');
 	        
 	        if (!mapElement) return;
-	
+
 	        const map = new google.maps.Map(mapElement, {
 	            zoom: 10, 
 	            center: centerLatLng,
 	            disableDefaultUI: true
 	        });
-	
+
 	        const pinSymbol = {
 	            path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
 	            fillOpacity: 1,
@@ -350,7 +354,7 @@
 	            strokeWeight: 1.5,   
 	            anchor: new google.maps.Point(12, 22)
 	        };
-	
+
 	        const categoryColors = {
 	            'food': '#e03131',      
 	            'sights': '#7048e8',   
@@ -358,7 +362,7 @@
 	            'festival': '#f59f00'  
 	        };
 	        const defaultColor = '#495057';
-	
+
 	        const locations = [
 	            <c:forEach items="${dtos}" var="dto" varStatus="status">
 	                { 
@@ -374,9 +378,9 @@
 	                }${!status.last ? ',' : ''}
 	            </c:forEach>
 	        ];
-	
+
 	        allMarkers = [];
-	
+
 	        locations.forEach(loc => {
 	            if (!isNaN(loc.lat) && !isNaN(loc.lng) && loc.lat !== 0 && loc.lng !== 0) {
 	                
@@ -390,7 +394,7 @@
 	                        }
 	                    }
 	                }
-	
+
 	                const marker = new google.maps.Marker({
 	                    position: { lat: loc.lat, lng: loc.lng },
 	                    map: map,
@@ -401,7 +405,7 @@
 	                        fillColor: color
 	                    }
 	                });
-	
+
 	                marker.markerRegion = loc.region || "";
 	                marker.markerCategory = loc.category || "";
 	                marker.markerSubCategory = loc.subCategory || "";
@@ -415,72 +419,93 @@
 	                    loc.region,
 	                    loc.content
 	                ].join(' ').toLowerCase();
-	
+
 	                marker.addListener('click', function() {
 	                    goView(loc.no);
 	                });
-	
+
 	                allMarkers.push(marker);
 	            }
 	        });
-	
+
 	        filterMarkers();
 	    }
 	
 	 // 6. 통합 필터 및 검색 처리 함수
-	    function filterMarkers() {
-	        const searchInput = document.querySelector('input[name="t_search"]');
-	        const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+	 function filterMarkers() {
+		    const mapMessage = document.getElementById('map-message');
+		    const searchInput = document.querySelector('input[name="t_search"]');
+		    const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+		    const selectedRegions = Array.from(
+		        document.querySelectorAll('.region-check:checked')
+		    ).map(cb => cb.value);
+		    const selectedFoodSubs = Array.from(
+		        document.querySelectorAll('.food-check:checked')
+		    ).map(cb => cb.value);
+		    const selectedOtherCats = Array.from(
+		        document.querySelectorAll('.category-check:not(.food-check-all):checked')
+		    ).map(cb => cb.value);
+		    const hasRegionFilter = selectedRegions.length > 0;
+		    const hasCategoryFilter =
+		        selectedFoodSubs.length > 0 || selectedOtherCats.length > 0;
+		    const hasKeyword = keyword.length > 0;
+		
+		    // 아무것도 선택하지 않은 최초 상태
+		    if (!hasRegionFilter && !hasCategoryFilter && !hasKeyword) {
+		        allMarkers.forEach(marker => marker.setVisible(false));
+		        if (mapMessage) {
+		            mapMessage.textContent =
+		                "원하는 지역 또는 카테고리를 선택해 주세요.";
+		            mapMessage.style.display = "block";
+		        }
+		        return;
+		    }
+		
+		    // 필터가 하나라도 선택되면 안내문 숨김
+		    if (mapMessage) {
+		        mapMessage.style.display = "none";
+		    }
+		    allMarkers.forEach(marker => {
+		        let show = true;
 
-	        const selectedRegions = Array.from(document.querySelectorAll('.region-check:checked')).map(cb => cb.value);
-	        const selectedFoodSubs = Array.from(document.querySelectorAll('.food-check:checked')).map(cb => cb.value);
-	        const selectedOtherCats = Array.from(document.querySelectorAll('.category-check:not(.food-check-all):checked')).map(cb => cb.value);
-
-	        const hasRegionFilter = selectedRegions.length > 0;
-	        const hasCategoryFilter = selectedFoodSubs.length > 0 || selectedOtherCats.length > 0;
-	        const hasKeyword = keyword.length > 0;
-
-	        // ✨ 핵심 변경 사항: 아무 필터 및 검색어도 없으면 모든 마커를 숨기고 함수 종료
-	        if (!hasRegionFilter && !hasCategoryFilter && !hasKeyword) {
-	            allMarkers.forEach(marker => marker.setVisible(false));
-	            return;
-	        }
-
-	        allMarkers.forEach(marker => {
-	            let show = true;
-
-	            // 체크된 지역이 있을 때만 필터링 (선택이 없으면 통과)
-	            if (hasRegionFilter) {
-	                const matchRegion = selectedRegions.some(reg => marker.markerRegion.includes(reg));
-	                if (!matchRegion) show = false;
-	            }
-
-	            // 체크된 카테고리가 있을 때만 필터링 (선택이 없으면 통과)
-	            if (hasCategoryFilter) {
-	                let matchCategory = false;
-	                
-	                if (selectedFoodSubs.length > 0 && selectedFoodSubs.some(sub => 
-	                    marker.markerSubCategory.includes(sub) || marker.markerTags.includes(sub)
-	                )) {
-	                    matchCategory = true;
-	                }
-	                
-	                if (selectedOtherCats.length > 0 && selectedOtherCats.some(cat => marker.markerCategory.includes(cat))) {
-	                    matchCategory = true;
-	                }
-
-	                if (!matchCategory) show = false;
-	            }
-
-	            if (hasKeyword) {
-	                if (!marker.searchData.includes(keyword)) {
-	                    show = false;
-	                }
-	            }
-
-	            marker.setVisible(show);
-	        });
-	    }
+		        // 체크된 지역이 있을 때만 필터링
+		        if (hasRegionFilter) {
+		            const matchRegion = selectedRegions.some(
+		                reg => marker.markerRegion.includes(reg)
+		            );
+		            if (!matchRegion) show = false;
+		        }
+		
+		        // 체크된 카테고리가 있을 때만 필터링
+		        if (hasCategoryFilter) {
+		            let matchCategory = false;
+		            if (
+		                selectedFoodSubs.length > 0 &&
+		                selectedFoodSubs.some(sub =>
+		                    marker.markerSubCategory.includes(sub) ||
+		                    marker.markerTags.includes(sub)
+		                )
+		            ) {
+		                matchCategory = true;
+		            }
+		            if (
+		                selectedOtherCats.length > 0 &&
+		                selectedOtherCats.some(cat =>
+		                    marker.markerCategory.includes(cat)
+		                )
+		            ) {
+		                matchCategory = true;
+		            }
+		            if (!matchCategory) show = false;
+		        }
+		        if (hasKeyword) {
+		            if (!marker.searchData.includes(keyword)) {
+		                show = false;
+		            }
+		        }
+		        marker.setVisible(show);
+		    });
+		}
 	
 	    function goSearch() {
 	        filterMarkers();
